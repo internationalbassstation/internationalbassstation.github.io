@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
+}
+
+.hidden {
+    display: none;
+}
+
+#audioPlayer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #f1f1f1;
+    padding: 10px;
+    text-align: center;
+}
+
+#mixesList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.mix-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+}

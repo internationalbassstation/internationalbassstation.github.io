@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DJ Mixes Showcase</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>DJ Name's Mixes</h1>
+        <nav>
+            <button id="mixesButton">View Mixes</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="landing">
+            <h2>Welcome to My DJ Mix Collection</h2>
+            <p>Scroll down or click to explore my music</p>
+        </section>
+
+        <section id="mixesList" class="hidden">
+            <h2>Available Mixes</h2>
+            <div id="mixesContainer">
+                <!-- Mixes will be dynamically added here -->
+                <div class="mix-item">
+                    <h3>October 4th</h3>
+                    <button class="play-mix" data-src="assets/mixes/bass_station_2024-10-4.mp3">Play</button>
+                </div>
+                <div class="mix-item">
+                    <h3>October 11th</h3>
+                    <button class="play-mix" data-src="assets/mixes/bass_station_2024-10-11.mp3">Play</button>
+                </div>
+                <div class="mix-item">
+                    <h3>October 18th</h3>
+                    <button class="play-mix" data-src="assets/mixes/bass_station_2024-10-18.mp3">Play</button>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div id="audioPlayer">
+            <audio id="mixPlayer" controls>
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

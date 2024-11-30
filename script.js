@@ -1,20 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const mixesButton = document.getElementById('mixesButton');
-    const landing = document.getElementById('landing');
-    const mixesList = document.getElementById('mixesList');
+    const ctaButton = document.querySelector('.cta');
+    const mixesContainer = document.querySelector('.mixes-container');
     const playButtons = document.querySelectorAll('.play-mix');
     const audioPlayer = document.getElementById('mixPlayer');
-
-    mixesButton.addEventListener('click', () => {
-        landing.classList.add('hidden');
-        mixesList.classList.remove('hidden');
+  
+    // Smooth scroll to mixes section
+    ctaButton.addEventListener('click', () => {
+      mixesContainer.scrollIntoView({ behavior: 'smooth' });
     });
-
+  
+    // Handle mix playback
     playButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const mixSrc = button.getAttribute('data-src');
-            audioPlayer.src = mixSrc;
-            audioPlayer.play();
-        });
+      button.addEventListener('click', () => {
+        const mixSrc = button.getAttribute('data-src');
+        audioPlayer.src = mixSrc;
+        audioPlayer.play();
+      });
     });
-});
+  
+    // Add parallax effect to hero section
+    window.addEventListener('scroll', () => {
+      const heroElement = document.querySelector('.hero');
+      heroElement.style.transform = `translateY(${window.pageYOffset * 0.5}px)`;
+    });
+  });

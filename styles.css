@@ -10,9 +10,9 @@
 body {
   font-family: Arial, sans-serif;
   color: #000;
-  background-color: '#000';
+  background-color: #000;
   line-height: 1.6;
-
+  padding-bottom: 30px; /* Adjust this value to match the height of your audio player */
 }
 
 /* Hero section */
@@ -39,7 +39,7 @@ body {
   opacity: 0;
   transform: translateY(50px);
   transition: transform 0.8s ease, opacity 0.8s ease;
-  background-color: 'transparent';
+  background-color: transparent;
 
 }
 
@@ -52,12 +52,12 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  background-color: 'transparent';
+  background-color: transparent;
 }
 
 .mix-item {
   position: relative;
-  background-color: 'transparent';
+  background-color: transparent;
   border-radius: 0.5rem;
   overflow: hidden;
   cursor: pointer;
@@ -116,14 +116,14 @@ body {
 
 /* Audio player */
 .audio-player {
-  background-color: #f5f5f5;
-  padding: 1rem;
+  background-color: transparent;
+  backdrop-filter: blur(10px);
+  border: none;
+  box-shadow: none;  padding: 1rem;
   position: fixed;
   bottom: 0;
   width: 100%;
   text-align: center;
-  backdrop-filter: blur(10px); /* Adds a blur effect for extra depth */
-  box-shadow: 0 -2px 10px rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease;
 }
 

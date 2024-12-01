@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle mix playback
   mixItems.forEach(mixItem => {
-    mixItem.addEventListener('click', () => {
+    const button = mixItem.querySelector('.play-mix');
+    button.addEventListener('click', () => {
       const mixSrc = mixItem.getAttribute('data-src');
       audioPlayer.src = mixSrc;
       audioPlayer.play();

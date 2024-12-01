@@ -13,68 +13,42 @@
 
   <main>
     <section class="mixes-container">
-      <div class="mixes-grid">
-        <div class="mix-item" data-src="assets/mixes/2024-10-4.mp3">
-          <img src="assets/images/robosapien1.jpeg" alt="October 4th">
-          <div class="mix-overlay">
-            <span class="mix-date">October 4th</span>
-          </div>
-        </div>
-        <div class="mix-item" data-src="assets/mixes/2024-10-11.mp3">
-          <img src="assets/images/robosapien2.jpeg" alt="October 11th">
-          <div class="mix-overlay">
-            <span class="mix-date">October 11th</span>
-          </div>
-        </div>
-        <div class="mix-item" data-src="assets/mixes/2024-10-18.mp3">
-          <img src="assets/images/robosapien3.jpeg" alt="October 18th">
-          <div class="mix-overlay">
-            <span class="mix-date">October 18th</span>
-          </div>
-        </div>
-        <div class="mix-item" data-src="assets/mixes/2024-10-25.mp3">
-          <img src="assets/images/robosapien4.jpeg" alt="October 25th">
-          <div class="mix-overlay">
-            <span class="mix-date">October 25th</span>
-          </div>
-        </div>
-        <div class="mix-item" data-src="assets/mixes/2024-11-01.mp3">
-          <img src="assets/images/robosapien5.jpeg" alt="November 1st">
-          <div class="mix-overlay">
-            <span class="mix-date">November 1st</span>
-          </div>
-        </div>
-        <div class="mix-item" data-src="assets/mixes/2024-11-08.mp3">
-          <img src="assets/images/robosapien6.jpeg" alt="November 8th">
-          <div class="mix-overlay">
-            <span class="mix-date">November 8th</span>
-          </div>
-        </div>
-        <div class="mix-item" data-src="assets/mixes/2024-11-15.mp3">
-          <img src="assets/images/robosapien7.jpeg" alt="November 15th">
-          <div class="mix-overlay">
-            <span class="mix-date">November 15th</span>
-          </div>
-        </div>
-        <div class="mix-item" data-src="assets/mixes/2024-11-22.mp3">
-          <img src="assets/images/robosapien8.jpeg" alt="November 22nd">
-          <div class="mix-overlay">
-            <span class="mix-date">November 22nd</span>
-          </div>
-        </div>
-        <div class="mix-item" data-src="assets/mixes/2024-11-29.mp3">
-          <img src="assets/images/robosapien9.jpeg" alt=">November 29th">
-          <div class="mix-overlay">
-            <span class="mix-date">November 29th</span>
-          </div>
-        </div>
+      <ul class="mixes-list">
+        <li class="mix-item" data-src="assets/mixes/2024-10-4.mp3">
+          <button class="play-mix">October 4th</button>
+        </li>
+        <li class="mix-item" data-src="assets/mixes/2024-10-11.mp3">
+          <button class="play-mix">October 11th</button>
+        </li>
+        <li class="mix-item" data-src="assets/mixes/2024-10-18.mp3">
+          <button class="play-mix">October 18th</button>
+        </li>
+        <li class="mix-item" data-src="assets/mixes/2024-10-25.mp3">
+          <button class="play-mix">October 25th</button>
+        </li>
+        <li class="mix-item" data-src="assets/mixes/2024-11-01.mp3">
+          <button class="play-mix">November 1st</button>
+        </li>
+        <li class="mix-item" data-src="assets/mixes/2024-11-08.mp3">
+          <button class="play-mix">November 8th</button>
+        </li>
+        <li class="mix-item" data-src="assets/mixes/2024-11-15.mp3">
+          <button class="play-mix">November 15th</button>
+        </li>
+        <li class="mix-item" data-src="assets/mixes/2024-11-22.mp3">
+          <button class="play-mix">November 22nd</button>
+        </li>
+        <li class="mix-item" data-src="assets/mixes/2024-11-29.mp3">
+          <button class="play-mix">November 29th</button>
+        </li>
+      </ul>
     </section>
   </main>
 
   <div class="audio-player hidden">
     <div class="audio-player-container">
       <audio id="mixPlayer" controls>
-        Your browser does not support the audio element.
+        Your browser is incompatible with the audio player.  That's strange.  How did you do that?
       </audio>
     </div>
   </div>

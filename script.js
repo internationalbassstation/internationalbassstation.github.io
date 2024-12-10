@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const audioPlayer = document.getElementById('mixPlayer');
   const audioPlayerElement = document.querySelector('.audio-player');
 
-  // Scroll to mixes on any interaction with hero
+  // Scroll to mixes on any interaction with hero - fix multi-scroll in v2
   function scrollToMixes() {
     mixesContainer.scrollIntoView({ 
       behavior: 'smooth',

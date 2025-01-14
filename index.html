@@ -8,10 +8,17 @@
 </head>
 <body>
   <header class="hero" id="heroSection">
-    <img src="assets/herobackground.jpg" alt="Hero Background" class="hero-background">
+    <picture>
+      <source media="(orientation: landscape)" srcset="assets/hero-landscape.jpg">
+      <source media="(orientation: portrait)" srcset="assets/hero-portrait.jpg">
+      <img src="assets/herobackground.jpg" alt="Hero Background" class="hero-background">
+    </picture>
+    <div class="scroll-indicator">
+      <span>Scroll Down</span>
+    </div>
   </header>
 
-  <main>
+  <main class="content">
     <section class="mixes-container">
       <ul class="mixes-list">
         <li class="mix-item" data-src="assets/mixes/2024-10-4.mp3">

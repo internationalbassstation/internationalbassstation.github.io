@@ -1,21 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const heroSection = document.getElementById('heroSection');
-  const mixesContainer = document.querySelector('.mixes-container');
-  const mixItems = document.querySelectorAll('.mix-item');
-  const audioPlayer = document.getElementById('mixPlayer');
-  const audioPlayerElement = document.querySelector('.audio-player');
+    // Force scroll to top on page load/refresh
+  history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
 
-  // Scroll to mixes on any interaction with hero - fix multi-scroll in v2
-  function scrollToMixes() {
-    mixesContainer.scrollIntoView({ 
+  const heroSection = document.getElementById('heroSection');
+  const content = document.querySelector('.content');
+
+  // Smooth scroll function
+  function scrollToContent() {
+    content.scrollIntoView({ 
       behavior: 'smooth',
       block: 'start' 
     });
   }
 
-  // Add scroll trigger to hero section
-  heroSection.addEventListener('click', scrollToMixes);
-  heroSection.addEventListener('wheel', scrollToMixes);
+  const mixesContainer = document.querySelector('.mixes-container');
+  const mixItems = document.querySelectorAll('.mix-item');
+  const audioPlayer = document.getElementById('mixPlayer');
+  const audioPlayerElement = document.querySelector('.audio-player');
+
+// Event listeners for hero section
+  heroSection.addEventListener('click', scrollToContent);
+  
+  // Optional: Add scroll listener for hero section
+  window.addEventListener('wheel', (e) => {
+    if (window.scrollY === 0 && e.deltaY > 0) {
+      e.preventDefault();
+      scrollToContent();
+    }
+  }, { passive: false });
+
+  // Hide scroll indicator when user scrolls
+  window.addEventListener('scroll', () => {
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (window.scrollY > 0) {
+      scrollIndicator.style.opacity = '0';
+    }
+  });
 
   // Handle mix playback
   mixItems.forEach(mixItem => {

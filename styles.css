@@ -17,9 +17,11 @@ body {
 
 /* Hero section */
 .hero {
-  height: 100vh;
+  height: 100vh; /* Fallback */
+  height: 100dvh;
   width: 100%;
   position: relative;
+  overflow: hidden;
   cursor: pointer; /* Indicates the entire hero is interactive */
 }
 
@@ -31,6 +33,37 @@ body {
   top: 0;
   left: 0;
   z-index: 1;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  color: white;
+  text-align: center;
+  opacity: 0;
+  animation: fadeInOut 2s infinite;
+}
+
+.scroll-indicator span {
+  display: block;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  background-color: #000;
 }
 
 /* Mixes section */

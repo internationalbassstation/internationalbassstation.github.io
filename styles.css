@@ -40,7 +40,7 @@ body {
 
 .scroll-indicator {
   position: absolute;
-  bottom: 2rem;
+  top: 2rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -67,6 +67,121 @@ body {
   position: relative;
   z-index: 2;
   background-color: #000;
+}
+
+.info-container {
+  padding: 2rem;
+  color: white;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Live banner styles */
+.live-banner {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: rgba(0, 123, 255, 0.1);
+  border: 2px solid rgba(0, 123, 255, 0.7);
+  border-radius: 0.5rem;
+}
+
+.live-banner h2 {
+  font-size: 1.5rem;
+  line-height: 1.6;
+}
+
+.live-banner a {
+  color: rgba(0, 123, 255, 1);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.live-banner a:hover {
+  color: white;
+}
+
+/* Countdown styles */
+.countdown-container {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  background: rgba(0, 123, 255, 0.1);
+  border-radius: 0.5rem;
+}
+
+#countdown {
+  font-size: 2rem;
+  font-weight: bold;
+  color: rgba(0, 123, 255, 1);
+}
+
+/* DJ info styles */
+.dj-info {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: rgba(0, 123, 255, 0.1);
+  border-radius: 0.5rem;
+}
+
+.dj-image {
+  margin-bottom: 1.5rem;
+}
+
+.dj-image img {
+  border-radius: 50%;
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+}
+
+.dj-info h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: rgba(0, 123, 255, 1);
+}
+
+.dj-bio {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.dj-bio p {
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+
+/* Past voyages styles */
+.past-voyages {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.past-voyages h2 {
+  font-size: 2rem;
+  color: rgba(0, 123, 255, 1);
+}
+
+/* Fix for player overlap */
+.mixes-container {
+  padding-bottom: 120px; /* Increased padding to prevent overlap with player */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .live-banner h2 {
+    font-size: 1.2rem;
+  }
+  
+  #countdown {
+    font-size: 1.5rem;
+  }
+  
+  .dj-info h2 {
+    font-size: 1.5rem;
+  }
 }
 
 /* Mixes section */

@@ -7,12 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroSection = document.getElementById('heroSection');
     const content = document.querySelector('.content');
     const indicator = document.querySelector('.scroll-indicator');
-    const sections = [
-        document.querySelector('.live-banner'),
-        document.querySelector('.countdown-container'),
-        document.querySelector('.dj-info'),
-        document.querySelector('.past-voyages')
-    ];
+    const sections = document.querySelectorAll('.grid-row');
     const footer = document.querySelector('.site-footer');
 
     // Animation state management
@@ -143,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const now = new Date();
         const nextFriday = getNextFriday10PM();
         const countdownElement = document.getElementById('countdown');
-        
         const isFriday = now.getDay() === 5;
         const hour = now.getHours();
         const isShowTime = isFriday && hour === 22;
@@ -153,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             countdownElement.style.color = '#ff0000';
         } else {
             const diff = nextFriday - now;
-            
+
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));

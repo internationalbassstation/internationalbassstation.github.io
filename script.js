@@ -197,7 +197,7 @@ class SiteSectionManager {
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
                 
-                countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                countdownElement.textContent = `${days}D ${hours}H ${minutes}M ${seconds}S`;
                 countdownElement.style.color = 'rgba(239, 36, 170, 1)';
             }
         };

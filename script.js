@@ -13,17 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.past-voyages')
     ];
 
-    // Create progress indicator
-    const indicator = document.createElement('div');
-    indicator.className = 'progress-indicator';
-    const progressBar = document.createElement('div');
-    progressBar.className = 'progress-bar';
-    const progressFill = document.createElement('div');
-    progressFill.className = 'progress-bar-fill';
-    progressBar.appendChild(progressFill);
-    indicator.appendChild(progressBar);
-    document.body.appendChild(indicator);
-
     // Animation state management
     let currentProgress = 0;
     const maxProgress = 100;
@@ -58,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update progress and trigger animations
     const updateProgress = (newProgress) => {
         currentProgress = Math.min(newProgress, maxProgress);
-        progressFill.style.width = `${currentProgress}%`;
         
         // Calculate which sections should be visible
         const sectionsToShow = Math.floor((currentProgress / maxProgress) * sections.length);
@@ -134,13 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { passive: false });
 
-    // Hide scroll indicator when user scrolls
-    window.addEventListener('scroll', () => {
-        const scrollIndicator = document.querySelector('.scroll-indicator');
-        if (window.scrollY > 0) {
-            scrollIndicator.style.opacity = '0';
-        }
-    });
 
     // Countdown timer functionality
     function getNextFriday10PM() {

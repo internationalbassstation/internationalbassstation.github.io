@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const indicator = document.querySelector('.scroll-indicator');
     const sections = document.querySelectorAll('.grid-row');
     const footer = document.querySelector('.site-footer');
+    const pastVoyages = document.querySelector('.past-voyages');
 
     // Animation state management
     let currentProgress = 0;
@@ -60,23 +61,17 @@ document.addEventListener('DOMContentLoaded', () => {
             isLocked = false;
             indicator.classList.remove('visible');
             enableMixScroll();
+            // Flash the past voyages section
+            pastVoyages.classList.add('flash');
+            setTimeout(() => {
+                pastVoyages.classList.remove('flash');
+            }, 1000);
         }
     };
 
     // Handle mix playback
     const mixItems = document.querySelectorAll('.mix-item');
     const audioPlayer = document.getElementById('mixPlayer');
-    const audioPlayerElement = document.querySelector('.audio-player');
-
-    mixItems.forEach(mixItem => {
-        const button = mixItem.querySelector('.play-mix');
-        button.addEventListener('click', () => {
-            const mixSrc = mixItem.getAttribute('data-src');
-            audioPlayer.src = mixSrc;
-            audioPlayer.play();
-            audioPlayerElement.classList.remove('hidden');
-        });
-    });
 
     // Enable scrolling to mix section
     const enableMixScroll = () => {
@@ -119,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { passive: false });
 
-
     // Countdown timer functionality
     function getNextFriday10PM() {
         const now = new Date();
@@ -154,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             
             countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-            countdownElement.style.color = 'rgba(0, 123, 255, 1)';
+            countdownElement.style.color = 'rgba(239, 36, 170, 1)';
         }
     }
 
@@ -173,24 +167,24 @@ document.addEventListener('DOMContentLoaded', () => {
             mixesContainer.classList.add('visible');
         }
     });
+
     mixItems.forEach(mixItem => {
-      const button = mixItem.querySelector('.play-mix');
-      button.addEventListener('click', () => {
-          const mixSrc = mixItem.getAttribute('data-src');
-          audioPlayer.src = mixSrc;
-          audioPlayer.play();
-          footer.classList.remove('hidden');
-      });
-  });
-  
-  // Show footer on scroll to bottom
-  window.addEventListener('scroll', () => {
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      
-      if (scrollPosition >= documentHeight - 50) { // -50 to trigger slightly before absolute bottom
-          footer.classList.remove('hidden');
-      }
-  });
-  
+        const button = mixItem.querySelector('.play-mix');
+        button.addEventListener('click', () => {
+            const mixSrc = mixItem.getAttribute('data-src');
+            audioPlayer.src = mixSrc;
+            audioPlayer.play();
+            footer.classList.remove('hidden');
+        });
+    });
+    
+    // Show footer on scroll to bottom
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        if (scrollPosition >= documentHeight - 50) { // -50 to trigger slightly before absolute bottom
+            footer.classList.remove('hidden');
+        }
+    });
 });

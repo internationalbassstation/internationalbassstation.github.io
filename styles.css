@@ -5,6 +5,7 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
+
 /* GLOBAL */
 body {
   font-family: Arial, sans-serif;
@@ -12,6 +13,7 @@ body {
   background-color: #000;
   line-height: 1.6;
 }
+
 /* HERO HEADER */
 .hero {
   height: 100vh;
@@ -21,6 +23,7 @@ body {
   overflow: hidden;
   cursor: crosshair;
 }
+
 .hero-background {
   position: absolute;
   top: 0;
@@ -33,6 +36,7 @@ body {
   background-repeat: no-repeat;
   z-index: 1;
 }
+
 .scroll-indicator {
   position: absolute;
   top: 2rem;
@@ -44,6 +48,7 @@ body {
   opacity: 0;
   animation: fadeInOut 2s infinite;
 }
+
 .scroll-indicator span {
   display: block;
   font-size: 1rem;
@@ -51,16 +56,19 @@ body {
   letter-spacing: 0.2em;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+
 @keyframes fadeInOut {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
 }
+
 /* CONTENT */
 .content {
   position: relative;
   z-index: 2;
-  background-color: #000;
+  background-color: 'tranparent';
 }
+
 /* INFO CONTAINER */
 .info-container {
   padding: 2rem;
@@ -70,125 +78,162 @@ body {
   min-height: 100vh;
   position: relative;
 }
+
 .info-grid {
   display: flex;
   flex-direction: column;
   gap: 3rem;
 }
+
 .grid-row {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  background: transparent;
+  border: 2px solid rgba(180, 233, 17, 1);
+  border-radius: 0.5rem;
+  padding: 2rem;
 }
+
 .grid-row.visible {
   opacity: 1;
   transform: translateY(0);
 }
+
 /* Broadcast Info Row */
 .broadcast-info {
   display: flex;
-  flex-direction: column;
   gap: 2rem;
-}
-@media (min-width: 768px) {
-  .broadcast-info {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .live-banner,
-  .radio-player {
-    flex: 1;
-  }
-}
-/* Live Banner */
-.live-banner {
-  padding: 2rem;
-  background: rgba(0, 123, 255, 0.1);
-  border: 2px solid rgba(100, 36, 184, 0.7);
-  border-radius: 0.5rem;
   text-align: center;
 }
-.live-banner h2 {
+.broadcast-title,
+.broadcast-player,
+.broadcast-countdown {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.broadcast-title h2 {
+  margin: 0;
+}
+
+.broadcast-player {
+  flex: 1.2; /* Give slightly more space to the player section */
+}
+
+.broadcast-player h3 {
+  margin-bottom: 1rem;
+}
+
+.tunein-container {
+  width: 100%;
+}
+
+#countdown {
   font-size: 1.5rem;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-/* Radio Player */
-.radio-player {
-  padding: 2rem;
-  background: rgba(0, 123, 255, 0.1);
-  border: 2px solid rgba(239, 36, 170, 0.7);
-  border-radius: 0.5rem;
+  font-weight: bold;
   text-align: center;
 }
-.radio-player h2 {
-  margin-bottom: 1rem;
+
+.broadcast-content {
+  flex: 2;
+  padding-right: 2rem;
 }
-.radio-player a {
+
+.radio-player {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .broadcast-info {
+    flex-direction: column;
+  }
+  .broadcast-title,
+  .broadcast-player,
+  .broadcast-countdown {
+    width: 100%;
+    padding: 1rem 0;
+  }
+  
+  .tunein-container {
+    max-width: 100%;
+  }
+  .broadcast-content {
+    padding-right: 0;
+    padding-bottom: 2rem;
+  }
+}
+
+/* Title Styles */
+.broadcast-content h2,
+.dj-info h2,
+.past-voyages h2 {
+  color: rgba(100, 36, 184, 1);
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Link Styles */
+.broadcast-content h3 {
+  margin-top: 1.5rem;
+}
+
+.broadcast-content a {
   color: rgba(0, 123, 255, 1);
   text-decoration: none;
   transition: color 0.3s ease;
 }
-.radio-player a:hover {
+
+.broadcast-content a:hover {
   color: white;
 }
-.tunein-container {
-  width: 100%;
-  height: 100px;
-}
-.tunein-container iframe {
-  width: 100%;
-  height: 100%;
-}
+
 /* DJ Section */
 .dj-section {
   display: flex;
-  flex-direction: column;
+  text-align: center;
   gap: 2rem;
-  padding: 2rem;
-  background: rgba(0, 123, 255, 0.1);
-  border: 2px solid rgba(180, 233, 17, 0.7);
-  border-radius: 0.5rem;
 }
-@media (min-width: 768px) {
+
+.dj-image {
+  flex: 1;
+}
+
+.dj-info {
+  flex: 2;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
   .dj-section {
-    flex-direction: row;
-    align-items: start;
-  }
-  .dj-image {
-    flex: 1;
-  }
-  .dj-info {
-    flex: 2;
-    padding-left: 2rem;
+    flex-direction: column;
   }
 }
+
 .dj-image img {
   width: 100%;
   height: auto;
   border-radius: 0.5rem;
 }
-.dj-info h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: rgba(0, 123, 255, 1);
-}
+
 .dj-bio p {
   margin-bottom: 1rem;
   line-height: 1.8;
+  color: white;
 }
+
 /* Past Voyages */
 .past-voyages {
   text-align: center;
-  padding: 2rem;
-  background: rgba(239, 36, 170, 0.1);
-  border: 2px solid rgba(100, 36, 184, 0.9);
-  border-radius: 0.5rem;
+  transition: border-color 0.3s ease;
 }
-.past-voyages h2 {
-  font-size: 2rem;
-  color: rgba(180, 233, 17, 1);
+
+.past-voyages.flash {
+  border-color: rgba(239, 36, 170, 0.9);
 }
+
 /* MIXES CONTAINER */
 .mixes-container {
   padding: 4rem 2rem;
@@ -197,17 +242,21 @@ body {
   transform: translateY(50px);
   transition: transform 0.5s ease, opacity 0.5s ease;
 }
+
 .mixes-container.visible {
   transform: translateY(0);
   opacity: 1;
 }
+
 .mixes-list {
   list-style: none;
   padding: 0;
 }
+
 .mix-item {
   margin-bottom: 1rem;
 }
+
 .play-mix {
   display: block;
   width: 100%;
@@ -217,18 +266,20 @@ body {
   font-size: 1.25rem;
   font-weight: bold;
   text-align: center;
-  border: 2px solid rgba(0, 123, 255, 0.7);
+  border: 2px solid rgba(180, 233, 17, 0.7);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.2s ease;
   opacity: 0.8;
 }
+
 .play-mix:hover {
-  background-color: rgba(0, 123, 255, 0.1);
-  border-color: rgba(0, 123, 255, 1);
-  color: rgba(0, 123, 255, 1);
+  background-color: rgba(180, 233, 17, 0.1);
+  border-color: rgba(180, 233, 17, 1);
+  color: rgba(180, 233, 17, 1);
   transform: scale(1.02);
 }
+
 /* FOOTER STYLES */
 .site-footer {
   background-color: rgba(0, 0, 0, 0.9);
@@ -240,13 +291,16 @@ body {
   transition: transform 0.3s ease;
   z-index: 10;
 }
+
 .site-footer.hidden {
   transform: translateY(100%);
 }
+
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 .footer-credits {
   display: flex;
   align-items: center;
@@ -254,57 +308,32 @@ body {
   color: rgba(0, 123, 255, 0.7);
   font-size: 0.875rem;
 }
+
 .credit-left, .credit-right {
   padding: 0 1rem;
 }
+
 .audio-player-container {
   flex-grow: 1;
   max-width: 800px;
   margin: 0 1rem;
   text-align: center;
 }
+
 #mixPlayer {
   width: 100%;
   margin: 0 auto;
 }
+
 @media (max-width: 768px) {
   .footer-credits {
     flex-direction: column;
     gap: 0.5rem;
   }
+  
   .audio-player-container {
     order: -1;
     margin: 0.5rem 0;
     width: 100%;
-  }
-}
-/* PLAYER STYLES */
-.audio-player {
-  background-color: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(10px);
-  padding: 1rem;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  transition: transform 0.3s ease;
-}
-.audio-player.hidden {
-  transform: translateY(100%);
-}
-.audio-player-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-/* RESPONSIVE ADJUSTMENTS */
-@media (max-width: 768px) {
-  .live-banner h2 {
-    font-size: 1.2rem;
-  }  
-  #countdown {
-    font-size: 1.5rem;
-  }
-  .dj-info h2 {
-    font-size: 1.5rem;
   }
 }

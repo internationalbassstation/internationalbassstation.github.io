@@ -62,7 +62,6 @@ body {
   background-color: #000;
 }
 /* INFO CONTAINER */
-/* Updated Info Container Styles */
 .info-container {
   padding: 2rem;
   color: white;
@@ -71,91 +70,76 @@ body {
   min-height: 100vh;
   position: relative;
 }
-
 .info-grid {
   display: flex;
   flex-direction: column;
   gap: 3rem;
 }
-
 .grid-row {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
-
 .grid-row.visible {
   opacity: 1;
   transform: translateY(0);
 }
-
 /* Broadcast Info Row */
 .broadcast-info {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-
 @media (min-width: 768px) {
   .broadcast-info {
     flex-direction: row;
     justify-content: space-between;
   }
-  
   .live-banner,
   .radio-player {
     flex: 1;
   }
 }
-
 /* Live Banner */
 .live-banner {
   padding: 2rem;
   background: rgba(0, 123, 255, 0.1);
-  border: 2px solid rgba(0, 123, 255, 0.7);
+  border: 2px solid rgba(100, 36, 184, 0.7);
   border-radius: 0.5rem;
   text-align: center;
 }
-
 .live-banner h2 {
   font-size: 1.5rem;
   line-height: 1.6;
   margin-bottom: 1rem;
 }
-
 /* Radio Player */
 .radio-player {
   padding: 2rem;
   background: rgba(0, 123, 255, 0.1);
-  border: 2px solid rgba(0, 123, 255, 0.7);
+  border: 2px solid rgba(239, 36, 170, 0.7);
   border-radius: 0.5rem;
   text-align: center;
 }
-
 .radio-player h2 {
   margin-bottom: 1rem;
 }
-
 .radio-player a {
   color: rgba(0, 123, 255, 1);
   text-decoration: none;
   transition: color 0.3s ease;
 }
-
 .radio-player a:hover {
   color: white;
 }
-
 .tunein-container {
   width: 100%;
   height: 100px;
 }
-
 .tunein-container iframe {
   width: 100%;
   height: 100%;
 }
-
 /* DJ Section */
 .dj-section {
   display: flex;
@@ -163,60 +147,52 @@ body {
   gap: 2rem;
   padding: 2rem;
   background: rgba(0, 123, 255, 0.1);
-  border: 2px solid rgba(0, 123, 255, 0.7);
+  border: 2px solid rgba(180, 233, 17, 0.7);
   border-radius: 0.5rem;
 }
-
 @media (min-width: 768px) {
   .dj-section {
     flex-direction: row;
     align-items: start;
   }
-  
   .dj-image {
     flex: 1;
   }
-  
   .dj-info {
     flex: 2;
     padding-left: 2rem;
   }
 }
-
 .dj-image img {
   width: 100%;
   height: auto;
   border-radius: 0.5rem;
 }
-
 .dj-info h2 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
   color: rgba(0, 123, 255, 1);
 }
-
 .dj-bio p {
   margin-bottom: 1rem;
   line-height: 1.8;
 }
-
 /* Past Voyages */
 .past-voyages {
   text-align: center;
   padding: 2rem;
-  background: rgba(0, 123, 255, 0.1);
-  border: 2px solid rgba(0, 123, 255, 0.7);
+  background: rgba(239, 36, 170, 0.1);
+  border: 2px solid rgba(100, 36, 184, 0.9);
   border-radius: 0.5rem;
 }
-
 .past-voyages h2 {
   font-size: 2rem;
-  color: rgba(0, 123, 255, 1);
+  color: rgba(180, 233, 17, 1);
 }
 /* MIXES CONTAINER */
 .mixes-container {
   padding: 4rem 2rem;
-  padding-bottom: 120px;
+  margin-bottom: 100px;
   opacity: 0;
   transform: translateY(50px);
   transition: transform 0.5s ease, opacity 0.5s ease;

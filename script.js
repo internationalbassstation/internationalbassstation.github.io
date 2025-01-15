@@ -173,14 +173,6 @@ class SiteSectionManager {
         }, 1000);
     }
     
-    showScrollIndicator() {
-        document.querySelector('.scroll-indicator').classList.add('visible');
-    }
-    
-    hideScrollIndicator() {
-        document.querySelector('.scroll-indicator').classList.remove('visible');
-    }
-    
     startCountdownTimer() {
         const updateCountdown = () => {
             const now = new Date();

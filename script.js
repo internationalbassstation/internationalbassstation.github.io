@@ -1,13 +1,10 @@
-// Class to manage the sections of the site and handle transitions between them
 class SiteSectionManager {
-    // Initialize the manager with section definitions and state
     constructor() {
-        // Object containing all sections of the site with their properties
         this.sections = {
             hero: {
                 element: document.getElementById('hero-container'),
                 isComplete: false,
-                next: 'info'  // Points to the next section in sequence
+                next: 'info'
             },
             info: {
                 element: document.querySelector('.info-container'),
@@ -22,90 +19,87 @@ class SiteSectionManager {
             footer: {
                 element: document.querySelector('.site-footer'),
                 isComplete: false,
-                next: null  // No next section after footer
+                next: null
             }
         };
         
-        // Track which section is currently active
         this.currentSection = 'hero';
-        
-        // State object for managing progress through sections
         this.progressState = {
-            current: 0,      // Current progress value
-            max: 100,        // Maximum progress value
-            rate: 25,        // Progress increase rate per second
-            scrollIncrement: 15  // How much progress is added per scroll
+            current: 0,
+            max: 100,
+            rate: 25,
+            interactionIncrement: 15
         };
         
-        // Start initialization
+        // Track touch and interaction state
+        this.interactionState = {
+            startY: 0,
+            lastInteractionTime: 0,
+            isTouching: false,
+            cooldownPeriod: 200,
+            interactionThreshold: 10
+        };
+        
         this.initialize();
     }
     
-    // Set up initial state and event listeners
     initialize() {
-        // Ensure page starts at the top
         history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
         
-        // Set up all event handlers and start countdown
         this.setupEventListeners();
         this.startCountdownTimer();
     }
     
-    // Set up all event listeners for the site
     setupEventListeners() {
-        // Allow clicking the hero section to proceed
-        this.sections.hero.element.addEventListener('click', () => {
+        // Universal click/tap handler for hero section
+        this.sections.hero.element.addEventListener('pointerdown', () => {
             this.proceedToSection('info');
         });
         
-        // Scroll handling with throttle to prevent too many events
-        let lastScrollTime = 0;
-        const scrollCooldown = 200;  // Milliseconds between scroll events
+        // Handle all types of interactions in info section
+        this.setupInfoSectionInteractions();
         
-        // Handle mouse wheel events
+        // Setup audio player controls
+        this.setupAudioControls();
+        
+        // Handle visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.pauseProgressTimer();
+            } else if (this.currentSection === 'info' && !this.sections.info.isComplete) {
+                this.startProgressTimer();
+            }
+        });
+
+        // Handle scrolling after info section is complete
         window.addEventListener('wheel', (e) => {
-            const now = Date.now();
-            
-            // Handle initial scroll from hero section
-            if (this.currentSection === 'hero' && e.deltaY > 0) {
-                e.preventDefault();
-                this.proceedToSection('info');
-                return;
-            }
-            
-            // Handle scrolling within info section
-            if (this.currentSection === 'info' && !this.sections.info.isComplete) {
-                e.preventDefault();
-                if (now - lastScrollTime > scrollCooldown) {
-                    this.updateProgress(this.progressState.current + this.progressState.scrollIncrement);
-                    lastScrollTime = now;
-                }
-            }
-            
-            // Handle transition from info to mixes section
             if (this.sections.info.isComplete && this.currentSection === 'info' && e.deltaY > 0) {
                 e.preventDefault();
                 this.proceedToSection('mixes');
             }
         }, { passive: false });
-        
-        // Set up audio player controls for mix items
-        const mixItems = document.querySelectorAll('.mix-item');
-        const audioPlayer = document.getElementById('mixPlayer');
-        
-        // Add click handlers to each mix item
-        mixItems.forEach(mixItem => {
-            const button = mixItem.querySelector('.play-mix');
-            button.addEventListener('click', () => {
-                audioPlayer.src = mixItem.getAttribute('data-src');
-                audioPlayer.play();
-                this.sections.footer.element.classList.remove('hidden');
-                this.currentSection = 'footer';
-            });
-        });
-        
-        // Watch for scrolling to bottom to reveal footer
+
+        // Handle touch scrolling after info section
+        let touchStartY = 0;
+        window.addEventListener('touchstart', (e) => {
+            if (this.sections.info.isComplete && this.currentSection === 'info') {
+                touchStartY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (this.sections.info.isComplete && this.currentSection === 'info') {
+                const touchCurrentY = e.touches[0].clientY;
+                const deltaY = touchStartY - touchCurrentY;
+                
+                if (deltaY > 50) { // threshold for swipe up
+                    e.preventDefault();
+                    this.proceedToSection('mixes');
+                }
+            }
+        }, { passive: false });
+
         window.addEventListener('scroll', () => {
             const scrollPosition = window.scrollY + window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
@@ -117,61 +111,104 @@ class SiteSectionManager {
         });
     }
     
-    // Handle transition to a new section
+    setupInfoSectionInteractions() {
+        const infoSection = this.sections.info.element;
+        
+        // Touch events
+        infoSection.addEventListener('touchstart', (e) => {
+            if (this.currentSection === 'info' && !this.sections.info.isComplete) {
+                this.interactionState.isTouching = true;
+                this.interactionState.startY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+        
+        infoSection.addEventListener('touchmove', (e) => {
+            if (!this.interactionState.isTouching || this.sections.info.isComplete) return;
+            
+            const currentY = e.touches[0].clientY;
+            const deltaY = this.interactionState.startY - currentY;
+            
+            if (Math.abs(deltaY) > this.interactionState.interactionThreshold) {
+                this.handleInteraction(deltaY > 0);
+                this.interactionState.startY = currentY;
+            }
+        }, { passive: true });
+        
+        infoSection.addEventListener('touchend', () => {
+            this.interactionState.isTouching = false;
+        });
+        
+        // Mouse wheel
+        infoSection.addEventListener('wheel', (e) => {
+            if (this.currentSection === 'info' && !this.sections.info.isComplete) {
+                e.preventDefault();
+                this.handleInteraction(e.deltaY > 0);
+            }
+        }, { passive: false });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (this.currentSection === 'info' && !this.sections.info.isComplete) {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    this.handleInteraction(e.key === 'ArrowDown');
+                }
+            } else if (this.sections.info.isComplete && this.currentSection === 'info' && e.key === 'ArrowDown') {
+                e.preventDefault();
+                this.proceedToSection('mixes');
+            }
+        });
+    }
+    
+    handleInteraction(isForward) {
+        const now = Date.now();
+        if (now - this.interactionState.lastInteractionTime < this.interactionState.cooldownPeriod) {
+            return;
+        }
+        
+        if (isForward && !this.sections.info.isComplete) {
+            this.updateProgress(this.progressState.current + this.progressState.interactionIncrement);
+        }
+        this.interactionState.lastInteractionTime = now;
+    }
+    
     proceedToSection(sectionName) {
         const section = this.sections[sectionName];
         if (!section) return;
         
-        // Modified: Changed scroll behavior to align with top of section
         section.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
-        // Update current section tracking
         this.currentSection = sectionName;
         
-        // Start progress timer when entering info section
         if (sectionName === 'info') {
             this.startProgressTimer();
-            this.showScrollIndicator();
-        }
-        
-        // Handle section-specific transitions
-        if (sectionName === 'mixes') {
-            this.sections.mixes.element.classList.add('visible');
-            this.sections.info.isComplete = true;
+        } else if (sectionName === 'mixes') {
+            this.enableMixesSection();
         } else if (sectionName === 'footer') {
             this.sections.footer.element.classList.remove('hidden');
         }
     }
     
-    // Update progress through the info section
     updateProgress(newProgress) {
-        // Ensure progress doesn't exceed maximum
         this.progressState.current = Math.min(newProgress, this.progressState.max);
         
-        // Show grid rows based on current progress
         const infoRows = document.querySelectorAll('.grid-row');
         const rowsToShow = Math.floor((this.progressState.current / this.progressState.max) * infoRows.length);
         
-        // Update visibility of rows
         infoRows.forEach((row, index) => {
             if (index < rowsToShow) {
                 row.classList.add('visible');
             }
         });
         
-        // Check if section is complete
         if (this.progressState.current >= this.progressState.max) {
             this.sections.info.isComplete = true;
-            this.hideScrollIndicator();
             this.enableMixesSection();
         }
     }
     
-    // Start timer for automatic progress
     startProgressTimer() {
         if (this._progressTimer) return;
         
-        // Update progress every 100ms
         this._progressTimer = setInterval(() => {
             if (this.progressState.current < this.progressState.max) {
                 this.updateProgress(this.progressState.current + this.progressState.rate/10);
@@ -181,30 +218,63 @@ class SiteSectionManager {
         }, 100);
     }
     
-    // Enable and animate the mixes section
+    pauseProgressTimer() {
+        if (this._progressTimer) {
+            clearInterval(this._progressTimer);
+            this._progressTimer = null;
+        }
+    }
+    
+    setupAudioControls() {
+        const mixItems = document.querySelectorAll('.mix-item');
+        const audioPlayer = document.getElementById('mixPlayer');
+        
+        mixItems.forEach(mixItem => {
+            const button = mixItem.querySelector('.play-mix');
+            button.addEventListener('pointerdown', () => {
+                audioPlayer.src = mixItem.getAttribute('data-src');
+                
+                // Handle autoplay restrictions
+                const playPromise = audioPlayer.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        if (error.name === 'NotAllowedError') {
+                            console.log('Autoplay blocked - user interaction required');
+                        }
+                    });
+                }
+                
+                this.sections.footer.element.classList.remove('hidden');
+                this.currentSection = 'footer';
+            });
+        });
+        
+        // Add media session API support for better mobile controls
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
+            navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
+        }
+    }
+    
     enableMixesSection() {
         this.sections.mixes.element.classList.add('visible');
         const pastVoyages = document.querySelector('.past-voyages');
-        // Add flash effect
         pastVoyages.classList.add('flash');
         setTimeout(() => {
             pastVoyages.classList.remove('flash');
         }, 1000);
     }
     
-    // Start the countdown timer for next broadcast
     startCountdownTimer() {
         const updateCountdown = () => {
             const now = new Date();
             const nextFriday = this.getNextFriday10PM();
             const countdownElement = document.getElementById('countdown');
             
-            // Check if broadcast is currently active
             if (now.getDay() === 5 && now.getHours() === 22) {
                 countdownElement.textContent = 'BASS STATION ACTIVE';
                 countdownElement.style.color = '#ff0000';
             } else {
-                // Calculate time until next broadcast
                 const diff = nextFriday - now;
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -216,20 +286,16 @@ class SiteSectionManager {
             }
         };
         
-        // Update countdown every second
         setInterval(updateCountdown, 1000);
         updateCountdown();
     }
     
-    // Calculate the next Friday at 10 PM
     getNextFriday10PM() {
         const now = new Date();
         const nextFriday = new Date();
-        // Calculate days until next Friday
         nextFriday.setDate(now.getDate() + ((7 - now.getDay() + 5) % 7));
         nextFriday.setHours(22, 0, 0, 0);
         
-        // If it's already past this Friday at 10 PM, get next week
         if (nextFriday <= now) {
             nextFriday.setDate(nextFriday.getDate() + 7);
         }
@@ -238,7 +304,11 @@ class SiteSectionManager {
     }
 }
 
-// Initialize the site manager when the DOM is fully loaded
+// Initialize with error handling
 document.addEventListener('DOMContentLoaded', () => {
-    const siteManager = new SiteSectionManager();
+    try {
+        const siteManager = new SiteSectionManager();
+    } catch (error) {
+        console.error('Failed to initialize site manager:', error);
+    }
 });

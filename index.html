@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>International Bass Station</title>
-  <link rel="icon" type="image/x-icon" href="/assets/icon.ico">
+  <link rel="icon" type="image/x-icon" href="/assets/circle-icon.ico">
   <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-
-  <header class="hero" id="heroSection">
+  <header class="hero" id="hero-container">
     <div class="hero-background"></div>
-    <div class="scroll-indicator"><span>CLICK OR SCROLL</span></div>
+    <div class="instruction-text"><span>CLICK OR SCROLL</span></div>
   </header>
 
   <main class="content">
+
     <section class="info-container">
+
       <div class="info-grid">
+
         <div class="grid-row broadcast-info">
+
           <div class="broadcast-title">
             <h2>BLASTING OFF LIVE<br>FRIDAYS 10 PM EST</h2>
             <div id="countdown"></div>
           </div>
-          <div id="countdown"></div>
+
           <div class="broadcast-player">
             <h3><a href="https://northumberland897.ca" target="_blank" rel="noopener noreferrer">Northumberland 89.7</a></h3>
-            <div class="tunein-container">
-              <iframe src="https://tunein.com/embed/player/s209644/?scheme=006DB8" style="width:100%; height:100px;" scrolling="no" frameborder="no"></iframe>
-            </div>
+            <iframe src="https://tunein.com/embed/player/s209644/?scheme=006DB8" style="width:100%; height:100px;" scrolling="no" frameborder="no"></iframe>
           </div>
+
         </div>
+
         <div class="grid-row dj-section">
+
           <div class="dj-image">
             <img src="/assets/images/robosapien.jpeg">
           </div>
+          
           <div class="dj-info">
             <h2>DJ ROBOSAPIEN</h2>
             <div class="dj-bio">
@@ -44,15 +47,21 @@
               <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </div>
           </div>
+
         </div>
+
         <div class="grid-row">
           <div class="past-voyages">
             <h2>PAST VOYAGES</h2>
           </div>
         </div>
+
       </div>
+
     </section>
+
     <section class="mixes-container">
+
       <ul class="mixes-list">
         <li class="mix-item" data-src="assets/mixes/2024-10-4.mp3">
           <button class="play-mix">October 4th</button>
@@ -103,13 +112,11 @@
   <footer class="site-footer hidden">
     <div class="footer-container">
       <div class="footer-credits">
-        <span class="credit-left">art by kate</span>
+        <span class="credit-left">art by <a href="instagram.com" target="_blank" rel="noopener noreferrer">kate</a></span>
         <div class="audio-player-container">
-          <audio id="mixPlayer" controls>
-            Your browser is incompatible with the audio player. That's strange. How did you do that?
-          </audio>
+          <audio id="mixPlayer" controls></audio>
         </div>
-        <span class="credit-right">site by sandy</span>
+        <span class="credit-right">site by <a href="sandyfletcher.ca" target="_blank" rel="noopener noreferrer">sandy</a></span>
       </div>
     </div>
   </footer>

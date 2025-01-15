@@ -1,15 +1,19 @@
-/* RESET */
+@font-face {
+  font-family: 'Goldman';
+  src: url('assets/fonts/Goldman-Regular.ttf') format('truetype');
+  font-display: block;
+}
+
+/* GLOBAL RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
-
-/* GLOBAL */
 body {
-  font-family: Arial, sans-serif;
-  color: #000;
+  font-family: 'Goldman', sans-serif;
+  color: #fff;
   background-color: #000;
   line-height: 1.6;
 }
@@ -23,7 +27,6 @@ body {
   overflow: hidden;
   cursor: crosshair;
 }
-
 .hero-background {
   position: absolute;
   top: 0;
@@ -34,29 +37,25 @@ body {
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
-  z-index: 1;
 }
-
-.scroll-indicator {
+.instruction-text {
   position: absolute;
   top: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2;
+/*  z-index: 1;   NOT NEEDED IF IMAGE IS BACKGROUND*/
   color: white;
   text-align: center;
   opacity: 0;
   animation: fadeInOut 2s infinite;
 }
-
-.scroll-indicator span {
+.instruction-text span {
   display: block;
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
-
 @keyframes fadeInOut {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
@@ -65,7 +64,6 @@ body {
 /* CONTENT */
 .content {
   position: relative;
-  z-index: 2;
 }
 
 /* INFO CONTAINER */
@@ -77,13 +75,11 @@ body {
   min-height: 100vh;
   position: relative;
 }
-
 .info-grid {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-
 .grid-row {
   opacity: 0;
   transform: translateY(30px);
@@ -91,19 +87,16 @@ body {
   border: 2px solid rgba(180, 233, 17, 1);
   padding: 1rem;
 }
-
 .grid-row.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Broadcast Info */
+/* BROADCAST INFO */
 .broadcast-info {
   display: flex;
-  gap: 1rem;
   text-align: center;
 }
-
 .broadcast-title,
 .broadcast-player {
   flex: 1;
@@ -112,94 +105,89 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 .broadcast-title h2 {
-  margin: 0;
+  font-size: 2.5rem;
+  color: rgba(100, 36, 184, 1);
 }
-
-.broadcast-player {
-  flex: 1.5;
-}
-
-.broadcast-player h3 {
-  margin-bottom: 1rem;
-}
-
-.tunein-container {
-  width: 100%;
-}
-
 #countdown {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
   text-align: center;
   color: rgba(239, 36, 170, 1);
 }
+.broadcast-player h3 {
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: larger;
+  /* NOT WORKING */
+}
+.broadcast-player a {
+  color: rgba(0, 123, 255, 1);
+  font-size: 2rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.broadcast-player a:hover {
+  color: rgba(239, 36, 170, 1);
+}
 
-/* DJ Section */
+/* DJ INFO */
 .dj-section {
   display: flex;
   gap: 1rem;
 }
-
 .dj-image {
   flex: 1;
 }
-
-.dj-info {
-  flex: 2;
-  text-align: left;
-}
-
 .dj-image img {
   width: 100%;
   height: auto;
   border-radius: 0.5rem;
 }
-
+.dj-info {
+  flex: 2;
+  text-align: center;
+}
+.dj-info h2 {
+  color: rgba(100, 36, 184, 1);
+  font-size: 3rem;
+}
 .dj-bio p {
   margin-bottom: 1rem;
   line-height: 1.8;
   color: white;
+  text-align: left;
 }
 
-/* Links */
-.broadcast-player a {
-  color: rgba(0, 123, 255, 1);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.broadcast-player a:hover {
-  color: white;
-}
-
-/* Past Voyages */
+/* PAST VOYAGES */
 .past-voyages {
   text-align: center;
 }
-
-.past-voyages.flash {
-  border-color: rgba(239, 36, 170, 0.9);
-}
-
-/* Headings */
-.broadcast-title h2,
-.dj-info h2,
 .past-voyages h2 {
   color: rgba(100, 36, 184, 1);
   font-size: 3rem;
 }
+.past-voyages.flash {
+    /* NOT WORKING */
+  border-color: rgba(239, 36, 170, 0.9);
+}
+
+  /* HEREHEREHERE */
+  /* HEREHEREHERE */
+  /* HEREHEREHERE */
 
 /* MIXES SECTION */
 .mixes-container {
   padding: 1rem;
+  max-width: 1200px;
   margin-bottom: 100px;
   opacity: 0;
   transform: translateY(50px);
   transition: transform 0.5s ease, opacity 0.5s ease;
-}
+  color: white;
+  position: relative;
 
+}
 .mixes-container.visible {
   opacity: 1;
   transform: translateY(0);
@@ -216,6 +204,7 @@ body {
 .play-mix {
   display: block;
   width: 100%;
+  justify-content: center;
   padding: 1rem;
   background-color: transparent;
   color: white;
@@ -261,8 +250,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: rgba(0, 123, 255, 0.7);
+  color: rgba(239, 36, 170, 1);
   font-size: 0.875rem;
+  text-decoration: none;
 }
 
 .credit-left, 

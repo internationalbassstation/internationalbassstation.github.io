@@ -2,7 +2,7 @@ class SiteSectionManager {
     constructor() {
         this.sections = {
             hero: {
-                element: document.getElementById('heroSection'),
+                element: document.getElementById('hero-container'),
                 isComplete: false,
                 next: 'info'
             },

@@ -6,18 +6,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize elements
     const heroSection = document.getElementById('heroSection');
     const content = document.querySelector('.content');
+    const indicator = document.querySelector('.scroll-indicator');
     const sections = [
         document.querySelector('.live-banner'),
         document.querySelector('.countdown-container'),
         document.querySelector('.dj-info'),
         document.querySelector('.past-voyages')
     ];
+    const footer = document.querySelector('.site-footer');
 
     // Animation state management
     let currentProgress = 0;
     const maxProgress = 100;
-    const progressPerSecond = 10;
-    const progressPerScroll = 5;
+    const progressPerSecond = 25;
+    const progressPerScroll = 15;
     let isLocked = true;
     let lastScrollTime = 0;
     const scrollCooldown = 200;
@@ -177,4 +179,24 @@ document.addEventListener('DOMContentLoaded', () => {
             mixesContainer.classList.add('visible');
         }
     });
+    mixItems.forEach(mixItem => {
+      const button = mixItem.querySelector('.play-mix');
+      button.addEventListener('click', () => {
+          const mixSrc = mixItem.getAttribute('data-src');
+          audioPlayer.src = mixSrc;
+          audioPlayer.play();
+          footer.classList.remove('hidden');
+      });
+  });
+  
+  // Show footer on scroll to bottom
+  window.addEventListener('scroll', () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      if (scrollPosition >= documentHeight - 50) { // -50 to trigger slightly before absolute bottom
+          footer.classList.remove('hidden');
+      }
+  });
+  
 });

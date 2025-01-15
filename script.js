@@ -1,10 +1,13 @@
+// Class to manage the sections of the site and handle transitions between them
 class SiteSectionManager {
+    // Initialize the manager with section definitions and state
     constructor() {
+        // Object containing all sections of the site with their properties
         this.sections = {
             hero: {
                 element: document.getElementById('hero-container'),
                 isComplete: false,
-                next: 'info'
+                next: 'info'  // Points to the next section in sequence
             },
             info: {
                 element: document.querySelector('.info-container'),
@@ -19,52 +22,59 @@ class SiteSectionManager {
             footer: {
                 element: document.querySelector('.site-footer'),
                 isComplete: false,
-                next: null
+                next: null  // No next section after footer
             }
         };
         
+        // Track which section is currently active
         this.currentSection = 'hero';
+        
+        // State object for managing progress through sections
         this.progressState = {
-            current: 0,
-            max: 100,
-            rate: 25, // per second
-            scrollIncrement: 15
+            current: 0,      // Current progress value
+            max: 100,        // Maximum progress value
+            rate: 25,        // Progress increase rate per second
+            scrollIncrement: 15  // How much progress is added per scroll
         };
         
+        // Start initialization
         this.initialize();
     }
     
+    // Set up initial state and event listeners
     initialize() {
-        // Reset scroll position
+        // Ensure page starts at the top
         history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
         
-        // Set up event listeners
+        // Set up all event handlers and start countdown
         this.setupEventListeners();
         this.startCountdownTimer();
     }
     
+    // Set up all event listeners for the site
     setupEventListeners() {
-        // Hero click handler
+        // Allow clicking the hero section to proceed
         this.sections.hero.element.addEventListener('click', () => {
             this.proceedToSection('info');
         });
         
-        // Scroll handling with throttle
+        // Scroll handling with throttle to prevent too many events
         let lastScrollTime = 0;
-        const scrollCooldown = 200;
+        const scrollCooldown = 200;  // Milliseconds between scroll events
         
+        // Handle mouse wheel events
         window.addEventListener('wheel', (e) => {
             const now = Date.now();
             
-            // Initial scroll from hero
+            // Handle initial scroll from hero section
             if (this.currentSection === 'hero' && e.deltaY > 0) {
                 e.preventDefault();
                 this.proceedToSection('info');
                 return;
             }
             
-            // Handle info section progression
+            // Handle scrolling within info section
             if (this.currentSection === 'info' && !this.sections.info.isComplete) {
                 e.preventDefault();
                 if (now - lastScrollTime > scrollCooldown) {
@@ -73,17 +83,18 @@ class SiteSectionManager {
                 }
             }
             
-            // Handle scroll to mixes section
+            // Handle transition from info to mixes section
             if (this.sections.info.isComplete && this.currentSection === 'info' && e.deltaY > 0) {
                 e.preventDefault();
                 this.proceedToSection('mixes');
             }
         }, { passive: false });
         
-        // Mix selection handlers
+        // Set up audio player controls for mix items
         const mixItems = document.querySelectorAll('.mix-item');
         const audioPlayer = document.getElementById('mixPlayer');
         
+        // Add click handlers to each mix item
         mixItems.forEach(mixItem => {
             const button = mixItem.querySelector('.play-mix');
             button.addEventListener('click', () => {
@@ -94,7 +105,7 @@ class SiteSectionManager {
             });
         });
         
-        // Watch for scroll to bottom to show footer
+        // Watch for scrolling to bottom to reveal footer
         window.addEventListener('scroll', () => {
             const scrollPosition = window.scrollY + window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
@@ -106,23 +117,24 @@ class SiteSectionManager {
         });
     }
     
+    // Handle transition to a new section
     proceedToSection(sectionName) {
         const section = this.sections[sectionName];
         if (!section) return;
         
-        // Scroll to section
-        section.element.scrollIntoView({ behavior: 'smooth' });
+        // Modified: Changed scroll behavior to align with top of section
+        section.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         
-        // Update current section
+        // Update current section tracking
         this.currentSection = sectionName;
         
-        // Start progress timer if entering info section
+        // Start progress timer when entering info section
         if (sectionName === 'info') {
             this.startProgressTimer();
             this.showScrollIndicator();
         }
         
-        // Handle section-specific visibility
+        // Handle section-specific transitions
         if (sectionName === 'mixes') {
             this.sections.mixes.element.classList.add('visible');
             this.sections.info.isComplete = true;
@@ -131,20 +143,23 @@ class SiteSectionManager {
         }
     }
     
+    // Update progress through the info section
     updateProgress(newProgress) {
+        // Ensure progress doesn't exceed maximum
         this.progressState.current = Math.min(newProgress, this.progressState.max);
         
-        // Calculate visible sections based on progress
+        // Show grid rows based on current progress
         const infoRows = document.querySelectorAll('.grid-row');
         const rowsToShow = Math.floor((this.progressState.current / this.progressState.max) * infoRows.length);
         
+        // Update visibility of rows
         infoRows.forEach((row, index) => {
             if (index < rowsToShow) {
                 row.classList.add('visible');
             }
         });
         
-        // Check for section completion
+        // Check if section is complete
         if (this.progressState.current >= this.progressState.max) {
             this.sections.info.isComplete = true;
             this.hideScrollIndicator();
@@ -152,9 +167,11 @@ class SiteSectionManager {
         }
     }
     
+    // Start timer for automatic progress
     startProgressTimer() {
         if (this._progressTimer) return;
         
+        // Update progress every 100ms
         this._progressTimer = setInterval(() => {
             if (this.progressState.current < this.progressState.max) {
                 this.updateProgress(this.progressState.current + this.progressState.rate/10);
@@ -164,25 +181,30 @@ class SiteSectionManager {
         }, 100);
     }
     
+    // Enable and animate the mixes section
     enableMixesSection() {
         this.sections.mixes.element.classList.add('visible');
         const pastVoyages = document.querySelector('.past-voyages');
+        // Add flash effect
         pastVoyages.classList.add('flash');
         setTimeout(() => {
             pastVoyages.classList.remove('flash');
         }, 1000);
     }
     
+    // Start the countdown timer for next broadcast
     startCountdownTimer() {
         const updateCountdown = () => {
             const now = new Date();
             const nextFriday = this.getNextFriday10PM();
             const countdownElement = document.getElementById('countdown');
             
+            // Check if broadcast is currently active
             if (now.getDay() === 5 && now.getHours() === 22) {
                 countdownElement.textContent = 'BASS STATION ACTIVE';
                 countdownElement.style.color = '#ff0000';
             } else {
+                // Calculate time until next broadcast
                 const diff = nextFriday - now;
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -194,16 +216,20 @@ class SiteSectionManager {
             }
         };
         
+        // Update countdown every second
         setInterval(updateCountdown, 1000);
         updateCountdown();
     }
     
+    // Calculate the next Friday at 10 PM
     getNextFriday10PM() {
         const now = new Date();
         const nextFriday = new Date();
+        // Calculate days until next Friday
         nextFriday.setDate(now.getDate() + ((7 - now.getDay() + 5) % 7));
         nextFriday.setHours(22, 0, 0, 0);
         
+        // If it's already past this Friday at 10 PM, get next week
         if (nextFriday <= now) {
             nextFriday.setDate(nextFriday.getDate() + 7);
         }
@@ -212,7 +238,7 @@ class SiteSectionManager {
     }
 }
 
-// Initialize when DOM is loaded
+// Initialize the site manager when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     const siteManager = new SiteSectionManager();
 });

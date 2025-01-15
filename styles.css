@@ -180,9 +180,9 @@ body {
 .mixes-container {
   max-width: 1200px;
   margin: 0 auto;
-  margin-bottom: 80px;
+  padding: 1rem;
+  margin-bottom: 5rem;
   opacity: 0;
-  transform: translateY(50px);
   transition: transform 0.5s ease, opacity 0.5s ease;
   color: white;
   position: relative;
@@ -257,6 +257,16 @@ body {
 .credit-right {
   padding: 0 1rem;
 }
+
+.footer-credits a {
+  color: rgba(100, 36, 184, 1);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.footer-credits a:hover {
+  color: rgba(239, 36, 170, 1);
+}
+
 .audio-player-container {
   flex-grow: 1;
   max-width: 800px;

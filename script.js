@@ -1,121 +1,212 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Force scroll to top on page load/refresh
-    history.scrollRestoration = 'manual';
-    window.scrollTo(0, 0);
-
-    // Initialize elements
-    const heroSection = document.getElementById('heroSection');
-    const content = document.querySelector('.content');
-    const indicator = document.querySelector('.scroll-indicator');
-    const sections = document.querySelectorAll('.grid-row');
-    const footer = document.querySelector('.site-footer');
-    const pastVoyages = document.querySelector('.past-voyages');
-
-    // Animation state management
-    let currentProgress = 0;
-    const maxProgress = 100;
-    const progressPerSecond = 25;
-    const progressPerScroll = 15;
-    let isLocked = true;
-    let lastScrollTime = 0;
-    const scrollCooldown = 200;
-    let progressTimer = null;
-
-    // Smooth scroll function
-    function scrollToContent() {
-        content.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+class SiteSectionManager {
+    constructor() {
+        this.sections = {
+            hero: {
+                element: document.getElementById('heroSection'),
+                isComplete: false,
+                next: 'info'
+            },
+            info: {
+                element: document.querySelector('.info-container'),
+                isComplete: false,
+                next: 'mixes'
+            },
+            mixes: {
+                element: document.querySelector('.mixes-container'),
+                isComplete: false,
+                next: 'footer'
+            },
+            footer: {
+                element: document.querySelector('.site-footer'),
+                isComplete: false,
+                next: null
+            }
+        };
+        
+        this.currentSection = 'hero';
+        this.progressState = {
+            current: 0,
+            max: 100,
+            rate: 25, // per second
+            scrollIncrement: 15
+        };
+        
+        this.initialize();
+    }
+    
+    initialize() {
+        // Reset scroll position
+        history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+        
+        // Set up event listeners
+        this.setupEventListeners();
+        this.startCountdownTimer();
+    }
+    
+    setupEventListeners() {
+        // Hero click handler
+        this.sections.hero.element.addEventListener('click', () => {
+            this.proceedToSection('info');
+        });
+        
+        // Scroll handling with throttle
+        let lastScrollTime = 0;
+        const scrollCooldown = 200;
+        
+        window.addEventListener('wheel', (e) => {
+            const now = Date.now();
+            
+            // Initial scroll from hero
+            if (this.currentSection === 'hero' && e.deltaY > 0) {
+                e.preventDefault();
+                this.proceedToSection('info');
+                return;
+            }
+            
+            // Handle info section progression
+            if (this.currentSection === 'info' && !this.sections.info.isComplete) {
+                e.preventDefault();
+                if (now - lastScrollTime > scrollCooldown) {
+                    this.updateProgress(this.progressState.current + this.progressState.scrollIncrement);
+                    lastScrollTime = now;
+                }
+            }
+            
+            // Handle scroll to mixes section
+            if (this.sections.info.isComplete && this.currentSection === 'info' && e.deltaY > 0) {
+                e.preventDefault();
+                this.proceedToSection('mixes');
+            }
+        }, { passive: false });
+        
+        // Mix selection handlers
+        const mixItems = document.querySelectorAll('.mix-item');
+        const audioPlayer = document.getElementById('mixPlayer');
+        
+        mixItems.forEach(mixItem => {
+            const button = mixItem.querySelector('.play-mix');
+            button.addEventListener('click', () => {
+                audioPlayer.src = mixItem.getAttribute('data-src');
+                audioPlayer.play();
+                this.sections.footer.element.classList.remove('hidden');
+                this.currentSection = 'footer';
+            });
+        });
+        
+        // Watch for scroll to bottom to show footer
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY + window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            
+            if (scrollPosition >= documentHeight - 50) {
+                this.sections.footer.element.classList.remove('hidden');
+                this.currentSection = 'footer';
+            }
         });
     }
-
-    // Timer for passive progression
-    const startProgressTimer = () => {
-        if (progressTimer) return; // Prevent multiple timers
+    
+    proceedToSection(sectionName) {
+        const section = this.sections[sectionName];
+        if (!section) return;
         
-        progressTimer = setInterval(() => {
-            if (currentProgress < maxProgress) {
-                updateProgress(currentProgress + progressPerSecond/10);
-            } else {
-                clearInterval(progressTimer);
-            }
-        }, 100);
-    };
-
-    // Update progress and trigger animations
-    const updateProgress = (newProgress) => {
-        currentProgress = Math.min(newProgress, maxProgress);
+        // Scroll to section
+        section.element.scrollIntoView({ behavior: 'smooth' });
         
-        // Calculate which sections should be visible
-        const sectionsToShow = Math.floor((currentProgress / maxProgress) * sections.length);
+        // Update current section
+        this.currentSection = sectionName;
         
-        // Show sections based on progress
-        sections.forEach((section, index) => {
-            if (index < sectionsToShow) {
-                section.classList.add('visible');
+        // Start progress timer if entering info section
+        if (sectionName === 'info') {
+            this.startProgressTimer();
+            this.showScrollIndicator();
+        }
+        
+        // Handle section-specific visibility
+        if (sectionName === 'mixes') {
+            this.sections.mixes.element.classList.add('visible');
+            this.sections.info.isComplete = true;
+        } else if (sectionName === 'footer') {
+            this.sections.footer.element.classList.remove('hidden');
+        }
+    }
+    
+    updateProgress(newProgress) {
+        this.progressState.current = Math.min(newProgress, this.progressState.max);
+        
+        // Calculate visible sections based on progress
+        const infoRows = document.querySelectorAll('.grid-row');
+        const rowsToShow = Math.floor((this.progressState.current / this.progressState.max) * infoRows.length);
+        
+        infoRows.forEach((row, index) => {
+            if (index < rowsToShow) {
+                row.classList.add('visible');
             }
         });
-
-        // Check if we've reached max progress
-        if (currentProgress >= maxProgress && isLocked) {
-            isLocked = false;
-            indicator.classList.remove('visible');
-            enableMixScroll();
-            // Flash the past voyages section
-            pastVoyages.classList.add('flash');
-            setTimeout(() => {
-                pastVoyages.classList.remove('flash');
-            }, 1000);
-        }
-    };
-
-    // Handle mix playback
-    const mixItems = document.querySelectorAll('.mix-item');
-    const audioPlayer = document.getElementById('mixPlayer');
-
-    // Enable scrolling to mix section
-    const enableMixScroll = () => {
-        const mixesSection = document.querySelector('.mixes-container');
-        document.addEventListener('wheel', (e) => {
-            if (!isLocked && e.deltaY > 0) {
-                mixesSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, { once: true });
-    };
-
-    // Event listeners
-    heroSection.addEventListener('click', () => {
-        scrollToContent();
-        indicator.classList.add('visible');
-        startProgressTimer();
-    });
-
-    window.addEventListener('wheel', (e) => {
-        const now = Date.now();
         
-        // Initial scroll to info section
-        if (window.scrollY === 0 && e.deltaY > 0) {
-            e.preventDefault();
-            scrollToContent();
-            indicator.classList.add('visible');
-            startProgressTimer();
-            return;
+        // Check for section completion
+        if (this.progressState.current >= this.progressState.max) {
+            this.sections.info.isComplete = true;
+            this.hideScrollIndicator();
+            this.enableMixesSection();
         }
-
-        // Handle scroll during locked state
-        if (isLocked && window.scrollY > 0) {
-            e.preventDefault();
-            
-            // Add scroll progress if cooldown has passed
-            if (now - lastScrollTime > scrollCooldown) {
-                updateProgress(currentProgress + progressPerScroll);
-                lastScrollTime = now;
+    }
+    
+    startProgressTimer() {
+        if (this._progressTimer) return;
+        
+        this._progressTimer = setInterval(() => {
+            if (this.progressState.current < this.progressState.max) {
+                this.updateProgress(this.progressState.current + this.progressState.rate/10);
+            } else {
+                clearInterval(this._progressTimer);
             }
-        }
-    }, { passive: false });
-
-    // Countdown timer functionality
-    function getNextFriday10PM() {
+        }, 100);
+    }
+    
+    enableMixesSection() {
+        this.sections.mixes.element.classList.add('visible');
+        const pastVoyages = document.querySelector('.past-voyages');
+        pastVoyages.classList.add('flash');
+        setTimeout(() => {
+            pastVoyages.classList.remove('flash');
+        }, 1000);
+    }
+    
+    showScrollIndicator() {
+        document.querySelector('.scroll-indicator').classList.add('visible');
+    }
+    
+    hideScrollIndicator() {
+        document.querySelector('.scroll-indicator').classList.remove('visible');
+    }
+    
+    startCountdownTimer() {
+        const updateCountdown = () => {
+            const now = new Date();
+            const nextFriday = this.getNextFriday10PM();
+            const countdownElement = document.getElementById('countdown');
+            
+            if (now.getDay() === 5 && now.getHours() === 22) {
+                countdownElement.textContent = 'BASS STATION ACTIVE';
+                countdownElement.style.color = '#ff0000';
+            } else {
+                const diff = nextFriday - now;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                countdownElement.style.color = 'rgba(239, 36, 170, 1)';
+            }
+        };
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    }
+    
+    getNextFriday10PM() {
         const now = new Date();
         const nextFriday = new Date();
         nextFriday.setDate(now.getDate() + ((7 - now.getDay() + 5) % 7));
@@ -127,64 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         return nextFriday;
     }
+}
 
-    function updateCountdown() {
-        const now = new Date();
-        const nextFriday = getNextFriday10PM();
-        const countdownElement = document.getElementById('countdown');
-        const isFriday = now.getDay() === 5;
-        const hour = now.getHours();
-        const isShowTime = isFriday && hour === 22;
-        
-        if (isShowTime) {
-            countdownElement.textContent = 'BASS STATION ACTIVE';
-            countdownElement.style.color = '#ff0000';
-        } else {
-            const diff = nextFriday - now;
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-            countdownElement.style.color = 'rgba(239, 36, 170, 1)';
-        }
-    }
-
-    // Update countdown every second
-    setInterval(updateCountdown, 1000);
-    // Initial call to avoid delay
-    updateCountdown();
-
-    // Scroll visibility for mixes
-    const mixesContainer = document.querySelector('.mixes-container');
-    window.addEventListener('scroll', () => {
-        const rect = mixesContainer.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-
-        if (rect.top <= windowHeight * 0.75 && rect.bottom >= 0) {
-            mixesContainer.classList.add('visible');
-        }
-    });
-
-    mixItems.forEach(mixItem => {
-        const button = mixItem.querySelector('.play-mix');
-        button.addEventListener('click', () => {
-            const mixSrc = mixItem.getAttribute('data-src');
-            audioPlayer.src = mixSrc;
-            audioPlayer.play();
-            footer.classList.remove('hidden');
-        });
-    });
-    
-    // Show footer on scroll to bottom
-    window.addEventListener('scroll', () => {
-        const scrollPosition = window.scrollY + window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        
-        if (scrollPosition >= documentHeight - 50) { // -50 to trigger slightly before absolute bottom
-            footer.classList.remove('hidden');
-        }
-    });
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const siteManager = new SiteSectionManager();
 });

@@ -66,12 +66,12 @@ body {
 .content {
   position: relative;
   z-index: 2;
-  background-color: 'tranparent';
+  background-color: 'transparent';
 }
 
 /* INFO CONTAINER */
 .info-container {
-  padding: 2rem;
+  padding: 1rem;
   color: white;
   max-width: 1200px;
   margin: 0 auto;
@@ -82,7 +82,7 @@ body {
 .info-grid {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1rem;
 }
 
 .grid-row {
@@ -91,8 +91,7 @@ body {
   transition: opacity 0.3s ease, transform 0.3s ease;
   background: transparent;
   border: 2px solid rgba(180, 233, 17, 1);
-  border-radius: 0.5rem;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .grid-row.visible {
@@ -103,7 +102,7 @@ body {
 /* Broadcast Info Row */
 .broadcast-info {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   text-align: center;
 }
 .broadcast-title,
@@ -120,7 +119,7 @@ body {
 }
 
 .broadcast-player {
-  flex: 1.2; /* Give slightly more space to the player section */
+  flex: 1.5;
 }
 
 .broadcast-player h3 {
@@ -132,14 +131,9 @@ body {
 }
 
 #countdown {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   text-align: center;
-}
-
-.broadcast-content {
-  flex: 2;
-  padding-right: 2rem;
 }
 
 .radio-player {
@@ -172,14 +166,10 @@ body {
 .past-voyages h2 {
   color: rgba(100, 36, 184, 1);
   font-size: 1.5rem;
-  margin-bottom: 1.5rem;
+  /*margin-bottom: 1.5rem;     THIS PROBABLY NEEDS TO BE RE-ADDED SOMEWHERE*/
 }
 
 /* Link Styles */
-.broadcast-content h3 {
-  margin-top: 1.5rem;
-}
-
 .broadcast-content a {
   color: rgba(0, 123, 255, 1);
   text-decoration: none;
@@ -194,7 +184,7 @@ body {
 .dj-section {
   display: flex;
   text-align: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .dj-image {
@@ -236,7 +226,7 @@ body {
 
 /* MIXES CONTAINER */
 .mixes-container {
-  padding: 4rem 2rem;
+  padding: 1rem;
   margin-bottom: 100px;
   opacity: 0;
   transform: translateY(50px);
@@ -250,7 +240,6 @@ body {
 
 .mixes-list {
   list-style: none;
-  padding: 0;
 }
 
 .mix-item {

@@ -57,7 +57,7 @@ body {
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  text-shadow: 2px 2px 4px rgba(239, 36, 170, 0.9); /* Light grey shadow */
+  text-shadow: 2px 2px 4px rgba(239, 36, 170, 1);
 }
 @keyframes fadeInOut {
   0%, 100% { opacity: 0; }

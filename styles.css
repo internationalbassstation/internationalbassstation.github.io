@@ -164,6 +164,10 @@ body {
   color: var(--color-secondary);
 }
 
+iframe.custom-border {
+  border: 1px solid #B4E911;
+}
+
 .broadcast-player h3 {
   margin-bottom: 1rem;
   font-size: 1.5rem;

@@ -116,7 +116,8 @@ body {
 .info-grid {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 4rem;    /*  CHANGE THIS AS IT PROBABLY LOOKS BAD ON MOBILE */
+  margin-bottom: 2rem;
 }
 
 /* Base styles for animation functionality */
@@ -157,6 +158,7 @@ body {
   display: flex;
   text-align: center;
   width: 100%;
+  padding: 1rem;
 }
 
 .broadcast-title,
@@ -207,6 +209,7 @@ iframe.custom-border {
 /* DJ Section */
 .dj-section {
   display: flex;
+  padding: 1rem;
 }
 
 .dj-image {
@@ -245,6 +248,7 @@ iframe.custom-border {
   display: flex;
   justify-content: center;
   width: 100%;
+  padding: 1rem;
 }
 
 .past-voyages h2 {
@@ -266,7 +270,7 @@ iframe.custom-border {
 .mixes-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 0 1rem 2rem 1rem;
   margin-bottom: 5rem;
   opacity: 0;
   transform: translateY(30px);
@@ -284,6 +288,7 @@ iframe.custom-border {
   align-items: center;
   gap: 1rem;
   list-style: none;
+  padding-top: 1rem;
 }
 
 .mix-item {

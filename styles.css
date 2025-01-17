@@ -276,13 +276,21 @@ body {
   cursor: pointer;
   transition: var(--transition-standard);
   opacity: 0.8;
+  will-change: transform;
 }
 
-.play-mix:hover {
+.play-mix:hover,
+.play-mix:focus {
   background-color: rgba(180, 233, 17, 0.1);
   border-color: var(--color-accent);
   color: var(--color-accent);
   transform: scale(1.02);
+  opacity: 1;
+}
+
+.play-mix:focus {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 /* ========== SECTION 4: FOOTER ========== */

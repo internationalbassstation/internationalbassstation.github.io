@@ -23,13 +23,18 @@
           </div>
           <div class="broadcast-player">
             <h3><a href="https://northumberland897.ca" target="_blank" rel="noopener noreferrer">Northumberland 89.7</a></h3>
-            <iframe src="https://tunein.com/embed/player/s209644/?background=dark" style="width:100%; height:100px;" scrolling="no" frameborder="1" border-color=#B4E911></iframe>
+            <div class="tunein-wrapper">
+              <iframe src="https://tunein.com/embed/player/s209644/?background=dark" 
+                      title="Radio Player"
+                      scrolling="no" 
+                      frameborder="1"></iframe>
+            </div>
           </div>
         </div>
-        <div class="grid-row dj-section">
 
+        <div class="grid-row dj-section">
           <div class="dj-image">
-            <img src="/assets/images/robosapien.jpeg">
+            <img src="/assets/images/robosapien.jpeg" alt="DJ Robosapien">
           </div>
           
           <div class="dj-info">
@@ -40,7 +45,6 @@
               <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </div>
           </div>
-
         </div>
 
         <div class="grid-row">
@@ -48,13 +52,10 @@
             <h2>PAST VOYAGES</h2>
           </div>
         </div>
-
       </div>
-
     </section>
 
     <section class="mixes-container">
-
       <ul class="mixes-list">
         <li class="mix-item" data-src="assets/mixes/2024-10-4.mp3">
           <button class="play-mix">October 4th 2024</button>
@@ -105,15 +106,22 @@
   <footer class="site-footer hidden">
     <div class="footer-container">
       <div class="footer-credits">
-        <span class="credit-left"><a href="https://www.instagram.com/katehunter.73/" target="_blank" rel="noopener noreferrer">art by kate</a></span>
+        <span class="credit-left">
+          <a href="https://www.instagram.com/katehunter.73/" 
+             target="_blank" 
+             rel="noopener noreferrer">art by kate</a>
+        </span>
         <div class="audio-player-container">
           <audio id="mixPlayer" controls></audio>
         </div>
-        <span class="credit-right"><a href="https://sandyfletcher.ca" target="_blank" rel="noopener noreferrer">site by sandy</a></span>
+        <span class="credit-right">
+          <a href="https://sandyfletcher.ca" 
+             target="_blank" 
+             rel="noopener noreferrer">site by sandy</a>
+        </span>
       </div>
     </div>
   </footer>
-
 
   <script src="script.js"></script>
 </body>

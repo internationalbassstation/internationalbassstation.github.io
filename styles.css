@@ -221,7 +221,8 @@ iframe.custom-border {
 }
 
 .dj-info h2 {
-  color: var(--color-primary);
+  padding: 2rem 1rem;
+  color: var(--color-accent);
   font-family: var(--font-display);
   font-size: 3rem;
   text-align: center;
@@ -296,7 +297,7 @@ iframe.custom-border {
   font-weight: bold;
   color: var(--color-text);
   background-color: transparent;
-  border: 2px solid rgba(180, 233, 17, 0.7);
+  border: 2px solid rgba(100, 36, 184, 1);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: var(--transition-standard);
@@ -308,14 +309,17 @@ iframe.custom-border {
 .play-mix:focus {
   background-color: rgba(180, 233, 17, 0.1);
   border-color: var(--color-accent);
-  color: var(--color-accent);
+  color: var(--color-text);
   transform: scale(1.02);
   opacity: 1;
 }
 
 .play-mix:focus {
-  outline: 3px solid var(--color-accent);
+  outline: 3px solid var(--color-secondary);
   outline-offset: 2px;
+  background-color: rgba(100, 36, 184, .1);
+  
+
 }
 
 /* ========== SECTION 4: FOOTER ========== */

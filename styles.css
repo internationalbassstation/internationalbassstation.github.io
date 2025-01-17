@@ -11,6 +11,24 @@
   font-display: block;
 }
 
+@font-face {
+  font-family: 'Syncopate';
+  src: url('assets/fonts/Syncopate-Regular.ttf') format('truetype');
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Syncopate-Bold';
+  src: url('assets/fonts/Syncopate-Bold.ttf') format('truetype');
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Wallpoet';
+  src: url('assets/fonts/Wallpoet-Regular.ttf') format('truetype');
+  font-display: block;
+}
+
 :root {
   --color-primary: rgba(100, 36, 184, 1);    /* Purple */
   --color-secondary: rgba(239, 36, 170, 1);  /* Pink */
@@ -106,7 +124,7 @@ body {
   opacity: 0;
   transform: translateY(30px);
   transition: var(--transition-standard);
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .grid-row.visible {
@@ -117,7 +135,7 @@ body {
 /* Individual section styles */
 .grid-row.broadcast-info {
   border: var(--border-standard);
-  background: rgba(0, 0, 0, 0.5);
+  background: 'transparent';
 }
 
 .grid-row.dj-section {
@@ -127,7 +145,6 @@ body {
 
 .grid-row .past-voyages {
   border: 2px solid var(--color-primary);
-  padding: 2rem;
   background: rgba(239, 36, 170, 0.1);
 }
 
@@ -135,7 +152,7 @@ body {
 .broadcast-info {
   display: flex;
   text-align: center;
-  gap: 2rem;
+  width: 100%;
 }
 
 .broadcast-title,
@@ -148,35 +165,37 @@ body {
 }
 
 .broadcast-info h2 {
-  font-family: var(--font-primary);
+  font-family: 'Wallpoet';
   /* Other specific styles */
 }
 
 .broadcast-title h2 {
   font-size: 2.5rem;
   color: var(--color-primary);
-  margin-bottom: 1rem;
 }
 
 #countdown {
   font-size: 2.5rem;
+  font-family: 'Wallpoet';
   font-weight: bold;
   color: var(--color-secondary);
 }
 
 iframe.custom-border {
-  border: 1px solid #B4E911;
+  border: 1px solid var(--color-accent);
 }
 
-.broadcast-player h3 {
-  margin-bottom: 1rem;
+ .broadcast-player h3 {
+  margin-bottom: 0rem; 
   font-size: 1.5rem;
 }
 
 .broadcast-player a {
   color: var(--color-primary);
+  font-family: 'Syncopate';
   text-decoration: none;
   transition: var(--transition-standard);
+  margin-bottom: 1rem;
 }
 
 .broadcast-player a:hover {
@@ -186,7 +205,6 @@ iframe.custom-border {
 /* DJ Section */
 .dj-section {
   display: flex;
-  gap: 2rem;
 }
 
 .dj-image {
@@ -207,29 +225,34 @@ iframe.custom-border {
 .dj-info h2 {
   color: var(--color-primary);
   font-family: var(--font-display);
-  font-size: 4rem;
+  font-size: 3rem;
   text-align: center;
   margin-bottom: 1.5rem;
 }
 
 .dj-bio p {
-  margin-bottom: 1.5rem;
+  margin-bottom: .5rem;
   line-height: 1.8;
 }
 
 /* Past Voyages */
+
 .past-voyages {
+  padding: 2rem 1rem; /* Same padding as .info-container */
   text-align: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .past-voyages h2 {
   color: var(--color-primary);
-  font-size: 3rem;
-  font-family: var(--font-display);
+  font-size: 4rem;
+  font-family: 'Syncopate-Bold';
 }
 
 .past-voyages.flash {
-  animation: flashBorder 1s ease;
+  animation: flashBorder s ease;
 }
 
 @keyframes flashBorder {

@@ -124,6 +124,7 @@ body {
   opacity: 0;
   transform: translateY(30px);
   transition: var(--transition-standard);
+  width: 100%;
   padding: 1rem;
 }
 
@@ -136,16 +137,19 @@ body {
 .grid-row.broadcast-info {
   border: var(--border-standard);
   background: 'transparent';
+  width: 100%;
 }
 
 .grid-row.dj-section {
   border: 2px solid var(--color-secondary);
   background: rgba(100, 36, 184, 0.1);
+  width: 100%;
 }
 
-.grid-row .past-voyages {
+.grid-row.past-voyages {
   border: var(--border-standard);
   background: 'transparent';
+  width: 100%;
 }
 
 /* Broadcast Section */
@@ -237,7 +241,6 @@ iframe.custom-border {
 /* Past Voyages */
 
 .past-voyages {
-  padding: 2rem 1rem; /* Same padding as .info-container */
   text-align: center;
   display: flex;
   justify-content: center;

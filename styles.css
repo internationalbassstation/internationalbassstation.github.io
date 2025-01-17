@@ -221,7 +221,6 @@ iframe.custom-border {
 }
 
 .dj-info h2 {
-  padding: 2rem 1rem;
   color: var(--color-accent);
   font-family: var(--font-display);
   font-size: 3rem;
@@ -230,6 +229,7 @@ iframe.custom-border {
 }
 
 .dj-bio p {
+  margin-right: .5rem;
   margin-bottom: .5rem;
   line-height: 1.8;
 }

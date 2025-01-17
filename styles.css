@@ -116,7 +116,7 @@ body {
 .info-grid {
   display: flex;
   flex-direction: column;
-  gap: 4rem;    /*  CHANGE THIS AS IT PROBABLY LOOKS BAD ON MOBILE */
+  gap: 2rem;
   margin-bottom: 2rem;
 }
 

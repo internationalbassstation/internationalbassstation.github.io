@@ -31,7 +31,6 @@ class SiteSectionManager {
             interactionIncrement: 15
         };
         
-        // Track touch and interaction state
         this.interactionState = {
             startY: 0,
             lastInteractionTime: 0,
@@ -52,9 +51,39 @@ class SiteSectionManager {
     }
     
     setupEventListeners() {
+        // Handle hero section scrolling
+        this.sections.hero.element.addEventListener('wheel', (e) => {
+            if (this.currentSection === 'hero' && e.deltaY > 0) {
+                e.preventDefault();
+                this.handleHeroScroll();
+            }
+        }, { passive: false });
+
+        // Handle hero section touch events
+        let touchStartY = 0;
+        this.sections.hero.element.addEventListener('touchstart', (e) => {
+            if (this.currentSection === 'hero') {
+                touchStartY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        this.sections.hero.element.addEventListener('touchmove', (e) => {
+            if (this.currentSection === 'hero') {
+                const touchCurrentY = e.touches[0].clientY;
+                const deltaY = touchStartY - touchCurrentY;
+                
+                if (deltaY > 50) {
+                    e.preventDefault();
+                    this.handleHeroScroll();
+                }
+            }
+        }, { passive: false });
+
         // Universal click/tap handler for hero section
         this.sections.hero.element.addEventListener('pointerdown', () => {
-            this.proceedToSection('info');
+            if (this.currentSection === 'hero') {
+                this.handleHeroScroll();
+            }
         });
         
         // Handle all types of interactions in info section
@@ -81,7 +110,6 @@ class SiteSectionManager {
         }, { passive: false });
 
         // Handle touch scrolling after info section
-        let touchStartY = 0;
         window.addEventListener('touchstart', (e) => {
             if (this.sections.info.isComplete && this.currentSection === 'info') {
                 touchStartY = e.touches[0].clientY;
@@ -93,7 +121,7 @@ class SiteSectionManager {
                 const touchCurrentY = e.touches[0].clientY;
                 const deltaY = touchStartY - touchCurrentY;
                 
-                if (deltaY > 50) { // threshold for swipe up
+                if (deltaY > 50) {
                     e.preventDefault();
                     this.proceedToSection('mixes');
                 }
@@ -109,6 +137,23 @@ class SiteSectionManager {
                 this.currentSection = 'footer';
             }
         });
+    }
+
+    handleHeroScroll() {
+        if (this.currentSection === 'hero') {
+            const heroBackground = this.sections.hero.element.querySelector('.hero-background');
+            heroBackground.style.transition = 'transform 0.8s ease-out';
+            heroBackground.style.transform = 'scale(1.1) translateY(-5%)';
+            
+            setTimeout(() => {
+                this.proceedToSection('info');
+                // Reset transform after transition
+                setTimeout(() => {
+                    heroBackground.style.transition = 'none';
+                    heroBackground.style.transform = 'none';
+                }, 800);
+            }, 400);
+        }
     }
     
     setupInfoSectionInteractions() {
@@ -304,7 +349,6 @@ class SiteSectionManager {
     }
 }
 
-// Initialize with error handling
 document.addEventListener('DOMContentLoaded', () => {
     try {
         const siteManager = new SiteSectionManager();

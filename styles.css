@@ -57,6 +57,7 @@ body {
   background-color: var(--color-background);
   line-height: 1.6;
 }
+
 .content {
   position: relative;
   width: 100%;
@@ -111,13 +112,16 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .info-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: clamp(1rem, 4vh, 3rem);
+  min-height: calc(100vh - 4rem);
+  padding: 2rem 0;
 }
 
 /* Base styles for animation functionality */
@@ -127,6 +131,8 @@ body {
   transition: var(--transition-standard);
   width: 100%;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .grid-row.visible {
@@ -137,7 +143,7 @@ body {
 /* Individual section styles */
 .grid-row.broadcast-info {
   border: var(--border-standard);
-  background: 'transparent';
+  background: transparent;
   width: 100%;
 }
 
@@ -145,17 +151,20 @@ body {
   border: 2px solid var(--color-secondary);
   background: rgba(100, 36, 184, 0.1);
   width: 100%;
+  flex: 1;
 }
 
 .grid-row.past-voyages {
   border: var(--border-standard);
-  background: 'transparent';
+  background: transparent;
   width: 100%;
 }
 
 /* Broadcast Section */
 .broadcast-info {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* Split into two equal columns */
+  gap: 1rem;
   text-align: center;
   width: 100%;
   padding: 1rem;
@@ -163,7 +172,6 @@ body {
 
 .broadcast-title,
 .broadcast-player {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -190,7 +198,7 @@ iframe.custom-border {
   border: 1px solid var(--color-accent);
 }
 
- .broadcast-player h3 {
+.broadcast-player h3 {
   margin-top: 1rem;
   font-size: 1.5rem;
 }
@@ -208,8 +216,10 @@ iframe.custom-border {
 
 /* DJ Section */
 .dj-section {
-  display: flex;
-  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+  height: 100%;
 }
 
 .dj-image {
@@ -224,8 +234,8 @@ iframe.custom-border {
 }
 
 .dj-info {
-  flex: 2;
-  padding: .5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .dj-info h2 {
@@ -236,6 +246,13 @@ iframe.custom-border {
   margin-bottom: 1.5rem;
 }
 
+.dj-bio {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .dj-bio p {
   margin-right: .5rem;
   margin-bottom: .5rem;
@@ -243,7 +260,6 @@ iframe.custom-border {
 }
 
 /* Past Voyages */
-
 .past-voyages {
   text-align: center;
   display: flex;
@@ -259,7 +275,7 @@ iframe.custom-border {
 }
 
 .past-voyages.flash {
-  animation: flashBorder s ease;
+  animation: flashBorder 1s ease;
 }
 
 @keyframes flashBorder {
@@ -270,8 +286,8 @@ iframe.custom-border {
 /* ========== SECTION 3: MIXES LIST ========== */
 .mixes-container {
   max-width: 1200px;
+  padding-bottom: calc(4rem + 60px);
   margin: 0 auto;
-  margin-bottom: 5rem;
   opacity: 0;
   transition: var(--transition-standard);
 }
@@ -324,8 +340,6 @@ iframe.custom-border {
   outline: 3px solid var(--color-secondary);
   outline-offset: 2px;
   background-color: rgba(100, 36, 184, .1);
-  
-
 }
 
 /* ========== SECTION 4: FOOTER ========== */
@@ -400,17 +414,25 @@ iframe.custom-border {
 /* ========== RESPONSIVE DESIGN ========== */
 @media (max-width: 768px) {
   .broadcast-info {
-    flex-direction: column;
+    grid-template-columns: 1fr;  /* Stack on mobile */
+    gap: 2rem;
   }
   
   .broadcast-title,
   .broadcast-player {
     width: 100%;
-    padding: 1rem 0;
+/*  padding: 1rem 0;  */    
   }
   
   .dj-section {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  
+  .dj-image img {
+    max-height: 30vh;
+    object-fit: cover;
+    width: 100%;
   }
   
   .dj-info h2 {

@@ -196,6 +196,7 @@ body {
 
 iframe.custom-border {
   border: 1px solid var(--color-accent);
+  margin: 1rem;
 }
 
 .broadcast-player h3 {
@@ -291,7 +292,7 @@ iframe.custom-border {
   margin: 0 auto;
   opacity: 0;
   transition: var(--transition-standard);
-  margin-bottom: 3rem;
+  margin-bottom: 4.20rem;
 }
 
 .mixes-container.visible {
@@ -314,7 +315,7 @@ iframe.custom-border {
 }
 
 .play-mix {
-  width: 90%;
+  width: 95%;
   padding: 1rem;
   font-family: var(--font-primary);
   font-size: 1.25rem;
@@ -325,7 +326,7 @@ iframe.custom-border {
   border-radius: 0.5rem;
   cursor: pointer;
   transition: var(--transition-standard);
-  opacity: 0.8;
+  opacity: 1;
   will-change: transform;
 }
 

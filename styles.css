@@ -433,6 +433,10 @@ iframe.custom-border {
     gap: 2rem;
   }
   
+  .broadcast-info h2 {
+    font-size: 1.5rem;
+  }
+
   .broadcast-title,
   .broadcast-player {
     width: 100%;
@@ -455,8 +459,9 @@ iframe.custom-border {
   }
   
   .dj-info h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
+  
   
   .past-voyages h2 {
     font-size: 3rem;

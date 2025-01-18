@@ -38,6 +38,15 @@ class SiteSectionManager {
             cooldownPeriod: 200,
             interactionThreshold: 10
         };
+
+        this.touchState = {
+            lastTouchTime: 0,
+            touchDelay: 300,
+            startY: 0,
+            startX: 0,
+            minSwipeDistance: 50,
+            isScrolling: false
+        };
         
         this.initialize();
     }
@@ -48,6 +57,35 @@ class SiteSectionManager {
         
         this.setupEventListeners();
         this.startCountdownTimer();
+    }
+
+    handleTouchEvent(e, eventType) {
+        const now = Date.now();
+        
+        if (eventType === 'start') {
+            this.touchState.startY = e.touches[0].clientY;
+            this.touchState.startX = e.touches[0].clientX;
+            this.touchState.isScrolling = false;
+            return true;
+        }
+        
+        // Prevent rapid touch events
+        if (now - this.touchState.lastTouchTime < this.touchState.touchDelay) {
+            return false;
+        }
+        
+        const deltaY = this.touchState.startY - e.touches[0].clientY;
+        const deltaX = this.touchState.startX - e.touches[0].clientX;
+        
+        // Determine if this is a deliberate vertical swipe
+        if (Math.abs(deltaY) > Math.abs(deltaX) && 
+            Math.abs(deltaY) > this.touchState.minSwipeDistance) {
+            this.touchState.lastTouchTime = now;
+            this.touchState.isScrolling = true;
+            return true;
+        }
+        
+        return false;
     }
     
     setupEventListeners() {
@@ -60,27 +98,22 @@ class SiteSectionManager {
         }, { passive: false });
 
         // Handle hero section touch events
-        let touchStartY = 0;
         this.sections.hero.element.addEventListener('touchstart', (e) => {
             if (this.currentSection === 'hero') {
-                touchStartY = e.touches[0].clientY;
+                this.handleTouchEvent(e, 'start');
             }
         }, { passive: true });
 
         this.sections.hero.element.addEventListener('touchmove', (e) => {
-            if (this.currentSection === 'hero') {
-                const touchCurrentY = e.touches[0].clientY;
-                const deltaY = touchStartY - touchCurrentY;
-                
-                if (deltaY > 50) {
-                    e.preventDefault();
-                    this.handleHeroScroll();
-                }
+            if (this.currentSection === 'hero' && 
+                this.handleTouchEvent(e, 'move')) {
+                e.preventDefault();
+                this.handleHeroScroll();
             }
         }, { passive: false });
 
-        // Universal click/tap handler for hero section
-        this.sections.hero.element.addEventListener('pointerdown', () => {
+        // Universal click handler for hero section
+        this.sections.hero.element.addEventListener('click', () => {
             if (this.currentSection === 'hero') {
                 this.handleHeroScroll();
             }
@@ -109,22 +142,18 @@ class SiteSectionManager {
             }
         }, { passive: false });
 
-        // Handle touch scrolling after info section
         window.addEventListener('touchstart', (e) => {
             if (this.sections.info.isComplete && this.currentSection === 'info') {
-                touchStartY = e.touches[0].clientY;
+                this.handleTouchEvent(e, 'start');
             }
         }, { passive: true });
 
         window.addEventListener('touchmove', (e) => {
-            if (this.sections.info.isComplete && this.currentSection === 'info') {
-                const touchCurrentY = e.touches[0].clientY;
-                const deltaY = touchStartY - touchCurrentY;
-                
-                if (deltaY > 50) {
-                    e.preventDefault();
-                    this.proceedToSection('mixes');
-                }
+            if (this.sections.info.isComplete && 
+                this.currentSection === 'info' && 
+                this.handleTouchEvent(e, 'move')) {
+                e.preventDefault();
+                this.proceedToSection('mixes');
             }
         }, { passive: false });
 
@@ -159,23 +188,16 @@ class SiteSectionManager {
     setupInfoSectionInteractions() {
         const infoSection = this.sections.info.element;
         
-        // Touch events
         infoSection.addEventListener('touchstart', (e) => {
             if (this.currentSection === 'info' && !this.sections.info.isComplete) {
-                this.interactionState.isTouching = true;
-                this.interactionState.startY = e.touches[0].clientY;
+                this.handleTouchEvent(e, 'start');
             }
         }, { passive: true });
         
         infoSection.addEventListener('touchmove', (e) => {
-            if (!this.interactionState.isTouching || this.sections.info.isComplete) return;
-            
-            const currentY = e.touches[0].clientY;
-            const deltaY = this.interactionState.startY - currentY;
-            
-            if (Math.abs(deltaY) > this.interactionState.interactionThreshold) {
-                this.handleInteraction(deltaY > 0);
-                this.interactionState.startY = currentY;
+            if (!this.sections.info.isComplete && 
+                this.handleTouchEvent(e, 'move')) {
+                this.handleInteraction(true);
             }
         }, { passive: true });
         
@@ -276,21 +298,36 @@ class SiteSectionManager {
         
         mixItems.forEach(mixItem => {
             const button = mixItem.querySelector('.play-mix');
-            button.addEventListener('pointerdown', () => {
-                audioPlayer.src = mixItem.getAttribute('data-src');
-                
-                // Handle autoplay restrictions
-                const playPromise = audioPlayer.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        if (error.name === 'NotAllowedError') {
-                            console.log('Autoplay blocked - user interaction required');
-                        }
-                    });
+            let touchTimeout;
+            
+            button.addEventListener('touchstart', (e) => {
+                touchTimeout = setTimeout(() => {
+                    audioPlayer.src = mixItem.getAttribute('data-src');
+                    const playPromise = audioPlayer.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            if (error.name === 'NotAllowedError') {
+                                console.log('Autoplay blocked - user interaction required');
+                            }
+                        });
+                    }
+                    
+                    this.sections.footer.element.classList.remove('hidden');
+                    this.currentSection = 'footer';
+                }, 150);
+            }, { passive: true });
+            
+            button.addEventListener('touchend', () => {
+                clearTimeout(touchTimeout);
+            });
+            
+            button.addEventListener('click', (e) => {
+                if (e.pointerType === 'mouse') {
+                    audioPlayer.src = mixItem.getAttribute('data-src');
+                    audioPlayer.play().catch(() => {});
+                    this.sections.footer.element.classList.remove('hidden');
+                    this.currentSection = 'footer';
                 }
-                
-                this.sections.footer.element.classList.remove('hidden');
-                this.currentSection = 'footer';
             });
         });
         

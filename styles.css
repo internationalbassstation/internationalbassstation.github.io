@@ -72,6 +72,7 @@ body {
   position: relative;
   overflow: hidden;
   cursor: crosshair;
+  touch-action: pan-y pinch-zoom;
 }
 
 .hero-background {
@@ -114,6 +115,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   justify-content: center;
+  touch-action: pan-y pinch-zoom;
 }
 
 .info-grid {
@@ -168,7 +170,6 @@ body {
   font-family: 'Wallpoet';
   font-weight: bold;
   color: var(--color-secondary);
-  margin-top: 0.6rem;
 }
 
 iframe.custom-border {
@@ -305,6 +306,7 @@ iframe.custom-border {
   opacity: 0;
   transition: var(--transition-standard);
   margin-bottom: 4.20rem;
+  touch-action: pan-y pinch-zoom;
 }
 
 .mixes-container.visible {
@@ -340,6 +342,8 @@ iframe.custom-border {
   transition: var(--transition-standard);
   opacity: 1;
   will-change: transform;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .play-mix:hover,
@@ -355,6 +359,11 @@ iframe.custom-border {
   outline: 3px solid var(--color-secondary);
   outline-offset: 2px;
   background-color: rgba(100, 36, 184, .1);
+}
+
+.play-mix:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
 }
 
 /* ========== SECTION 4: FOOTER ========== */

@@ -118,9 +118,12 @@ class SiteSectionManager {
                 this.handleHeroScroll();
             }
         });
-        
+
         // Handle all types of interactions in info section
         this.setupInfoSectionInteractions();
+
+        // Setup Past Voyages interactions
+        this.setupPastVoyagesInteractions();
         
         // Setup audio player controls
         this.setupAudioControls();
@@ -135,28 +138,6 @@ class SiteSectionManager {
         });
 
         // Handle scrolling after info section is complete
-        window.addEventListener('wheel', (e) => {
-            if (this.sections.info.isComplete && this.currentSection === 'info' && e.deltaY > 0) {
-                e.preventDefault();
-                this.proceedToSection('mixes');
-            }
-        }, { passive: false });
-
-        window.addEventListener('touchstart', (e) => {
-            if (this.sections.info.isComplete && this.currentSection === 'info') {
-                this.handleTouchEvent(e, 'start');
-            }
-        }, { passive: true });
-
-        window.addEventListener('touchmove', (e) => {
-            if (this.sections.info.isComplete && 
-                this.currentSection === 'info' && 
-                this.handleTouchEvent(e, 'move')) {
-                e.preventDefault();
-                this.proceedToSection('mixes');
-            }
-        }, { passive: false });
-
         window.addEventListener('scroll', () => {
             const scrollPosition = window.scrollY + window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
@@ -183,6 +164,21 @@ class SiteSectionManager {
                 }, 800);
             }, 400);
         }
+    }
+
+    handlePastVoyagesTransition() {
+        const pastVoyages = document.querySelector('.past-voyages');
+        pastVoyages.style.transition = 'transform 0.8s ease-out';
+        pastVoyages.style.transform = 'scale(1.05)';
+        
+        setTimeout(() => {
+            this.proceedToSection('mixes');
+            // Reset transform after transition
+            setTimeout(() => {
+                pastVoyages.style.transition = 'none';
+                pastVoyages.style.transform = 'none';
+            }, 800);
+        }, 400);
     }
     
     setupInfoSectionInteractions() {
@@ -220,9 +216,44 @@ class SiteSectionManager {
                     e.preventDefault();
                     this.handleInteraction(e.key === 'ArrowDown');
                 }
-            } else if (this.sections.info.isComplete && this.currentSection === 'info' && e.key === 'ArrowDown') {
-                e.preventDefault();
-                this.proceedToSection('mixes');
+            }
+        });
+    }
+
+    setupPastVoyagesInteractions() {
+        const pastVoyages = document.querySelector('.past-voyages');
+        let touchStartTime = 0;
+        let touchStartY = 0;
+        let isLongPress = false;
+        const longPressThreshold = 500; // ms
+
+        // Touch events
+        pastVoyages.addEventListener('touchstart', (e) => {
+            touchStartTime = Date.now();
+            touchStartY = e.touches[0].clientY;
+            isLongPress = false;
+
+            // Set a timer for long press
+            setTimeout(() => {
+                isLongPress = true;
+            }, longPressThreshold);
+        }, { passive: true });
+
+        pastVoyages.addEventListener('touchend', (e) => {
+            const touchDuration = Date.now() - touchStartTime;
+            const touchEndY = e.changedTouches[0].clientY;
+            const touchDistance = Math.abs(touchEndY - touchStartY);
+
+            // Only trigger if it was a deliberate press and not a scroll attempt
+            if (!isLongPress && touchDistance < 10) {
+                this.handlePastVoyagesTransition();
+            }
+        });
+
+        // Click event for desktop
+        pastVoyages.addEventListener('click', (e) => {
+            if (e.pointerType === 'mouse' || !e.pointerType) {
+                this.handlePastVoyagesTransition();
             }
         });
     }
@@ -233,8 +264,16 @@ class SiteSectionManager {
             return;
         }
         
+        // Check if we're on mobile
+        const isMobile = window.innerWidth <= 768;
+        
         if (isForward && !this.sections.info.isComplete) {
-            this.updateProgress(this.progressState.current + this.progressState.interactionIncrement);
+            // Use smaller increment on mobile
+            const increment = isMobile ? 
+                this.progressState.interactionIncrement / 2 : 
+                this.progressState.interactionIncrement;
+                
+            this.updateProgress(this.progressState.current + increment);
         }
         this.interactionState.lastInteractionTime = now;
     }
@@ -298,29 +337,36 @@ class SiteSectionManager {
         
         mixItems.forEach(mixItem => {
             const button = mixItem.querySelector('.play-mix');
-            let touchTimeout;
+            let touchStartTime;
+            let touchStartY;
+            let isTouchMove = false;
             
             button.addEventListener('touchstart', (e) => {
-                touchTimeout = setTimeout(() => {
-                    audioPlayer.src = mixItem.getAttribute('data-src');
-                    const playPromise = audioPlayer.play();
-                    if (playPromise !== undefined) {
-                        playPromise.catch(error => {
-                            if (error.name === 'NotAllowedError') {
-                                console.log('Autoplay blocked - user interaction required');
-                            }
-                        });
-                    }
-                    
-                    this.sections.footer.element.classList.remove('hidden');
-                    this.currentSection = 'footer';
-                }, 150);
+                touchStartTime = Date.now();
+                touchStartY = e.touches[0].clientY;
+                isTouchMove = false;
             }, { passive: true });
             
-            button.addEventListener('touchend', () => {
-                clearTimeout(touchTimeout);
+            button.addEventListener('touchmove', (e) => {
+                const touchMoveY = e.touches[0].clientY;
+                if (Math.abs(touchMoveY - touchStartY) > 10) {
+                    isTouchMove = true;
+                }
+            }, { passive: true });
+            
+            button.addEventListener('touchend', (e) => {
+                const touchDuration = Date.now() - touchStartTime;
+                
+                // Only play if it was a short tap and not a scroll
+                if (touchDuration < 200 && !isTouchMove) {
+                    audioPlayer.src = mixItem.getAttribute('data-src');
+                    audioPlayer.play().catch(() => {});
+                    this.sections.footer.element.classList.remove('hidden');
+                    this.currentSection = 'footer';
+                }
             });
             
+            // Keep the click handler for desktop
             button.addEventListener('click', (e) => {
                 if (e.pointerType === 'mouse') {
                     audioPlayer.src = mixItem.getAttribute('data-src');
@@ -340,11 +386,6 @@ class SiteSectionManager {
     
     enableMixesSection() {
         this.sections.mixes.element.classList.add('visible');
-        const pastVoyages = document.querySelector('.past-voyages');
-        pastVoyages.classList.add('flash');
-        setTimeout(() => {
-            pastVoyages.classList.remove('flash');
-        }, 1000);
     }
     
     startCountdownTimer() {

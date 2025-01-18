@@ -148,7 +148,6 @@ body {
   text-align: center;
   width: 100%;
   border: var(--border-standard);
-  background: transparent;
 }
 
 .broadcast-title,
@@ -260,8 +259,14 @@ iframe.custom-border {
   position: relative;
   overflow: hidden;
   padding: 2rem;
-  border: var(--border-standard);
+  border: 2px solid var(--color-accent);
   background: transparent;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.past-voyages:hover {
+  border-color: var(--color-secondary);
 }
 
 .past-voyages::before {
@@ -285,15 +290,6 @@ iframe.custom-border {
   font-family: 'Syncopate-Bold';
   position: relative;
   z-index: 1;
-}
-
-.past-voyages.flash {
-  animation: flashBorder 1s ease;
-}
-
-@keyframes flashBorder {
-  0%, 100% { border-color: var(--color-accent); }
-  50% { border-color: var(--color-secondary); }
 }
 
 /* ========== SECTION 3: MIXES LIST ========== */
@@ -435,8 +431,48 @@ iframe.custom-border {
   font-family: var(--font-primary);
 }
 
-/* ========== RESPONSIVE DESIGN ========== */
+/* ========== RESPONSIVE MOBILE DESIGN ========== */
+
 @media (max-width: 768px) {
+  /* Adjust section heights for mobile */
+  .info-container {
+    min-height: auto;
+    padding: 2rem 1rem;
+  }
+
+  .info-grid {
+    min-height: auto;
+    gap: 2rem;
+  }
+
+  /* Adjust spacing in info section */
+  .grid-row {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Make DJ section more compact */
+  .dj-section {
+    padding: 1rem;
+  }
+
+  .dj-bio p {
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+  }
+
+  /* Adjust mixes container */
+  .mixes-container {
+    min-height: auto;
+    padding: 2rem 1rem;
+  }
+
+  /* Make mix buttons easier to tap accurately */
+  .play-mix {
+    padding: 1.25rem;
+    margin: 0.5rem 0;
+  }
+
   .broadcast-info {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -449,11 +485,6 @@ iframe.custom-border {
   .broadcast-title,
   .broadcast-player {
     width: 100%;
-  }
-  
-  .dj-section {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
   }
   
   .dj-image {
@@ -470,7 +501,6 @@ iframe.custom-border {
   .dj-info h2 {
     font-size: 2.5rem;
   }
-  
   
   .past-voyages h2 {
     font-size: 3rem;
@@ -507,11 +537,7 @@ iframe.custom-border {
   .credit-right {
     justify-self: end;
   }
-  
-  .footer-credits {
-    grid-template-columns: 1fr;
-  }
-  
+    
   #mixPlayer {
     height: 32px;
   }

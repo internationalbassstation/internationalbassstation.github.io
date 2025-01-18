@@ -55,7 +55,7 @@ body {
   font-family: var(--font-primary);
   color: var(--color-text);
   background-color: var(--color-background);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .content {
@@ -108,12 +108,13 @@ body {
 
 /* ========== SECTION 2: INFO SECTION ========== */
 .info-container {
-  padding: 2rem 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  justify-content: center;
 }
 
 .info-grid {
@@ -164,10 +165,8 @@ body {
 .broadcast-info {
   display: grid;
   grid-template-columns: 1fr 1fr;  /* Split into two equal columns */
-  gap: 1rem;
   text-align: center;
   width: 100%;
-  padding: 1rem;
 }
 
 .broadcast-title,
@@ -192,15 +191,16 @@ body {
   font-family: 'Wallpoet';
   font-weight: bold;
   color: var(--color-secondary);
+  margin-top: 0.6rem;
 }
 
 iframe.custom-border {
   border: 1.5px solid var(--color-accent);
-  margin: 1rem;
+  margin: 0.5rem;
 }
 
 .broadcast-player h3 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .broadcast-player a {
@@ -220,13 +220,17 @@ iframe.custom-border {
   grid-template-columns: 1fr 2fr;
   gap: 1rem;
   height: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .dj-image {
   flex: 1;
   min-height: 200px; /* Minimum height to prevent too small sizing */
-  max-height: 400px; /* Maximum height to prevent oversizing */
+  max-height: 18rem; /* Maximum height to prevent oversizing */
+  max-width:  18rem; /* Maximum width to prevent oversizing */
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -241,6 +245,7 @@ iframe.custom-border {
 
 .dj-info {
   display: flex;
+  align-items: center;
   flex-direction: column;
 }
 
@@ -259,8 +264,6 @@ iframe.custom-border {
 }
 
 .dj-bio p {
-  margin-right: 1rem;
-  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 

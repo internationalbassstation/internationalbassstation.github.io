@@ -1,5 +1,6 @@
 class SiteSectionManager {
     constructor() {
+        // Define the main sections of the site and their relationships
         this.sections = {
             hero: {
                 element: document.getElementById('hero-container'),
@@ -23,28 +24,33 @@ class SiteSectionManager {
             }
         };
         
+        // Track the current section being viewed
         this.currentSection = 'hero';
+        
+        // Progress state for the info section's reveal animation
         this.progressState = {
             current: 0,
             max: 100,
-            rate: 25,
-            interactionIncrement: 15
+            rate: 25,               // Base rate of progress increase
+            interactionIncrement: 15 // How much progress increases per interaction
         };
         
+        // State management for user interactions
         this.interactionState = {
             startY: 0,
             lastInteractionTime: 0,
             isTouching: false,
-            cooldownPeriod: 200,
-            interactionThreshold: 10
+            cooldownPeriod: 200,     // Prevents rapid-fire interactions
+            interactionThreshold: 10  // Minimum distance for touch interactions
         };
 
+        // Specific touch event handling state
         this.touchState = {
             lastTouchTime: 0,
-            touchDelay: 300,
+            touchDelay: 300,         // Minimum time between touch events
             startY: 0,
             startX: 0,
-            minSwipeDistance: 50,
+            minSwipeDistance: 50,    // Minimum distance for a swipe
             isScrolling: false
         };
         
@@ -52,6 +58,7 @@ class SiteSectionManager {
     }
     
     initialize() {
+        // Ensure page starts at the top
         history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
         
@@ -59,6 +66,7 @@ class SiteSectionManager {
         this.startCountdownTimer();
     }
 
+    // Handle touch events with improved gesture detection
     handleTouchEvent(e, eventType) {
         const now = Date.now();
         
@@ -77,7 +85,7 @@ class SiteSectionManager {
         const deltaY = this.touchState.startY - e.touches[0].clientY;
         const deltaX = this.touchState.startX - e.touches[0].clientX;
         
-        // Determine if this is a deliberate vertical swipe
+        // Only trigger for vertical swipes
         if (Math.abs(deltaY) > Math.abs(deltaX) && 
             Math.abs(deltaY) > this.touchState.minSwipeDistance) {
             this.touchState.lastTouchTime = now;
@@ -89,46 +97,19 @@ class SiteSectionManager {
     }
     
     setupEventListeners() {
-        // Handle hero section scrolling
-        this.sections.hero.element.addEventListener('wheel', (e) => {
-            if (this.currentSection === 'hero' && e.deltaY > 0) {
-                e.preventDefault();
-                this.handleHeroScroll();
-            }
-        }, { passive: false });
+        // Hero section event listeners
+        this.setupHeroListeners();
 
-        // Handle hero section touch events
-        this.sections.hero.element.addEventListener('touchstart', (e) => {
-            if (this.currentSection === 'hero') {
-                this.handleTouchEvent(e, 'start');
-            }
-        }, { passive: true });
+        // Info section event listeners
+        this.setupInfoSectionListeners();
 
-        this.sections.hero.element.addEventListener('touchmove', (e) => {
-            if (this.currentSection === 'hero' && 
-                this.handleTouchEvent(e, 'move')) {
-                e.preventDefault();
-                this.handleHeroScroll();
-            }
-        }, { passive: false });
-
-        // Universal click handler for hero section
-        this.sections.hero.element.addEventListener('click', () => {
-            if (this.currentSection === 'hero') {
-                this.handleHeroScroll();
-            }
-        });
-
-        // Handle all types of interactions in info section
-        this.setupInfoSectionInteractions();
-
-        // Setup Past Voyages interactions
-        this.setupPastVoyagesInteractions();
+        // Past Voyages section listeners
+        this.setupPastVoyagesListeners();
         
-        // Setup audio player controls
+        // Audio player setup
         this.setupAudioControls();
         
-        // Handle visibility changes
+        // Handle tab/window visibility changes
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 this.pauseProgressTimer();
@@ -137,14 +118,194 @@ class SiteSectionManager {
             }
         });
 
-        // Handle scrolling after info section is complete
+        // Add scroll detection for footer reveal
         window.addEventListener('scroll', () => {
+            // Show footer when near bottom of page
             const scrollPosition = window.scrollY + window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
             
             if (scrollPosition >= documentHeight - 50) {
                 this.sections.footer.element.classList.remove('hidden');
                 this.currentSection = 'footer';
+            }
+        });
+    }
+
+    setupHeroListeners() {
+        const heroElement = this.sections.hero.element;
+
+        // Handle mouse wheel on hero
+        heroElement.addEventListener('wheel', (e) => {
+            if (this.currentSection === 'hero' && e.deltaY > 0) {
+                e.preventDefault();
+                this.handleHeroScroll();
+            }
+        }, { passive: false });
+
+        // Handle touch events on hero
+        heroElement.addEventListener('touchstart', (e) => {
+            if (this.currentSection === 'hero') {
+                this.handleTouchEvent(e, 'start');
+            }
+        }, { passive: true });
+
+        heroElement.addEventListener('touchmove', (e) => {
+            if (this.currentSection === 'hero' && 
+                this.handleTouchEvent(e, 'move')) {
+                e.preventDefault();
+                this.handleHeroScroll();
+            }
+        }, { passive: false });
+
+        // Handle clicks on hero
+        heroElement.addEventListener('click', () => {
+            if (this.currentSection === 'hero') {
+                this.handleHeroScroll();
+            }
+        });
+    }
+
+setupInfoSectionListeners() {
+    const infoSection = this.sections.info.element;
+    let isAtInfoBottom = false;
+    let scrollTimeout;
+    
+    // Function to check if we're at the bottom of info section
+    const checkInfoBottom = () => {
+        const infoRect = infoSection.getBoundingClientRect();
+        const tolerance = 5; // Small tolerance for rounding errors
+        return (infoRect.bottom <= window.innerHeight + tolerance);
+    };
+
+    // Prevent default scroll when at info bottom
+    const handleScroll = (e) => {
+        if (this.currentSection === 'info') {
+            if (isAtInfoBottom && e.deltaY > 0) {
+                e.preventDefault();
+                this.handlePastVoyagesTransition();
+            } else if (!this.sections.info.isComplete) {
+                this.handleInteraction(e.deltaY > 0);
+            }
+        }
+    };
+
+    // Update isAtInfoBottom state
+    const updateScrollState = () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            if (this.currentSection === 'info') {
+                isAtInfoBottom = checkInfoBottom();
+                
+                // If we've scrolled to bottom and info section is complete,
+                // prepare for next scroll to trigger transition
+                if (isAtInfoBottom && this.sections.info.isComplete) {
+                    infoSection.style.height = '100vh';
+                    infoSection.style.overflow = 'hidden';
+                }
+            }
+        }, 50);
+    };
+
+    // Add scroll event listeners
+    window.addEventListener('scroll', updateScrollState, { passive: true });
+    infoSection.addEventListener('wheel', handleScroll, { passive: false });
+    
+    // Touch events for info section
+    infoSection.addEventListener('touchstart', (e) => {
+        if (this.currentSection === 'info') {
+            this.handleTouchEvent(e, 'start');
+        }
+    }, { passive: true });
+    
+    infoSection.addEventListener('touchmove', (e) => {
+        if (this.currentSection === 'info') {
+            if (isAtInfoBottom && this.sections.info.isComplete) {
+                e.preventDefault();
+                this.handlePastVoyagesTransition();
+            } else if (!this.sections.info.isComplete) {
+                if (this.handleTouchEvent(e, 'move')) {
+                    this.handleInteraction(true);
+                }
+            }
+        }
+    }, { passive: false });
+    
+    // Update isAtInfoBottom when content becomes visible
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.target.classList.contains('visible')) {
+                updateScrollState();
+            }
+        });
+    });
+
+    document.querySelectorAll('.grid-row').forEach(row => {
+        observer.observe(row, { attributes: true });
+    });
+}
+
+// Update handlePastVoyagesTransition() to ensure smooth transition
+handlePastVoyagesTransition() {
+    const pastVoyages = document.querySelector('.past-voyages');
+    const mixesSection = this.sections.mixes.element;
+    
+    pastVoyages.style.transition = 'transform 0.8s ease-out';
+    pastVoyages.style.transform = 'scale(1.05)';
+    
+    // Ensure mixes section is ready for smooth scroll
+    mixesSection.style.opacity = '0';
+    mixesSection.classList.add('visible');
+    
+    setTimeout(() => {
+        // Reset info section constraints
+        this.sections.info.element.style.height = '';
+        this.sections.info.element.style.overflow = '';
+        
+        // Smooth scroll to mixes section
+        mixesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        this.currentSection = 'mixes';
+        
+        // Fade in mixes section
+        setTimeout(() => {
+            mixesSection.style.opacity = '1';
+            
+            // Reset past voyages transform
+            pastVoyages.style.transition = 'none';
+            pastVoyages.style.transform = 'none';
+        }, 800);
+    }, 400);
+}    
+
+    setupPastVoyagesListeners() {
+        const pastVoyages = document.querySelector('.past-voyages');
+        const touchConfig = {
+            startTime: 0,
+            startY: 0,
+            longPressThreshold: 500,
+            moveThreshold: 10
+        };
+
+        // Touch events for Past Voyages section
+        pastVoyages.addEventListener('touchstart', (e) => {
+            touchConfig.startTime = Date.now();
+            touchConfig.startY = e.touches[0].clientY;
+        }, { passive: true });
+
+        pastVoyages.addEventListener('touchend', (e) => {
+            const touchDuration = Date.now() - touchConfig.startTime;
+            const touchEndY = e.changedTouches[0].clientY;
+            const touchDistance = Math.abs(touchEndY - touchConfig.startY);
+
+            if (touchDuration < touchConfig.longPressThreshold && 
+                touchDistance < touchConfig.moveThreshold) {
+                this.handlePastVoyagesTransition();
+            }
+        });
+
+        // Click event for desktop
+        pastVoyages.addEventListener('click', (e) => {
+            if (e.pointerType === 'mouse' || !e.pointerType) {
+                this.handlePastVoyagesTransition();
             }
         });
     }
@@ -157,7 +318,6 @@ class SiteSectionManager {
             
             setTimeout(() => {
                 this.proceedToSection('info');
-                // Reset transform after transition
                 setTimeout(() => {
                     heroBackground.style.transition = 'none';
                     heroBackground.style.transform = 'none';
@@ -173,89 +333,11 @@ class SiteSectionManager {
         
         setTimeout(() => {
             this.proceedToSection('mixes');
-            // Reset transform after transition
             setTimeout(() => {
                 pastVoyages.style.transition = 'none';
                 pastVoyages.style.transform = 'none';
             }, 800);
         }, 400);
-    }
-    
-    setupInfoSectionInteractions() {
-        const infoSection = this.sections.info.element;
-        
-        infoSection.addEventListener('touchstart', (e) => {
-            if (this.currentSection === 'info' && !this.sections.info.isComplete) {
-                this.handleTouchEvent(e, 'start');
-            }
-        }, { passive: true });
-        
-        infoSection.addEventListener('touchmove', (e) => {
-            if (!this.sections.info.isComplete && 
-                this.handleTouchEvent(e, 'move')) {
-                this.handleInteraction(true);
-            }
-        }, { passive: true });
-        
-        infoSection.addEventListener('touchend', () => {
-            this.interactionState.isTouching = false;
-        });
-        
-        // Mouse wheel
-        infoSection.addEventListener('wheel', (e) => {
-            if (this.currentSection === 'info' && !this.sections.info.isComplete) {
-                e.preventDefault();
-                this.handleInteraction(e.deltaY > 0);
-            }
-        }, { passive: false });
-        
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (this.currentSection === 'info' && !this.sections.info.isComplete) {
-                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    this.handleInteraction(e.key === 'ArrowDown');
-                }
-            }
-        });
-    }
-
-    setupPastVoyagesInteractions() {
-        const pastVoyages = document.querySelector('.past-voyages');
-        let touchStartTime = 0;
-        let touchStartY = 0;
-        let isLongPress = false;
-        const longPressThreshold = 500; // ms
-
-        // Touch events
-        pastVoyages.addEventListener('touchstart', (e) => {
-            touchStartTime = Date.now();
-            touchStartY = e.touches[0].clientY;
-            isLongPress = false;
-
-            // Set a timer for long press
-            setTimeout(() => {
-                isLongPress = true;
-            }, longPressThreshold);
-        }, { passive: true });
-
-        pastVoyages.addEventListener('touchend', (e) => {
-            const touchDuration = Date.now() - touchStartTime;
-            const touchEndY = e.changedTouches[0].clientY;
-            const touchDistance = Math.abs(touchEndY - touchStartY);
-
-            // Only trigger if it was a deliberate press and not a scroll attempt
-            if (!isLongPress && touchDistance < 10) {
-                this.handlePastVoyagesTransition();
-            }
-        });
-
-        // Click event for desktop
-        pastVoyages.addEventListener('click', (e) => {
-            if (e.pointerType === 'mouse' || !e.pointerType) {
-                this.handlePastVoyagesTransition();
-            }
-        });
     }
     
     handleInteraction(isForward) {
@@ -264,11 +346,9 @@ class SiteSectionManager {
             return;
         }
         
-        // Check if we're on mobile
         const isMobile = window.innerWidth <= 768;
         
         if (isForward && !this.sections.info.isComplete) {
-            // Use smaller increment on mobile
             const increment = isMobile ? 
                 this.progressState.interactionIncrement / 2 : 
                 this.progressState.interactionIncrement;
@@ -341,6 +421,7 @@ class SiteSectionManager {
             let touchStartY;
             let isTouchMove = false;
             
+            // Touch event handling for mix buttons
             button.addEventListener('touchstart', (e) => {
                 touchStartTime = Date.now();
                 touchStartY = e.touches[0].clientY;
@@ -357,7 +438,6 @@ class SiteSectionManager {
             button.addEventListener('touchend', (e) => {
                 const touchDuration = Date.now() - touchStartTime;
                 
-                // Only play if it was a short tap and not a scroll
                 if (touchDuration < 200 && !isTouchMove) {
                     audioPlayer.src = mixItem.getAttribute('data-src');
                     audioPlayer.play().catch(() => {});
@@ -366,7 +446,7 @@ class SiteSectionManager {
                 }
             });
             
-            // Keep the click handler for desktop
+            // Click handling for desktop
             button.addEventListener('click', (e) => {
                 if (e.pointerType === 'mouse') {
                     audioPlayer.src = mixItem.getAttribute('data-src');
@@ -377,7 +457,7 @@ class SiteSectionManager {
             });
         });
         
-        // Add media session API support for better mobile controls
+        // Add media session API support
         if ('mediaSession' in navigator) {
             navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
             navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());

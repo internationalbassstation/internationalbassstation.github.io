@@ -526,17 +526,16 @@ iframe.custom-border {
   }
   
   .dj-info h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
   .past-voyages h2 {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 
   .site-footer {
     padding: 0;
   }
-  
   
   .audio-player-container {
     grid-row: 1;
@@ -550,16 +549,16 @@ iframe.custom-border {
     align-items: center;
     padding: 0.5rem;
     font-size: 0.5rem;
-}
+  }
 
 /* Remove the grid-specific styles */
-.credit-left, 
-.credit-right {
-    padding: 0;
-}
+  .credit-left, 
+  .credit-right {
+      padding: 0;
+  }
 
-#mixPlayer {
-    height: 2rem;
-    width: 100%;
-}
+  #mixPlayer {
+      height: 2rem;
+      width: 100%;
+  }
 }

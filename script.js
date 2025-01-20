@@ -215,7 +215,7 @@ class SiteSectionManager {
 
     handleHeroScroll() {
         if (this.state.currentSection === 'hero') {
-            const heroBackground = this.sections.hero.element.querySelector('.hero-background');
+            const heroBackground = this.sections.hero.element.querySelector('.hero__background');
             heroBackground.style.transition = 'transform 0.8s ease-out';
             heroBackground.style.transform = 'scale(1.1) translateY(-5%)';
 

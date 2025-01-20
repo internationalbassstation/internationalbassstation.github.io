@@ -4,25 +4,21 @@
   src: url('assets/fonts/Goldman.ttf') format('truetype');
   font-display: block;
 }
-
 @font-face {
   font-family: 'RubikGlitch';
   src: url('assets/fonts/RubikGlitch.ttf') format('truetype');
   font-display: block;
 }
-
 @font-face {
   font-family: 'Syncopate';
   src: url('assets/fonts/Syncopate-Regular.ttf') format('truetype');
   font-display: block;
 }
-
 @font-face {
   font-family: 'Syncopate-Bold';
   src: url('assets/fonts/Syncopate-Bold.ttf') format('truetype');
   font-display: block;
 }
-
 @font-face {
   font-family: 'Wallpoet';
   src: url('assets/fonts/Wallpoet-Regular.ttf') format('truetype');
@@ -36,11 +32,26 @@
   --color-text: #ffffff;
   --color-background: #000000;
   
-  --font-primary: 'Goldman', sans-serif;
-  --font-display: 'RubikGlitch', 'Goldman', sans-serif;
+  --font-goldman: 'Goldman', sans-serif;
+  --font-glitch: 'RubikGlitch', sans-serif;
+  --font-syncopate: 'Syncopate', sans-serif;
+  --font-syncopate-bold: 'Syncopate-Bold', sans-serif;
+  --font-wallpoet: 'Wallpoet', sans-serif;
   
   --transition-standard: all 0.3s ease;
+
   --border-standard: 2px solid var(--color-accent);
+  --border-highlight: 2px solid var(--color-secondary);  /* UNUSED CURRENTLY */
+
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 4rem;
+ 
+  --container-max-width: 1200px;   /* UNUSED CURRENTLY */
+
+  --section-padding: clamp(1rem, 5vw, 2rem);  /* UNUSED CURRENTLY */
 }
 
 /* ========== GLOBAL RESET & BASE STYLES ========== */
@@ -48,14 +59,18 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html {
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: var(--font-primary);
+  font-family: var(--font-goldman);
   color: var(--color-text);
   background-color: var(--color-background);
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 .content {
@@ -72,21 +87,21 @@ body {
   position: relative;
   overflow: hidden;
   cursor: crosshair;
-  touch-action: pan-y pinch-zoom;
+  touch-action: pan-y pinch-zoom;   /* PINCH ZOOM? */
 }
 
-.hero-background {
+.hero__background {
   position: absolute;
   inset: 0;
   background-image: url('assets/images/ibs.jpg');
-  background-position: center center;
+  background-position: center ;  /* CENTER CENTER INSTEAD OF CENTER? */
   background-size: contain;
   background-repeat: no-repeat;
 }
 
-.instruction-text {
+.hero__instruction {
   position: absolute;
-  top: 2rem;
+  top: var(--spacing-md);
   left: 50%;
   transform: translateX(-50%);
   color: var(--color-accent);
@@ -94,9 +109,8 @@ body {
   animation: fadeInOut 2s infinite;
 }
 
-.instruction-text span {
+.hero__instruction span {
   display: block;
-  font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   text-shadow: 2px 2px 4px var(--color-secondary);
@@ -116,14 +130,14 @@ body {
   margin: 0 auto;
   justify-content: center;
   touch-action: pan-y pinch-zoom;
-  padding: 1rem;
+  padding: var(--spacing-sm);
 }
 
 .info-grid {
   display: grid;
   grid-template-rows: auto auto 1fr;
   gap: clamp(1.5rem, calc(2vh + 1rem), 4rem);
-  min-height: calc(100vh - 4rem);
+  min-height: calc(100vh - var(--spacing-xl));
 }
 
 /* Base styles for animation functionality */
@@ -132,7 +146,7 @@ body {
   transform: translateY(30px);
   transition: var(--transition-standard);
   width: 100%;
-  padding: 1rem;
+  padding: var(--spacing-sm);
   display: flex;
   flex-direction: column;
 }
@@ -160,21 +174,20 @@ body {
 }
 
 .broadcast-info h2 {
-  font-family: 'Wallpoet';
+  font-family: var(--font-wallpoet);
   font-size: 2rem;
   color: var(--color-primary);
 }
 
 #countdown {
   font-size: 2.5rem;
-  font-family: 'Wallpoet';
+  font-family: var(--font-wallpoet);
   font-weight: bold;
   color: var(--color-secondary);
 }
 
 iframe.custom-border {
-  border: 1.5px solid var(--color-accent);
-  margin: 0.5rem;
+  border: 0.15rem solid var(--color-accent);
 }
 
 .broadcast-player h3 {
@@ -183,7 +196,7 @@ iframe.custom-border {
 
 .broadcast-player a {
   color: var(--color-primary);
-  font-family: 'Syncopate';
+  font-family: var(--font-syncopate);
   text-decoration: none;
   transition: var(--transition-standard);
 }
@@ -196,10 +209,10 @@ iframe.custom-border {
 .dj-section {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 1rem;
+  gap: var(--spacing-sm);
   align-items: center;
   border: 2px solid var(--color-secondary);
-  padding: 1rem;
+  padding: var(--spacing-sm);
 }
 
 .dj-image {
@@ -230,7 +243,7 @@ iframe.custom-border {
 
 .dj-info h2 {
   color: var(--color-accent);
-  font-family: var(--font-display);
+  font-family: var(--font-glitch);
   font-size: 3rem;
   text-align: center;
 }
@@ -244,7 +257,7 @@ iframe.custom-border {
 }
 
 .dj-bio p {
-  margin-top: 1rem;
+  margin-top: var(--spacing-sm);
 }
 
 /* Past Voyages */
@@ -257,7 +270,7 @@ iframe.custom-border {
   min-height: 200px;
   position: relative;
   overflow: hidden;
-  padding: 2rem;
+  padding: var(--spacing-lg);
   border: 2px solid var(--color-accent);
   background: transparent;
   cursor: pointer;
@@ -287,7 +300,7 @@ iframe.custom-border {
 .past-voyages h2 {
   color: var(--color-secondary);
   font-size: 4rem;
-  font-family: 'Syncopate-Bold';
+  font-family: var(--font-syncopate-bold);
   position: relative;
   z-index: 1;
 }
@@ -314,8 +327,8 @@ iframe.custom-border {
   flex-direction: column;
   align-items: center;
   list-style: none;
-  padding-top: 1rem;
-  gap: 1rem;
+  padding-top: var(--spacing-sm);
+  gap: var(--spacing-sm);
 }
 
 .mix-item {
@@ -326,8 +339,8 @@ iframe.custom-border {
 
 .play-mix {
   width: 95%;
-  padding: 1rem;
-  font-family: var(--font-primary);
+  padding: var(--spacing-sm);
+  font-family: var(--font-goldman);
   font-size: 1.25rem;
   font-weight: bold;
   color: var(--color-text);
@@ -458,7 +471,7 @@ iframe.custom-border {
 #mixPlayer::-webkit-media-controls-current-time-display,
 #mixPlayer::-webkit-media-controls-time-remaining-display {
   color: var(--color-accent);
-  font-family: var(--font-primary);
+  font-family: var(--font-goldman);
 }
 
 /* ========== RESPONSIVE MOBILE DESIGN ========== */
@@ -485,8 +498,8 @@ iframe.custom-border {
   .dj-section {
     grid-template-columns: 1fr;  /* Stack vertically */
     grid-template-rows: auto auto auto;  /* Three rows */
-    gap: 1.5rem;
-    padding: 1.5rem;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
 }
 
 .dj-info {

@@ -30,9 +30,9 @@
 }
 
 :root {
-  --color-primary: rgba(100, 36, 184, 1);    /* Purple */
-  --color-secondary: rgba(239, 36, 170, 1);  /* Pink */
-  --color-accent: rgba(180, 233, 17, 1);     /* Green */
+  --color-primary: rgba(100, 36, 184, 1);
+  --color-secondary: rgba(239, 36, 170, 1);
+  --color-accent: rgba(180, 233, 17, 1);
   --color-text: #ffffff;
   --color-background: #000000;
   

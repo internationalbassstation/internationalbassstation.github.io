@@ -1,6 +1,6 @@
 class SectionManager {
     constructor() {
-        // Define core sections
+// DEFINE SECTIONS
         this.sections = {
             hero: {
                 element: document.getElementById('hero-container'),
@@ -19,36 +19,51 @@ class SectionManager {
                 nextSection: null,
             }
         };
-
+// START AT HERO
         this.state = {
             currentSection: 'hero'
         };
-
+// PREPARE FUNCTION
         this.initialize();
     }
-
+// INITIALIZE STRUCTURE
     initialize() {
-        // Ensure page starts at the top
+// FORCE PAGE TO TOP
         history.scrollRestoration = 'manual';
-        window.scrollTo(0, 0);
-        
-        // Set up core navigation listeners
+        window.scrollTo(0, 0);    
+// PREPARE SCRIPTS
         this.setupNavigationListeners();
-        
-        // Set up mix player functionality
-        this.setupMixPlayer();
+        this.setupInitialVisibility();
+        this.setupAudioPlayer();
     }
-
+// SET UP INVISIBILITY
+    setupInitialVisibility() {
+// HIDE ALL BUT HERO SCREEN
+        Object.keys(this.sections).forEach(sectionName => {
+            if (sectionName !== 'hero') {
+                this.sections[sectionName].element.classList.remove('visible');
+                if (sectionName === 'footer') {
+                    this.sections[sectionName].element.classList.add('hidden');
+                }
+            }
+        });
+    }
+// SET UP LISTENERS
     setupNavigationListeners() {
-        // Keyboard navigation
+// CLICK (update for past voyages, only for hero right now)
+        this.sections.hero.element.addEventListener('click', () => {
+            if (this.state.currentSection === 'hero') {
+                this.navigateToNextSection();
+            }
+        });
+// KEYBOARD
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowDown' || e.key === 'Space') {
                 e.preventDefault();
                 this.navigateToNextSection();
             }
         });
-
-        // Touch navigation
+// TAP + SWIPE
         let touchStartY = 0;
         document.addEventListener('touchstart', (e) => {
             touchStartY = e.touches[0].clientY;
@@ -62,62 +77,46 @@ class SectionManager {
                 this.navigateToNextSection();
             }
         });
-
-        // Hero section click
-        this.sections.hero.element.addEventListener('click', () => {
-            if (this.state.currentSection === 'hero') {
-                this.navigateToNextSection();
-            }
-        });
     }
-
-    setupMixPlayer() {
+// SET UP AUDIO PLAYER
+    setupAudioPlayer() {
         const mixItems = document.querySelectorAll('.mix-item');
         const audioPlayer = document.getElementById('mixPlayer');
+        const footer = this.sections.footer.element;
 
         mixItems.forEach(mixItem => {
-            const button = mixItem.querySelector('.play-mix');
-            
-            button.addEventListener('click', () => {
+            mixItem.addEventListener('click', () => {
                 audioPlayer.src = mixItem.getAttribute('data-src');
-                audioPlayer.play().catch(console.error);
-                this.sections.footer.element.classList.remove('hidden');
+                audioPlayer.play().catch(error => {
+                    console.error('Error playing audio:', error);
+                });
+                footer.classList.remove('hidden');
                 this.navigateToSection('footer');
             });
         });
     }
-
+// SCRIPT TO SCROLL AUTOMATICALLY
     navigateToNextSection() {
         const currentSection = this.sections[this.state.currentSection];
         if (currentSection && currentSection.nextSection) {
             this.navigateToSection(currentSection.nextSection);
         }
     }
-
     navigateToSection(sectionName) {
         const targetSection = this.sections[sectionName];
         if (!targetSection) return;
-
-        // Update current section
+// UPDATE CURRENT SECTION
         this.state.currentSection = sectionName;
-
-        // Add visibility class
+// ADD VISIBILITY
         targetSection.element.classList.add('visible');
-        
-        // Smooth scroll to section
+// SCROLL TO SECTION
         targetSection.element.scrollIntoView({ 
             behavior: 'smooth',
             block: 'start'
         });
-
-        // Show footer if needed
-        if (sectionName === 'footer') {
-            this.sections.footer.element.classList.remove('hidden');
-        }
     }
 }
-
-// Initialize when DOM is ready
+// FUNCTION TO ENSURE SITE IS LOADED BEFORE DISPLAY
 document.addEventListener('DOMContentLoaded', () => {
     try {
         const siteManager = new SectionManager();

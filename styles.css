@@ -27,8 +27,8 @@
 /* START STYLING */
 :root {
 /* LAYOUT */
-  --container-max-width: 75rem;
-  --footer-height: 4.5rem;
+  --container-max-width: 80rem;
+  --footer-height: 6rem;  /* prob too much after we fix border */
   --border: 2px solid var(--color-pink);
 /* COLOURS */
   --color-purple: rgba(100, 36, 184, 1);
@@ -45,7 +45,7 @@
   --font-wallpoet: 'Wallpoet', sans-serif;
 }
 /* BASE STYLES */
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -62,28 +62,29 @@ body {
   line-height: 1.5;
   overflow-x: hidden;
 }
-/* GRID LAYOUT */
-.container {
-  width: 100%;
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-.grid-row {
-  width: 100%;
-  padding: 1rem;
+
+/* VISIBILITY TRANSITIONS */
+
+.info-container,
+.mix-container {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-/* HERO SECTION */
+.info-container.visible,
+.mix-container.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* HERO SCREEN */
 .hero {
+  margin: 0 auto;
   height: 100dvh;
-  position: relative;
+  max-width: var(--container-max-width);
   overflow: hidden;
   cursor: crosshair;
-}
-.hero-background {
-  position: absolute;
-  inset: 0;
   background: url('assets/images/ibs.jpg') center/contain no-repeat;
 }
 .hero-instruction {
@@ -98,7 +99,7 @@ body {
   letter-spacing: 0.2em;
   animation: fadeInOut 2s infinite;
 }
-/* INFO SECTION */
+/* INFO SCREEN */
 .info-container {
   min-height: 100dvh;
   max-width: var(--container-max-width);
@@ -106,87 +107,118 @@ body {
   flex-direction: column;
   margin: 0 auto;
   padding: 1rem;
+  
 }
 .info-grid {
-  min-height: 100dvh;
+  max-height: 100dvh;  /* does this work????? */
   display: grid;
-  gap: 2rem;
-}
-.section-border {
-  border: 3rem solid var(--color-green);
+  min-height: 100dvh;
+  border: 0.8rem solid var(--color-green);
+  border-radius: 1rem;
+  gap: 1rem;
   padding: 1rem;
+  background: url('assets/images/DJ ROBOSAPIEN.jpg') right/contain no-repeat;
+  text-align: center;
+}
+/* BROADCAST INFO */
+.broadcast-info {
+  color: var(--color-purple);
+  font-size: 2rem;
+  text-align: left;
+}
+.broadcast-title {
+  color: var(--color-purple);
+  font-size: 2rem;
+  text-align: left;
+}
+/* countdown here */
+.broadcast-player {
+  text-align: left;
+}
+.embed-border {
+  border: 1rem solid var(--color-green);
+  border-radius: 1.2rem;
+  transition: border-color 0.3s ease;
+}
+/* DJ INFO */
+.dj-section {
+  position: relative;
+}
+.dj-info {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for readability */
+  padding: 2rem;
   border-radius: 1rem;
 }
-.section-title {
-  color: var(--color-purple);
-  text-align: center;
-  font-size: 2rem;
+/* PAST VOYAGES */
+.past-voyages {
+  position: relative;
 }
-  /* countdown and other things go here */
-
-
-
-/* MIXES SECTION */
+/* MIXES SCREEN */
 .mix-container {
   max-width: var(--container-max-width);
-  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   margin: 0 auto var(--footer-height);
 }
 .mix-list {
-  display: flex;
+  list-style: none;
+  text-align: center;
   flex-direction: column;
   gap: 1rem;
-  list-style: none;
-  padding-top: 1rem;
 }
-.play-mix {
+.mix-item {
+  margin: 0 auto;
   width: 95%;
   padding: 1rem;
-  font-family: var(--font-goldman);
   color: var(--color-green);
-  font-weight: bold; /* does this do anything with this font? */
   background: transparent;
   border: 1rem solid var(--color-purple);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.play-mix:hover {
-  background-color: rgba(180, 233, 17, 0.1);   /*alter */
+.mix-item:hover {
+  background-color: rgba(239, 36, 170, 0.1);   /*alter */
   border-color: var(--color-pink);
-  transform: scale(1.02);
+  transform: scale(1.05);
 }
 /* FOOTER SECTION */
 .site-footer {
   background-color: var(--color-black-translucent);
-  backdrop-filter: blur(10px);   /* rem? */
-  padding: 0.5rem;
+  backdrop-filter: sepia(90%);
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 10;
+  padding: 0.5rem;
 }
 .footer-credits {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+/* Update audio player container */
+.audio-player-container {
+  flex-grow: 1;
+  max-width: calc(var(--container-max-width) - 20rem); /* Adjust value based on your needs */
 }
 #mixPlayer {
   width: 100%;
-  height: 3 rem;
   border: 1rem solid var(--color-green);
   border-radius: 1.2rem;
   transition: border-color 0.3s ease;
 }
-
-/* Animations */
+/* ANIMATIONS */
 @keyframes fadeInOut {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
 }
 
-/* Media Queries */
+/* MOBILE BROWSER CHANGES TO COME LATER 
 @media (max-width: 768px) {
   .info-grid {
     gap: 1rem;
@@ -215,6 +247,7 @@ body {
     height: 2rem;
   }
 }
+  */
 /*
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

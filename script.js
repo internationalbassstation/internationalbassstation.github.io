@@ -99,7 +99,7 @@ class SectionManager {
         });
 // KEYBOARD
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown' || e.key === 'Space') {
+            if (e.key === 'ArrowDown' || e.code === 'Space') {
                 e.preventDefault();
                 this.navigateToNextSection();
             }

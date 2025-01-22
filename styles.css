@@ -133,7 +133,7 @@ body {
 #countdown {
   font-family: var(--font-wallpoet);
   color: var(--color-pink);
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 .broadcast-player {
   font-size: 2rem;
@@ -281,8 +281,11 @@ body {
 /* MOBILE BROWSER CHANGES */
 @media (max-width: 768px) {
   .info-grid {
-    grid-template-columns: 1fr; /* Changes to single column */
-  } 
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100vw;
+    padding: 0.5rem;
+}
   .info-grid-left {
     grid-template-rows: auto auto auto;
     gap: 1rem;
@@ -292,13 +295,13 @@ body {
     display: none; /* Removes empty right column */
   }
   .broadcast-title {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
   .dj-info {
     padding: 0.5rem;
   }
   .dj-info p{
-    font-size: 0.5rem;
+    font-size: 0.8rem;
   }
   .past-voyages {
     font-size: 1.5rem;

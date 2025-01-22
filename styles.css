@@ -28,7 +28,7 @@
 :root {
 /* LAYOUT */
   --container-max-width: 80rem;
-  --footer-height: 6rem;  /* prob too much after we fix border */
+  --footer-height: 4.5rem;
   --border: 2px solid var(--color-pink);
 /* COLOURS */
   --color-purple: rgba(100, 36, 184, 1);
@@ -100,13 +100,13 @@ body {
 }
 .info-grid {
   display: grid;
-  min-height: 99.5dvh;
   border: 0.5rem solid var(--color-green);
   border-radius: 1rem;
-  gap: 1rem;
-  padding: 0.2rem;
+  min-height: 99.5dvh;
   background: url('assets/images/DJ ROBOSAPIEN.jpg') right no-repeat;
   background-size: auto 98dvh;
+  padding: 0.2rem;
+  gap: 1rem;
   text-align: center;
 }
 /* BROADCAST INFO */
@@ -149,7 +149,9 @@ body {
   max-width: var(--container-max-width);
   display: flex;
   flex-direction: column;
+  padding: 0.5rem;
   margin: 0 auto var(--footer-height);
+
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -167,7 +169,7 @@ body {
 }
 .mix-item {
   margin: 0 auto;
-  width: 95%;
+  width: 97%;
   padding: 1rem;
   color: var(--color-green);
   background: transparent;
@@ -202,10 +204,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
   max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 1rem;
+  gap: 0.5rem;
 }
 .audio-player-container {
   flex-grow: 1;

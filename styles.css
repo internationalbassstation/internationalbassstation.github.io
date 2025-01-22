@@ -129,8 +129,10 @@ body {
 }
 .broadcast-title {
   color: var(--color-purple);
-  font-size: 2rem;
-  line-height: 2.2rem;
+}
+.broadcast-title h2 {
+  font-size: clamp(1rem, 4vw, 2.5rem);
+  line-height: 1;
 }
 #countdown {
   font-family: var(--font-wallpoet);
@@ -138,16 +140,20 @@ body {
   font-size: 2.5rem;
 }
 .broadcast-player {
-  font-size: 2rem;
+  font-size: 1.5rem;
+  line-height: 1.2;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
 }
 .broadcast-player iframe {
-  min-height: 10rem; 
-  width: 100%;
-}
+  .broadcast-player iframe {
+    width: 100%;
+    height: 100px !important; /* Force height */
+    min-width: 100%; /* Ensure full width */
+    max-width: 100%; /* Prevent overflow */
+    border: none; /* Remove default border */
+    background: transparent; /* Remove white background */
+  }}
 .broadcast-player a {
   color: var(--color-purple);
   text-decoration: none;
@@ -184,7 +190,7 @@ body {
   flex-direction: column;
   justify-content: center;
   font-family: var(--font-glitch);
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: var(--color-pink);
 }
 /* MIXES SCREEN */
@@ -296,6 +302,10 @@ body {
   }
   .broadcast-title {
     font-size: 1rem;
+  }
+  .broadcast-player iframe {
+    height: 80px !important; /* Slightly smaller on mobile */
+    margin: 0.5rem 0; /* Add spacing */
   }
   .dj-info {
     padding: 0.5rem;

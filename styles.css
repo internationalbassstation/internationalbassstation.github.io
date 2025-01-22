@@ -85,7 +85,7 @@ body {
 }
 /* INFO SCREEN */
 .info-container {
-  min-height: 100dvh;
+  height: 100dvh;
   max-width: var(--container-max-width);
   display: flex;
   flex-direction: column;
@@ -288,8 +288,15 @@ body {
   }
   .info-grid-right {
     display: none; /* Removes empty right column */
-  }  
+  }
+  .broadcast-title {
+    font-size: 1.5rem;
+  }
   .dj-info {
     padding: 0.5rem;
   }
+}
+.footer-credits a {
+  font-size: 0.5rem;
+
 }

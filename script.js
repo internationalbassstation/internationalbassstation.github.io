@@ -53,43 +53,22 @@ class SectionManager {
         });
     }
 // SET UP LISTENERS
-
-
-    // HANDLE SCROLL EVENTS
-
+// HANDLE SCROLL EVENTS
     handleScroll() {
-
         // Get scroll position
-
         const scrollPosition = window.scrollY + window.innerHeight;
-
         const documentHeight = document.documentElement.scrollHeight;
-
-        
-
         // Show footer if near bottom (within 100px)
-
         const footer = this.sections.footer.element;
-
         if (scrollPosition > documentHeight - 100) {
-
             footer.classList.add('visible');
-
             footer.classList.remove('hidden');
-
         } else if (!this.state.isAudioPlaying) {
-
             // Only hide if we're not playing audio
-
             footer.classList.remove('visible');
-
             footer.classList.add('hidden');
-
         }
-
     }
-
-
     setupNavigationListeners() {
 // CLICK
         this.sections.hero.element.addEventListener('click', () => {
@@ -114,7 +93,6 @@ class SectionManager {
 // SCROLL
         let lastScrollTime = 0;
         const scrollThreshold = 500; // Minimum time between scroll triggers in ms
-
         document.addEventListener('wheel', (e) => {
             const currentTime = new Date().getTime();
             
@@ -145,7 +123,6 @@ class SectionManager {
         const mixItems = document.querySelectorAll('.mix-item');
         const audioPlayer = document.getElementById('mixPlayer');
         const footer = this.sections.footer.element;
-
         mixItems.forEach(mixItem => {
             mixItem.addEventListener('click', () => {
                 audioPlayer.src = mixItem.getAttribute('data-src');

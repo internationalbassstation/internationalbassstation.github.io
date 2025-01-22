@@ -91,12 +91,19 @@ class SectionManager {
 
 
     setupNavigationListeners() {
-// CLICK (update for past voyages, only for hero right now)
+// CLICK
         this.sections.hero.element.addEventListener('click', () => {
             if (this.state.currentSection === 'hero') {
                 this.navigateToNextSection();
             }
         });
+        const pastVoyages = document.querySelector('.past-voyages');
+        pastVoyages.addEventListener('click', () => {
+            if (this.state.currentSection === 'info') {
+                this.navigateToNextSection();
+            }
+        });
+        pastVoyages.style.cursor = 'pointer';
 // KEYBOARD
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowDown' || e.code === 'Space') {

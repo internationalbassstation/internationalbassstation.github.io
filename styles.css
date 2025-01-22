@@ -133,9 +133,10 @@ body {
 #countdown {
   font-family: var(--font-wallpoet);
   color: var(--color-pink);
+  font-size: 3rem;
 }
 .broadcast-player {
-  font-size: 1rem;
+  font-size: 2rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -144,14 +145,13 @@ body {
 .broadcast-player iframe {
   min-height: 10rem; 
   width: 100%;
-  border: none; /* Remove default iframe border */
 }
 .broadcast-player a {
-  color: var(--color-pink);
+  color: var(--color-purple);
   text-decoration: none;
 }
 .broadcast-player a:hover {
-  color: var(--color-purple);
+  color: var(--color-green);
 }
 /* DJ INFO */
 .dj-section {
@@ -169,6 +169,10 @@ body {
   flex-direction: column;
   justify-content: center;
 }
+.dj-info h2{
+  font-size: 2rem;
+  color: var(--color-green);
+}
 /* PAST VOYAGES */
 .past-voyages {
   position: relative;
@@ -176,6 +180,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  font-family: var(--font-glitch);
+  font-size: 3rem;
+  color: var(--color-pink);
+
 }
 /* MIXES SCREEN */
 .mix-container {
@@ -240,6 +248,13 @@ body {
   margin: 0 auto;
   gap: 0.5rem;
 }
+.footer-credits a {
+  color: var(--color-purple);
+  text-decoration: none;
+}
+.footer-credits a:hover {
+  color: var(--color-pink);
+}
 .audio-player-container {
   flex-grow: 1;
 }
@@ -249,11 +264,11 @@ body {
   border-radius: 2.2rem;
 }
 #mixPlayer::-webkit-media-controls-panel {
-  background-color: var(--color-green);
+  background-color: var(--color-purple);
 }
 #mixPlayer::-webkit-media-controls-current-time-display,
 #mixPlayer::-webkit-media-controls-time-remaining-display {
-  color: var(--color-purple);
+  color: var(--color-green);
   font-family: var(--font-goldman);
 }
 /* ANIMATIONS */

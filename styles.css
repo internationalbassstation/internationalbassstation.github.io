@@ -82,6 +82,7 @@ body {
   transform: translateX(-50%);
   color: var(--color-green);
   text-shadow: 3px 2px 4px var(--color-pink);
+  font-size: clamp(0.8rem, 3vw, 1.2rem);
   letter-spacing: 0.2em;
   animation: fadeInOut 2s infinite;
 }
@@ -134,7 +135,7 @@ body {
 #countdown {
   font-family: var(--font-wallpoet);
   color: var(--color-pink);
-  font-size: 2.5rem;
+  font-size: clamp(1.2rem, 5vw, 2.5rem);
 }
 .broadcast-player {
   display: flex;
@@ -169,11 +170,11 @@ body {
   justify-content: center;
 }
 .dj-info h2{
-  font-size: 2rem;
+  font-size: clamp(1.2rem, 4vw, 2rem);
   color: var(--color-green);
 }
 .dj-info p{
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 2vw, 1rem);
 }
 /* PAST VOYAGES */
 .past-voyages {
@@ -182,7 +183,7 @@ body {
   flex-direction: column;
   justify-content: center;
   font-family: var(--font-glitch);
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
   color: var(--color-pink);
 }
 /* MIXES SCREEN */
@@ -251,6 +252,7 @@ body {
 .footer-credits a {
   color: var(--color-purple);
   text-decoration: none;
+  font-size: clamp(0.5rem, 2vw, 0.8rem);
 }
 .footer-credits a:hover {
   color: var(--color-pink);
@@ -291,19 +293,7 @@ body {
   .info-grid-right {
     display: none; /* Removes empty right column */
   }
-  .broadcast-title {
-    font-size: 1rem;
-  }
   .dj-info {
     padding: 0.5rem;
-  }
-  .dj-info p{
-    font-size: 0.8rem;
-  }
-  .past-voyages {
-    font-size: 1.5rem;
-  }
-  .footer-credits a {
-    font-size: 0.5rem;
   }
 }

@@ -113,7 +113,7 @@ body {
 }
 .info-grid-left {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
   text-align: center;
 }
 /* BROADCAST INFO */
@@ -143,7 +143,7 @@ body {
 .broadcast-player iframe {
   width: 90%;
   max-width: 100%; 
-  border: none; 
+  border-color: var(--color-pink); 
   background: transparent;
 }
 .broadcast-player a {
@@ -293,10 +293,6 @@ body {
   }
   .broadcast-title {
     font-size: 1rem;
-  }
-  .broadcast-player iframe {
-    height: 80px !important; /* Slightly smaller on mobile */
-    margin: 0.5rem 0; /* Add spacing */
   }
   .dj-info {
     padding: 0.5rem;

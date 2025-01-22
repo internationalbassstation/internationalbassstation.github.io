@@ -173,6 +173,9 @@ body {
   font-size: 2rem;
   color: var(--color-green);
 }
+.dj-info p{
+  font-size: 1rem;
+}
 /* PAST VOYAGES */
 .past-voyages {
   position: relative;
@@ -293,6 +296,9 @@ body {
   }
   .dj-info {
     padding: 0.5rem;
+  }
+  .dj-info p{
+    font-size: 0.5rem;
   }
   .past-voyages {
     font-size: 1.5rem;

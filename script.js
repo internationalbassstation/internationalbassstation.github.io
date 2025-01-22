@@ -36,12 +36,8 @@ class SectionManager {
         this.setupNavigationListeners();
         this.setupInitialVisibility();
         this.setupAudioPlayer();
-
-        
-        // Add scroll listener
-
+        this.setupCountdown();
         this.handleScroll = this.handleScroll.bind(this);
-
         window.addEventListener('scroll', this.handleScroll);
     }
 // SET UP INVISIBILITY
@@ -108,6 +104,20 @@ class SectionManager {
                 this.navigateToNextSection();
             }
         });
+// SCROLL
+        let lastScrollTime = 0;
+        const scrollThreshold = 500; // Minimum time between scroll triggers in ms
+
+        document.addEventListener('wheel', (e) => {
+            const currentTime = new Date().getTime();
+            
+            if (e.deltaY > 0 && // Scrolling down
+                currentTime - lastScrollTime > scrollThreshold) { // Throttle scroll events
+                
+                lastScrollTime = currentTime;
+                this.navigateToNextSection();
+            }
+        }, { passive: true });
 // TAP + SWIPE
         let touchStartY = 0;
         document.addEventListener('touchstart', (e) => {
@@ -134,6 +144,7 @@ class SectionManager {
                 audioPlayer.src = mixItem.getAttribute('data-src');
                 audioPlayer.play().catch(error => {
                     console.error('Error playing audio:', error);
+                    footer.querySelector('.audio-player-container').classList.add('error');
                 });
                 
                 this.state.isAudioPlaying = true;
@@ -144,6 +155,36 @@ class SectionManager {
             });
         });
     }
+// SET UP COUNTDOWN
+        setupCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            function updateCountdown() {
+                const now = new Date();
+                const estOffset = -5; // EST offset from UTC
+                // Convert current time to EST
+                const estTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (estOffset * 3600000));
+                // Find next Friday 10 PM
+                const nextFriday = new Date(estTime);
+                nextFriday.setDate(nextFriday.getDate() + ((7 - nextFriday.getDay() + 5) % 7)); // Get to Friday
+                nextFriday.setHours(22, 0, 0, 0); // Set to 10 PM
+                // If it's already past Friday 10 PM, move to next week
+                if (estTime > nextFriday) {
+                    nextFriday.setDate(nextFriday.getDate() + 7);
+                }
+                // Calculate difference
+                const diff = nextFriday - estTime;
+                // Convert to days, hours, minutes, seconds
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                // Update countdown display
+                countdownElement.textContent = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+            }
+            // Update immediately and then every second
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
 // SCRIPT TO SCROLL AUTOMATICALLY
     navigateToNextSection() {
         const currentSection = this.sections[this.state.currentSection];

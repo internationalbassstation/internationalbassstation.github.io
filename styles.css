@@ -65,6 +65,7 @@ body {
 /* HERO SCREEN */
 .hero {
   margin: 0 auto;
+  height: 100vh;
   height: 100dvh;
   max-width: var(--container-max-width);
   overflow: hidden;
@@ -129,13 +130,28 @@ body {
   font-size: 2rem;
   line-height: 2.2rem;
 }
-/* countdown here */
+#countdown {
+  font-family: var(--font-wallpoet);
+  color: var(--color-pink);
+}
 .broadcast-player {
   font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
-.embed-border {
-  border: 0.1rem solid var(--color-purple);
-  border-radius: 1.2rem;
+.broadcast-player iframe {
+  min-height: 10rem; 
+  width: 100%;
+  border: none; /* Remove default iframe border */
+}
+.broadcast-player a {
+  color: var(--color-pink);
+  text-decoration: none;
+}
+.broadcast-player a:hover {
+  color: var(--color-purple);
 }
 /* DJ INFO */
 .dj-section {
@@ -229,8 +245,16 @@ body {
 }
 #mixPlayer {
   width: 100%;
-  border: 0.4rem solid var(--color-green);
+  border: 0.4rem solid var(--color-pink);
   border-radius: 2.2rem;
+}
+#mixPlayer::-webkit-media-controls-panel {
+  background-color: var(--color-green);
+}
+#mixPlayer::-webkit-media-controls-current-time-display,
+#mixPlayer::-webkit-media-controls-time-remaining-display {
+  color: var(--color-purple);
+  font-family: var(--font-goldman);
 }
 /* ANIMATIONS */
 @keyframes fadeInOut {

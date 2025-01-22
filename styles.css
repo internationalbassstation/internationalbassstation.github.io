@@ -126,9 +126,8 @@ body {
   text-align: left;
 }
 .embed-border {
-  border: 1rem solid var(--color-green);
+  border: 0.1rem solid var(--color-purple);
   border-radius: 1.2rem;
-  transition: border-color 0.3s ease;
 }
 /* DJ INFO */
 .dj-section {
@@ -172,14 +171,15 @@ body {
   color: var(--color-green);
   background: transparent;
   border: 0.2rem solid var(--color-purple);
-  border-radius: 0.5rem;
+  border-radius: 0.7rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 .mix-item:hover {
   background-color: rgba(239, 36, 170, 0.1);
   border-color: var(--color-pink);
-  transform: scale(1.04);
+  border-radius: 1.5rem;
+  transform: scale(1.02);
 }
 /* FOOTER SECTION */
 .site-footer {
@@ -212,8 +212,7 @@ body {
 #mixPlayer {
   width: 100%;
   border: 0.4rem solid var(--color-green);
-  border-radius: 2rem;
-  transition: border-color 0.3s ease;
+  border-radius: 2.2rem;
 }
 /* ANIMATIONS */
 @keyframes fadeInOut {

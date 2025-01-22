@@ -21,7 +21,8 @@ class SectionManager {
         };
 // START AT HERO
         this.state = {
-            currentSection: 'hero'
+            currentSection: 'hero',
+            isAudioPlaying: false
         };
 // PREPARE FUNCTION
         this.initialize();
@@ -35,6 +36,13 @@ class SectionManager {
         this.setupNavigationListeners();
         this.setupInitialVisibility();
         this.setupAudioPlayer();
+
+        
+        // Add scroll listener
+
+        this.handleScroll = this.handleScroll.bind(this);
+
+        window.addEventListener('scroll', this.handleScroll);
     }
 // SET UP INVISIBILITY
     setupInitialVisibility() {
@@ -49,6 +57,43 @@ class SectionManager {
         });
     }
 // SET UP LISTENERS
+
+
+    // HANDLE SCROLL EVENTS
+
+    handleScroll() {
+
+        // Get scroll position
+
+        const scrollPosition = window.scrollY + window.innerHeight;
+
+        const documentHeight = document.documentElement.scrollHeight;
+
+        
+
+        // Show footer if near bottom (within 100px)
+
+        const footer = this.sections.footer.element;
+
+        if (scrollPosition > documentHeight - 100) {
+
+            footer.classList.add('visible');
+
+            footer.classList.remove('hidden');
+
+        } else if (!this.state.isAudioPlaying) {
+
+            // Only hide if we're not playing audio
+
+            footer.classList.remove('visible');
+
+            footer.classList.add('hidden');
+
+        }
+
+    }
+
+
     setupNavigationListeners() {
 // CLICK (update for past voyages, only for hero right now)
         this.sections.hero.element.addEventListener('click', () => {
@@ -90,6 +135,10 @@ class SectionManager {
                 audioPlayer.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });
+                
+                this.state.isAudioPlaying = true;
+
+                footer.classList.add('visible');
                 footer.classList.remove('hidden');
                 this.navigateToSection('footer');
             });

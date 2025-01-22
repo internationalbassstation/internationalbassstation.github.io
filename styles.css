@@ -65,18 +65,9 @@ body {
 
 /* VISIBILITY TRANSITIONS */
 
-.info-container,
-.mix-container {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
 
-.info-container.visible,
-.mix-container.visible {
-  opacity: 1;
-  visibility: visible;
-}
+
+
 
 /* HERO SCREEN */
 .hero {
@@ -106,8 +97,14 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 1rem;
-  
+  padding: 0.2rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;  
+}
+.info-container.visible{
+  opacity: 1;
+  visibility: visible;
 }
 .info-grid {
   max-height: 100dvh;  /* does this work????? */
@@ -117,7 +114,8 @@ body {
   border-radius: 1rem;
   gap: 1rem;
   padding: 1rem;
-  background: url('assets/images/DJ ROBOSAPIEN.jpg') right/contain no-repeat;
+  background: url('assets/images/DJ ROBOSAPIEN.jpg') right no-repeat;
+  background-size: auto 98dvh;
   text-align: center;
 }
 /* BROADCAST INFO */
@@ -160,12 +158,20 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0 auto var(--footer-height);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.mix-container.visible {
+  opacity: 1;
+  visibility: visible;
 }
 .mix-list {
   list-style: none;
   text-align: center;
+  display: flex;  /* Add this line */
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 .mix-item {
   margin: 0 auto;
@@ -173,7 +179,7 @@ body {
   padding: 1rem;
   color: var(--color-green);
   background: transparent;
-  border: 1rem solid var(--color-purple);
+  border: 0.2rem solid var(--color-purple);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -181,7 +187,7 @@ body {
 .mix-item:hover {
   background-color: rgba(239, 36, 170, 0.1);   /*alter */
   border-color: var(--color-pink);
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 /* FOOTER SECTION */
 .site-footer {
@@ -191,6 +197,13 @@ body {
   bottom: 0;
   width: 100%;
   padding: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.site-footer.visible {
+  opacity: 1;
+  visibility: visible;
 }
 .footer-credits {
   display: flex;

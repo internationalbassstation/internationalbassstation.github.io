@@ -110,12 +110,12 @@ body {
   min-height: 99.5dvh;
   background: url('assets/images/nobacky.png') right no-repeat;
   background-size: contain;
-  padding: 0.3rem;
 }
 .info-grid-left {
   display: grid;
   grid-template-rows: auto auto auto;
   text-align: center;
+  padding: 1rem;
 }
 /* BROADCAST INFO */
 .broadcast-info {
@@ -123,13 +123,13 @@ body {
   flex-direction: column;
   justify-content: center;
   color: var(--color-purple);
-  font-size: clamp(1rem, 4vw, 2rem);
+  font-size: clamp(1.5rem, 4vw, 2rem);
 }
 .broadcast-title {
   color: var(--color-purple);
 }
 .broadcast-title h2 {
-  font-size: clamp(1rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   line-height: 1;
 }
 #countdown {
@@ -170,11 +170,11 @@ body {
   justify-content: center;
 }
 .dj-info h2{
-  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-size: clamp(1.5rem, 4vw, 2rem);
   color: var(--color-green);
 }
 .dj-info p{
-  font-size: clamp(0.8rem, 2vw, 1rem);
+  font-size: clamp(1rem, 2vw, 1rem);
 }
 /* PAST VOYAGES */
 .past-voyages {
@@ -183,7 +183,7 @@ body {
   flex-direction: column;
   justify-content: center;
   font-family: var(--font-glitch);
-  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-size: clamp(1.6rem, 5vw, 2.5rem);
   color: var(--color-pink);
 }
 /* MIXES SCREEN */
@@ -286,10 +286,6 @@ body {
     max-width: 100vw;
     padding: 0.5rem;
 }
-  .info-grid-left {
-    grid-template-rows: auto auto auto;
-    padding: 0.5rem;
-  }
   .info-grid-right {
     display: none; /* Removes empty right column */
   }

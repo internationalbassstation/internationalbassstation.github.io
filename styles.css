@@ -183,7 +183,6 @@ body {
   font-family: var(--font-glitch);
   font-size: 3rem;
   color: var(--color-pink);
-
 }
 /* MIXES SCREEN */
 .mix-container {
@@ -295,8 +294,10 @@ body {
   .dj-info {
     padding: 0.5rem;
   }
-}
-.footer-credits a {
-  font-size: 0.5rem;
-
+  .past-voyages {
+    font-size: 1.5rem;
+  }
+  .footer-credits a {
+    font-size: 0.5rem;
+  }
 }

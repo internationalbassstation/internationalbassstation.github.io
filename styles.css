@@ -104,20 +104,23 @@ body {
   border: 0.5rem solid var(--color-green);
   border-radius: 1rem;
   min-height: 99.5dvh;
-  background: url('assets/images/DJ ROBOSAPIEN.jpg') right no-repeat;
+  background: url('assets/images/nobacky.png') right no-repeat;
   background-size: auto 98dvh;
   padding: 0.2rem;
   gap: 1rem;
 }
 .info-grid-left {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
   gap: 1rem;
   padding: 1rem;
   text-align: center;
 }
 /* BROADCAST INFO */
 .broadcast-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   color: var(--color-purple);
   font-size: 2rem;
 }
@@ -137,6 +140,8 @@ body {
 /* DJ INFO */
 .dj-section {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 .dj-info {
   position: relative;
@@ -144,12 +149,17 @@ body {
   padding: 1rem;
   border-radius: 1rem;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 /* PAST VOYAGES */
 .past-voyages {
   position: relative;
   padding: 1rem;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 /* MIXES SCREEN */
 .mix-container {
@@ -158,7 +168,6 @@ body {
   flex-direction: column;
   padding: 0.5rem;
   margin: 0 auto var(--footer-height);
-
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -228,58 +237,20 @@ body {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
 }
-
-/* MOBILE BROWSER CHANGES TO COME LATER */
+/* MOBILE BROWSER CHANGES */
 @media (max-width: 768px) {
   .info-grid {
     grid-template-columns: 1fr; /* Changes to single column */
+  } 
+  .info-grid-left {
+    grid-template-rows: auto auto auto;
+    gap: 1rem;
+    padding: 0.5rem;
   }
   .info-grid-right {
     display: none; /* Removes empty right column */
   }  
-  .info-grid-left {
-    padding: 0.5rem; /* Reduces padding for mobile */
-  }
-}
-
-/* MOBILE BROWSER CHANGES TO COME LATER 
-@media (max-width: 768px) {
-  .info-grid {
-    gap: 1rem;
-  }
-  .grid-row {
+  .dj-info {
     padding: 0.5rem;
   }
-  .section-title {
-    font-size: clamp(1.5rem, 5vw, 2rem);
-  }
-  .info-container {
-    min-height: auto;
-  }
-  .dj-section {
-    flex-direction: column;
-    text-align: center;
-  }
-  .dj-image {
-    max-width: 30rem;
-    margin: 0 auto;
-  }
-  .footer-credits {
-    padding: 0.25rem;
-  }
-  #mixPlayer {
-    height: 2rem;
-  }
 }
-  */
-/*
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-POTENTIAL FOR MORE ACCESSIBILITY
-*/

@@ -79,7 +79,6 @@ body {
   transform: translateX(-50%);
   color: var(--color-green);
   text-shadow: 3px 2px 4px var(--color-pink);
-  text-transform: uppercase;
   letter-spacing: 0.2em;
   animation: fadeInOut 2s infinite;
 }
@@ -101,11 +100,11 @@ body {
 }
 .info-grid {
   display: grid;
-  min-height: 99dvh;
-  border: 0.8rem solid var(--color-green);
+  min-height: 99.5dvh;
+  border: 0.5rem solid var(--color-green);
   border-radius: 1rem;
   gap: 1rem;
-  padding: 1rem;
+  padding: 0.2rem;
   background: url('assets/images/DJ ROBOSAPIEN.jpg') right no-repeat;
   background-size: auto 98dvh;
   text-align: center;
@@ -136,12 +135,14 @@ body {
 .dj-info {
   position: relative;
   background-color: rgba(0, 0, 0, 0.7);
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 1rem;
 }
 /* PAST VOYAGES */
 .past-voyages {
   position: relative;
+  padding: 1rem;
+
 }
 /* MIXES SCREEN */
 .mix-container {

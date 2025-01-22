@@ -62,13 +62,6 @@ body {
   line-height: 1.5;
   overflow-x: hidden;
 }
-
-/* VISIBILITY TRANSITIONS */
-
-
-
-
-
 /* HERO SCREEN */
 .hero {
   margin: 0 auto;
@@ -107,9 +100,8 @@ body {
   visibility: visible;
 }
 .info-grid {
-  max-height: 100dvh;  /* does this work????? */
   display: grid;
-  min-height: 100dvh;
+  min-height: 99dvh;
   border: 0.8rem solid var(--color-green);
   border-radius: 1rem;
   gap: 1rem;
@@ -144,7 +136,7 @@ body {
 }
 .dj-info {
   position: relative;
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for readability */
+  background-color: rgba(0, 0, 0, 0.7);
   padding: 2rem;
   border-radius: 1rem;
 }
@@ -169,7 +161,7 @@ body {
 .mix-list {
   list-style: none;
   text-align: center;
-  display: flex;  /* Add this line */
+  display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
@@ -185,7 +177,7 @@ body {
   transition: all 0.3s ease;
 }
 .mix-item:hover {
-  background-color: rgba(239, 36, 170, 0.1);   /*alter */
+  background-color: rgba(239, 36, 170, 0.1);
   border-color: var(--color-pink);
   transform: scale(1.04);
 }
@@ -214,15 +206,13 @@ body {
   margin: 0 auto;
   padding: 0 1rem;
 }
-/* Update audio player container */
 .audio-player-container {
   flex-grow: 1;
-  max-width: calc(var(--container-max-width) - 20rem); /* Adjust value based on your needs */
 }
 #mixPlayer {
   width: 100%;
-  border: 1rem solid var(--color-green);
-  border-radius: 1.2rem;
+  border: 0.4rem solid var(--color-green);
+  border-radius: 2rem;
   transition: border-color 0.3s ease;
 }
 /* ANIMATIONS */

@@ -82,7 +82,7 @@ body {
   transform: translateX(-50%);
   color: var(--color-green);
   text-shadow: 3px 2px 4px var(--color-pink);
-  font-size: clamp(0.8rem, 3vw, 1.2rem);
+  font-size: clamp(0.8rem, 3vw, 1rem);
   letter-spacing: 0.2em;
   animation: fadeInOut 2s infinite;
 }
@@ -93,7 +93,7 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 0.2rem;
+  padding: 0.3rem;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s ease, visibility 0.5s ease;  
@@ -115,7 +115,7 @@ body {
   display: grid;
   grid-template-rows: auto auto auto;
   text-align: center;
-  padding: 1rem;
+  padding: 0.8rem;
 }
 /* BROADCAST INFO */
 .broadcast-info {
@@ -123,7 +123,7 @@ body {
   flex-direction: column;
   justify-content: center;
   color: var(--color-purple);
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(1.5rem, 4vw, 1.5rem);
 }
 .broadcast-title {
   color: var(--color-purple);
@@ -140,6 +140,10 @@ body {
 .broadcast-player {
   display: flex;
   flex-direction: column;
+}
+.broadcast-player h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1;
 }
 .broadcast-player iframe {
   width: 90%;
@@ -162,7 +166,7 @@ body {
 }
 .dj-info {
   position: relative;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.6);
   border-radius: 1rem;
   text-align: left;
   display: flex;
@@ -170,11 +174,11 @@ body {
   justify-content: center;
 }
 .dj-info h2{
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   color: var(--color-green);
 }
 .dj-info p{
-  font-size: clamp(1rem, 2vw, 1rem);
+  font-size: clamp(0.8rem, 2vw, 1rem);
 }
 /* PAST VOYAGES */
 .past-voyages {
@@ -183,7 +187,7 @@ body {
   flex-direction: column;
   justify-content: center;
   font-family: var(--font-glitch);
-  font-size: clamp(1.6rem, 5vw, 2.5rem);
+  font-size: clamp(1.6rem, 5vw, 2rem);
   color: var(--color-pink);
 }
 /* MIXES SCREEN */

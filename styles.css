@@ -130,7 +130,7 @@ body {
 }
 .broadcast-title h2 {
   font-size: clamp(1.5rem, 4vw, 2.5rem);
-  line-height: 1;
+  line-height: 0.8;
 }
 #countdown {
   font-family: var(--font-wallpoet);
@@ -154,6 +154,7 @@ body {
   max-width: 100%; 
   border-color: var(--color-pink); 
   background: transparent;
+  margin: 0.2rem 0;
 }
 .broadcast-player a {
   color: var(--color-purple);
@@ -194,9 +195,11 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-  font-size: clamp(1rem, 4vw, 2rem);
+  font-size: clamp(1rem, 4vw, 3rem);
   font-family: var(--font-glitch);
   color: var(--color-pink);
+  width: 100%;
+  max-width: 100%; 
 }
 /* MIXES SCREEN */
 .mix-container {

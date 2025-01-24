@@ -297,10 +297,18 @@ body {
 @media (max-width: 768px) {
   .info-grid {
     grid-template-columns: 1fr;
+    border: 0.3rem solid var(--color-green);
     width: 100%;
     max-width: 100vw;
-    padding: 0.5rem;
-}
+    padding: 0.3rem;
+    background-color: rgba(0, 0, 0, 0.6); /* Adjust opacity with last value (0-1) */
+    background-blend-mode: overlay; /* Helps blend the image with background color */
+  }
+  .dj-info h2{
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--color-green);
+    text-align: center;
+  }
   .info-grid-right {
     display: none; /* Removes empty right column */
   }

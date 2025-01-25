@@ -145,8 +145,7 @@ body {
   display: inline-block;
 }
 .bass-station-active:hover {
-  transform: scale(1.05);
-  color: var(--color-green);
+  transform: scale(1.05) skew(-10deg); 
 }
 .glitch {
   position: relative;
@@ -279,6 +278,11 @@ body {
   font-size: clamp(2rem, 4vw, 3rem);
   font-family: var(--font-glitch);
   color: var(--color-pink);
+  animation: neon 1.5s ease-in-out infinite alternate;
+}
+@keyframes neon {
+  from { text-shadow: 0 0 5px var(--color-green); }
+  to { text-shadow: 0 0 20px var(--color-purple); }
 }
 /* MIXES SCREEN */
 .mix-container {

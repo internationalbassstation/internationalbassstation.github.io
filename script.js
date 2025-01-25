@@ -135,45 +135,49 @@ class SectionManager {
     setupCountdown() {
         const countdownElement = document.getElementById('countdown');
         const broadcastTitleElement = document.querySelector('.broadcast-title h2:last-child');
- 
+    
         function updateCountdown() {
             const now = new Date();
             const currentDay = now.getDay();
             const currentHour = now.getHours();
- 
+    
             // Check if it's Friday between 10 PM and 11 PM
             if (currentDay === 5 && currentHour >= 22 && currentHour < 23) {
                 countdownElement.innerHTML = `<a href="https://northumberland897.ca" target="_blank" rel="noopener noreferrer" class="bass-station-active">
                     <span class="glitch" data-text="BASS STATION ACTIVE">BASS STATION ACTIVE</span>
                 </a>`;
                 // Add a subtle pulsing animation to the broadcast title
-                broadcastTitleElement.classList.add('broadcast-live');                return;
+                broadcastTitleElement.classList.add('broadcast-live');
+                return;
             }
- 
+    
             // Find next Friday at 10 PM
             const nextFriday = new Date(now);
-            nextFriday.setDate(nextFriday.getDate() + ((7 - nextFriday.getDay() + 5) % 7));
-            nextFriday.setHours(22, 0, 0, 0);
- 
-            // If past this Friday's 10 PM, move to next week
-            if (now > nextFriday) {
+    
+            // If today is Friday and it's past 10 PM, move to next Friday
+            if (currentDay === 5 && currentHour >= 22) {
                 nextFriday.setDate(nextFriday.getDate() + 7);
+            } else {
+                nextFriday.setDate(nextFriday.getDate() + ((7 - currentDay + 5) % 7));
             }
- 
+    
+            nextFriday.setHours(22, 0, 0, 0);
+    
             // Calculate difference
             const diff = nextFriday - now;
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
- 
+    
             countdownElement.textContent = `${days}D ${hours}H ${minutes}M ${seconds}S`;
         }
- 
+    
         // Update immediately and then every second
         updateCountdown();
         setInterval(updateCountdown, 1000);
     }
+    
  
     navigateToNextSection() {
         const currentSection = this.sections[this.state.currentSection];

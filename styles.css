@@ -274,45 +274,12 @@ body {
 .past-voyages {
   position: relative;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   max-width: 100%;
   font-size: clamp(1rem, 4vw, 3rem);
   font-family: var(--font-glitch);
   color: var(--color-pink);
-  width: 100%;
-  max-width: 100%; 
-}
-.past-voyages::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg, 
-    transparent, 
-    rgba(180, 233, 17, 0.3), 
-    transparent
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.past-voyages:hover::before {
-  opacity: 1;
-  animation: cosmic-scan 3s infinite linear;
-}
-@keyframes cosmic-scan {
-  0% {
-    transform: rotate(0deg) translate(-50%, -50%);
-  }
-  100% {
-    transform: rotate(360deg) translate(-50%, -50%);
-  }
 }
 /* MIXES SCREEN */
 .mix-container {

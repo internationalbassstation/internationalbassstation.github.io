@@ -91,7 +91,7 @@ body {
   max-width: var(--container-max-width);
   display: flex;
   flex-direction: column;
-  margin: 0.3rem auto;
+  margin: auto;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s ease, visibility 0.5s ease;  
@@ -127,13 +127,14 @@ body {
   color: var(--color-purple);
 }
 .broadcast-title h2 {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  white-space: nowrap;
   line-height: 0.8;
 }
 #countdown {
   font-family: var(--font-wallpoet);
   color: var(--color-pink);
-  font-size: clamp(1.2rem, 5vw, 2.5rem);
+  font-size: clamp(1.2rem, 5vw, 2.3rem);
 }
 .broadcast-player {
   display: flex;

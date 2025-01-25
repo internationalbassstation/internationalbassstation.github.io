@@ -234,9 +234,7 @@ body {
   font-family: var(--font-syncopate);
 }
 .broadcast-player iframe {
-  max-width: 100%; 
   border-color: var(--color-pink); 
-  background: transparent;
   margin: 0.2rem 0;
 }
 .broadcast-player a {
@@ -274,6 +272,7 @@ body {
 .past-voyages {
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   white-space: nowrap;
   max-width: 100%;

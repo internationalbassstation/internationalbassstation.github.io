@@ -94,6 +94,7 @@ body {
   margin: auto;
   opacity: 0;
   visibility: hidden;
+  padding: 0.3rem;
   transition: opacity 0.5s ease, visibility 0.5s ease;  
 }
 .info-container.visible{
@@ -121,20 +122,19 @@ body {
   flex-direction: column;
   justify-content: center;
   color: var(--color-purple);
-  font-size: clamp(1.5rem, 4vw, 1.5rem);
 }
 .broadcast-title {
   color: var(--color-purple);
 }
 .broadcast-title h2 {
-  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   white-space: nowrap;
   line-height: 0.8;
 }
 #countdown {
   font-family: var(--font-wallpoet);
   color: var(--color-pink);
-  font-size: clamp(1.2rem, 5vw, 2.3rem);
+  font-size: clamp(2rem, 5vw, 2.3rem);
   white-space: nowrap;
 }
 /* Countdown Active State Styles */
@@ -226,7 +226,7 @@ body {
   font-family: var(--font-syncopate-bold);
 }
 .broadcast-player h2 {
-  font-size: clamp(1rem, 4vw, 2rem);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -261,12 +261,12 @@ body {
   justify-content: center;
 }
 .dj-info h2{
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(2rem, 4vw, 2.5rem);
   color: var(--color-green);
 }
 .dj-info p{
   line-height: 1.1;
-  font-size: clamp(0.8rem, 2vw, 1rem);
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
 }
 /* PAST VOYAGES */
 .past-voyages {
@@ -276,7 +276,7 @@ body {
   justify-content: center;
   white-space: nowrap;
   max-width: 100%;
-  font-size: clamp(1rem, 4vw, 3rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   font-family: var(--font-glitch);
   color: var(--color-pink);
 }
@@ -384,9 +384,10 @@ body {
     background-blend-mode: overlay; /* Helps blend the image with background color */
   }
   .dj-info h2{
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    color: var(--color-green);
     text-align: center;
+  }
+  .info-grid-left {
+    padding: 0.3rem;
   }
   .info-grid-right {
     display: none; /* Remove empty column */

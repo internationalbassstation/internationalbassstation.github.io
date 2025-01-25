@@ -134,6 +134,7 @@ class SectionManager {
  
     setupCountdown() {
         const countdownElement = document.getElementById('countdown');
+        const broadcastTitleElement = document.querySelector('.broadcast-title h2:last-child');
  
         function updateCountdown() {
             const now = new Date();
@@ -142,8 +143,11 @@ class SectionManager {
  
             // Check if it's Friday between 10 PM and 11 PM
             if (currentDay === 5 && currentHour >= 22 && currentHour < 23) {
-                countdownElement.textContent = 'BASS STATION ACTIVE';
-                return;
+                countdownElement.innerHTML = `<a href="https://northumberland897.ca" target="_blank" rel="noopener noreferrer" class="bass-station-active">
+                    <span class="glitch" data-text="BASS STATION ACTIVE">BASS STATION ACTIVE</span>
+                </a>`;
+                // Add a subtle pulsing animation to the broadcast title
+                broadcastTitleElement.classList.add('broadcast-live');                return;
             }
  
             // Find next Friday at 10 PM

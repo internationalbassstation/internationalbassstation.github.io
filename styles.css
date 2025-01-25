@@ -140,6 +140,7 @@ body {
 /* Countdown Active State Styles */
 .bass-station-active {
   color: var(--color-green);
+  font-size: clamp(2rem, 4vw, 3rem);
   text-decoration: none;
   transition: all 0.3s ease;
   display: inline-block;

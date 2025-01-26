@@ -143,10 +143,8 @@ class SectionManager {
     
             // Check if it's Friday between 10 PM and 11 PM
             if (currentDay === 5 && currentHour >= 22 && currentHour < 23) {
-                countdownElement.innerHTML = `<a href="https://northumberland897.ca" target="_blank" rel="noopener noreferrer" class="bass-station-active">
-                    <span class="glitch" data-text="BASS STATION ACTIVE">BASS STATION ACTIVE</span>
-                </a>`;
                 // Add a subtle pulsing animation to the broadcast title
+                countdownElement.innerHTML = `<a href="https://northumberland897.ca" target="_blank" rel="noopener noreferrer" class="bass-station-active"><span class="glitch" data-text="BASS STATION ACTIVE">BASS STATION ACTIVE</span></a>`;
                 broadcastTitleElement.classList.add('broadcast-live');
                 return;
             }
@@ -176,8 +174,7 @@ class SectionManager {
         // Update immediately and then every second
         updateCountdown();
         setInterval(updateCountdown, 1000);
-    }
-    
+    }    
  
     navigateToNextSection() {
         const currentSection = this.sections[this.state.currentSection];

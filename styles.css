@@ -81,7 +81,7 @@ body {
   transform: translateX(-50%);
   color: var(--color-green);
   text-shadow: 3px 2px 4px var(--color-pink);
-  font-size: clamp(0.2rem, 3vw, 1rem);
+  font-size: clamp(0.2rem, 3vw, 1.1rem);
   white-space: nowrap;
   letter-spacing: 0.2em;
   animation: fadeInOut 2s infinite;
@@ -93,13 +93,11 @@ body {
   display: flex;
   flex-direction: column;
   margin: auto;
-  opacity: 0;
-  visibility: hidden;
+  visibility: hidden; /* ?? is this still a thing? */
   padding: 0.3rem;
   transition: opacity 0.5s ease, visibility 0.5s ease;  
 }
 .info-container.visible{
-  opacity: 1;
   visibility: visible;
 }
 .info-grid {
@@ -266,6 +264,7 @@ body {
 }
 .dj-info h2{
   font-size: clamp(0.5rem, 4vw, 3rem);
+  white-space: nowrap;
   letter-spacing: 0.2em;
   color: var(--color-green);
 }
@@ -392,7 +391,11 @@ body {
     background-color: rgba(0, 0, 0, 0.6); /* Adjust opacity with last value (0-1) */
     background-blend-mode: overlay; /* Helps blend the image with background color */
   }
+  .broadcast-title h2 {
+    font-size: clamp(0.1rem, 8vw, 3rem); /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode, 0.1rem to shrink to smaller sizing??  */
+  }
   .dj-info h2{
+    font-size: clamp(0.1rem, 7vw, 3rem); /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode */
     text-align: center;
   }
   .info-grid-left {

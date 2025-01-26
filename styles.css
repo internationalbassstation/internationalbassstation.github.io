@@ -81,7 +81,8 @@ body {
   transform: translateX(-50%);
   color: var(--color-green);
   text-shadow: 3px 2px 4px var(--color-pink);
-  font-size: clamp(0.8rem, 3vw, 1rem);
+  font-size: clamp(0.2rem, 3vw, 1rem);
+  white-space: nowrap;
   letter-spacing: 0.2em;
   animation: fadeInOut 2s infinite;
 }
@@ -122,26 +123,26 @@ body {
   flex-direction: column;
   justify-content: center;
   color: var(--color-purple);
-  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-size: clamp(0.5rem, 4vw, 2.5rem);
 }
 .broadcast-title {
   color: var(--color-purple);
 }
 .broadcast-title h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
   white-space: nowrap;
+  font-size: clamp(0.5rem, 4vw, 3rem);
   line-height: 0.8;
 }
 #countdown {
   font-family: var(--font-wallpoet);
   color: var(--color-pink);
-  font-size: clamp(2rem, 5vw, 2.3rem);
   white-space: nowrap;
+  font-size: clamp(0.5rem, 5vw, 2.3rem);
 }
 /* Countdown Active State Styles */
 .bass-station-active {
   color: var(--color-green);
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(0.5rem, 4vw, 3rem);
   text-decoration: none;
   transition: all 0.3s ease;
   display: inline-block;
@@ -224,12 +225,12 @@ body {
   display: flex;
   flex-direction: column;
   font-family: var(--font-syncopate-bold);
-  font-size: clamp(1.5rem, 3vw, 1.8rem);
+  font-size: clamp(0.5rem, 3vw, 1.8rem);
   letter-spacing: 0.25em;
 }
 .broadcast-player h2 {
-  font-size: clamp(1.8rem, 3vw, 2rem);
   white-space: nowrap;
+  font-size: clamp(0.5rem, 3vw, 2rem);
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
@@ -264,12 +265,12 @@ body {
   justify-content: center;
 }
 .dj-info h2{
-  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-size: clamp(0.5rem, 4vw, 3rem);
   letter-spacing: 0.2em;
   color: var(--color-green);
 }
 .dj-info p{
-  font-size: clamp(0.8rem, 2vw, 1.1rem);
+  font-size: clamp(0.5rem, 2vw, 1.1rem);
 }
 /* PAST VOYAGES */
 .past-voyages {
@@ -279,7 +280,7 @@ body {
   justify-content: center;
   white-space: nowrap;
   max-width: 100%;
-  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-size: clamp(0.5rem, 4vw, 3rem);
   font-family: var(--font-glitch);
   color: var(--color-pink);
   animation: neon 1.5s ease-in-out infinite alternate;

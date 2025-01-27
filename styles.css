@@ -391,20 +391,40 @@ body {
     background-color: rgba(0, 0, 0, 0.6); /* Adjust opacity with last value (0-1) */
     background-blend-mode: overlay; /* Helps blend the image with background color */
   }
-  .broadcast-title h2 {
-    font-size: clamp(0.1rem, 8vw, 3rem); /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode, 0.1rem to shrink to smaller sizing??  */
-  }
-  .dj-info h2{
-    font-size: clamp(0.1rem, 7vw, 3rem); /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode */
-    text-align: center;
-  }
   .info-grid-left {
     padding: 0.3rem;
   }
   .info-grid-right {
     display: none; /* Remove empty column */
   }
+  .broadcast-title h2 {
+    font-size: clamp(0.1rem, 8vw, 3rem);      /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode, 0.1rem to shrink to smaller sizing??  */
+    margin-bottom: 0.5rem;
+  }
+  #countdown {
+    font-size: clamp(0.1rem, 7vw, 2.3rem);
+    margin-bottom: 0.5rem;
+  }
+  .broadcast-player {
+    font-size: clamp(0.1rem, 4vw, 1.8rem);
+  }
+  .broadcast-player h2 {
+    font-size: clamp(0.1rem, 5vw, 2rem);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.5rem;
+  }
   .dj-info {
     padding: 0.5rem;
+  }
+  .dj-info h2{
+    font-size: clamp(0.1rem, 7vw, 3rem); /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode */
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  .dj-info p{
+    font-size: clamp(0.5rem, 3vw, 1.1rem);
+  }
+  .past-voyages {
+    font-size: clamp(0.5rem, 6vw, 3rem);
   }
 }

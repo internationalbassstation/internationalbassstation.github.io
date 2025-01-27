@@ -428,3 +428,35 @@ body {
     font-size: clamp(0.5rem, 6vw, 3rem);
   }
 }
+/* Landscape orientation for mobile devices */
+@media (max-width: 768px) and (orientation: landscape) {
+  .info-grid {
+    gap: 0.2rem;
+  }
+  .info-grid-left {
+    padding: 0.3rem;
+    overflow: auto; /* Enable scrolling for content */
+  }
+  .broadcast-title h2 {
+    font-size: clamp(0.1rem, 2vw, 3rem);      /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode, 0.1rem to shrink to smaller sizing??  */
+    margin: 0;
+  }
+  .broadcast-player iframe {
+    height: 60px;
+  }
+  .dj-info p {
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    display: none;
+    font-size: clamp(0.1rem, 3vw, 0.9rem); /* Slightly smaller text in landscape */
+    /* line-height: 1.2; */
+  }
+  .dj-info h2 {
+    font-size: clamp(0.1rem, 4vw, 2.5rem); /* Smaller DJ name */
+  }
+  .mix-item {
+    min-height: 44px; /* Minimum touch target size */
+    padding: 0.5rem 1rem;
+  }
+}

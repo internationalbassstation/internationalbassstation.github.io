@@ -86,7 +86,7 @@ class SectionManager {
         });
  
         let lastScrollTime = 0;
-        const scrollThreshold = 500;
+        const scrollThreshold = 300;
         document.addEventListener('wheel', (e) => {
             const currentTime = new Date().getTime();
             

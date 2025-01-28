@@ -24,7 +24,6 @@
   src: url('assets/fonts/Wallpoet-Regular.ttf') format('truetype');
   font-display: block;
 }
-/* START STYLING */
 :root {
 /* LAYOUT */
   --container-max-width: 80rem;
@@ -70,7 +69,7 @@ body {
   overflow: hidden;
   cursor: crosshair;
   background: url('assets/images/ibs.jpg') center/contain no-repeat;
-  background-size: contain;
+  background-size: cover;
   max-width: 100vw;
 }
 .hero-instruction {

@@ -91,12 +91,7 @@ body {
   display: flex;
   flex-direction: column;
   margin: auto;
-  visibility: hidden; /* ?? is this still a thing? */
-  padding: 0.3rem;
-  transition: opacity 0.5s ease, visibility 0.5s ease;  
-}
-.info-container.visible{
-  visibility: visible;
+  padding: 0.3rem;  
 }
 .info-grid {
   display: grid;
@@ -135,7 +130,7 @@ body {
   white-space: nowrap;
   font-size: clamp(0.5rem, 5vw, 2.3rem);
 }
-/* Countdown Active State Styles */
+/* Countdown Active */
 .bass-station-active {
   color: var(--color-green);
   font-size: clamp(0.5rem, 4vw, 3rem);
@@ -144,7 +139,7 @@ body {
   display: inline-block;
 }
 .bass-station-active:hover {
-  transform: scale(1.05) skew(-10deg); 
+  transform: scale(1.05) skew(-10deg);
 }
 .glitch {
   position: relative;
@@ -260,13 +255,13 @@ body {
   flex-direction: column;
   justify-content: center;
 }
-.dj-info h2{
+.dj-info h2 {
   font-size: clamp(0.5rem, 4vw, 3rem);
   white-space: nowrap;
   letter-spacing: 0.2em;
   color: var(--color-green);
 }
-.dj-info p{
+.dj-info p {
   font-size: clamp(0.5rem, 2vw, 1.1rem);
 }
 /* PAST VOYAGES */
@@ -293,13 +288,6 @@ body {
   flex-direction: column;
   padding: 0.5rem;
   margin: 0 auto var(--footer-height);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-.mix-container.visible {
-  opacity: 1;
-  visibility: visible;
 }
 .mix-list {
   list-style: none;
@@ -389,7 +377,7 @@ body {
     width: 100%;
     max-width: 100vw;
     padding: 0.3rem;
-    background-color: rgba(0, 0, 0, 0.6); /* Adjust opacity with last value (0-1) */
+    background-color: rgba(0, 0, 0, 0.6); /* Adjust opacity */
     background-blend-mode: overlay; /* Helps blend the image with background color */
   }
   .info-grid-left {
@@ -417,12 +405,12 @@ body {
   .dj-info {
     padding: 0.5rem;
   }
-  .dj-info h2{
+  .dj-info h2 {
     font-size: clamp(0.1rem, 7vw, 3rem); /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode */
     text-align: center;
     margin-bottom: 0.5rem;
   }
-  .dj-info p{
+  .dj-info p {
     font-size: clamp(0.5rem, 3vw, 1.1rem);
   }
   .past-voyages {
@@ -430,7 +418,7 @@ body {
   }
 }
 /* Landscape orientation for mobile devices */
-@media (orientation: landscape) and(max-height: 500px)   {
+@media (orientation: landscape) and (max-height: 500px) {
   .info-grid {
     gap: 0.2rem;
   }

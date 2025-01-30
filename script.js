@@ -2,19 +2,19 @@ class SectionManager {
     constructor() {
         this.sections = {
             hero: {
-                element: document.getElementById('hero-container'),
+                element: document.getElementById('hero-section'),
                 nextSection: 'info',
             },
             info: {
-                element: document.querySelector('.info-container'),
+                element: document.getElementById('info-section'),
                 nextSection: 'mixes',
             },
             mixes: {
-                element: document.querySelector('.mix-container'),
+                element: document.getElementById('mix-section'),
                 nextSection: 'footer',
             },
             footer: {
-                element: document.querySelector('.site-footer'),
+                element: document.getElementById('footer-section'),
                 nextSection: null,
             }
         };
@@ -72,9 +72,7 @@ class SectionManager {
         });
         const pastVoyages = document.querySelector('.past-voyages');
         pastVoyages.addEventListener('click', () => {
-            if (this.state.currentSection === 'info') {
                 this.navigateToNextSection();
-            }
         });
         pastVoyages.style.cursor = 'pointer';
  

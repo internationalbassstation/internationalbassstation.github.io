@@ -61,14 +61,13 @@ body {
   overflow-x: hidden;
 }
 /* HERO SCREEN */
-.hero {
+.hero-container {
   margin: 0 auto;
-  height: 100vh;
   height: 100dvh;
   max-width: var(--container-max-width);
   overflow: hidden;
   cursor: crosshair;
-  background: url('assets/images/ibs.jpg') center/contain no-repeat;
+  background: url('assets/images/IBSwide.jpg') center/contain no-repeat;
   background-size: contain ;
   max-width: 100vw;
 }
@@ -382,7 +381,7 @@ body {
 /* MOBILE BROWSER CHANGES */
 @media (max-width: 768px) {
   .hero {
-    background: url('assets/images/ibstall.jpg') center/contain no-repeat;
+    background: url('assets/images/IBStall.jpg') center/contain no-repeat;
   }
   .info-grid {
     grid-template-columns: 1fr;

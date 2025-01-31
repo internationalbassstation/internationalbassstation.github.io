@@ -266,6 +266,7 @@ body {
 }
 /* PAST VOYAGES */
 .past-voyages {
+  cursor: crosshair;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -304,7 +305,7 @@ body {
   background: transparent;
   border: 0.2rem solid var(--color-purple);
   border-radius: 0.7rem;
-  cursor: pointer;
+  cursor: crosshair;
   transition: all 0.3s ease;
 }
 .mix-item:hover {

@@ -3,34 +3,31 @@ class SectionManager {
         this.sections = {
             hero: {
                 element: document.getElementById('hero-section'),
-                nextSection: 'info',
+                nextSection: 'info'
             },
             info: {
                 element: document.getElementById('info-section'),
-                nextSection: 'mixes',
+                nextSection: 'mixes'
             },
             mixes: {
                 element: document.getElementById('mix-section'),
-                nextSection: 'footer',
+                nextSection: 'footer'
             },
             footer: {
                 element: document.getElementById('footer-section'),
-                nextSection: null,
+                nextSection: null
             }
         };
-// START AT HERO
- 
         this.state = {
             currentSection: 'hero',
             isAudioPlaying: false
         };
- 
         this.initialize();
     }
- 
+
     initialize() {
         history.scrollRestoration = 'manual';
-        window.scrollTo(0, 0);    
+        window.scrollTo(0, 0);
  
         this.setupNavigationListeners();
         this.setupInitialVisibility();
@@ -66,15 +63,12 @@ class SectionManager {
  
     setupNavigationListeners() {
         this.sections.hero.element.addEventListener('click', () => {
-            if (this.state.currentSection === 'hero') {
-                this.navigateToNextSection();
-            }
+            this.navigateToNextSection();
         });
         const pastVoyages = document.querySelector('.past-voyages');
         pastVoyages.addEventListener('click', () => {
                 this.navigateToNextSection();
         });
-        pastVoyages.style.cursor = 'pointer';
  
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowDown' || e.code === 'Space') {
@@ -82,7 +76,7 @@ class SectionManager {
                 this.navigateToNextSection();
             }
         });
- 
+
         let lastScrollTime = 0;
         const scrollThreshold = 300;
         document.addEventListener('wheel', (e) => {
@@ -93,7 +87,7 @@ class SectionManager {
                 this.navigateToNextSection();
             }
         }, { passive: true });
- 
+
         let touchStartY = 0;
         document.addEventListener('touchstart', (e) => {
             touchStartY = e.touches[0].clientY;
@@ -108,7 +102,7 @@ class SectionManager {
             }
         });
     }
- 
+
     setupAudioPlayer() {
         const mixItems = document.querySelectorAll('.mix-item');
         const audioPlayer = document.getElementById('mixPlayer');
@@ -129,7 +123,7 @@ class SectionManager {
             });
         });
     }
- 
+
     setupCountdown() {
         const countdownElement = document.getElementById('countdown');
         const broadcastTitleElement = document.querySelector('.broadcast-title h2:last-child');
@@ -172,15 +166,15 @@ class SectionManager {
         // Update immediately and then every second
         updateCountdown();
         setInterval(updateCountdown, 1000);
-    }    
- 
+    }
+
     navigateToNextSection() {
         const currentSection = this.sections[this.state.currentSection];
         if (currentSection && currentSection.nextSection) {
             this.navigateToSection(currentSection.nextSection);
         }
     }
- 
+
     navigateToSection(sectionName) {
         const targetSection = this.sections[sectionName];
         if (!targetSection) return;
@@ -192,12 +186,12 @@ class SectionManager {
             block: 'start'
         });
     }
- }
- 
- document.addEventListener('DOMContentLoaded', () => {
+}
+
+document.addEventListener('DOMContentLoaded', () => {
     try {
         const siteManager = new SectionManager();
     } catch (error) {
         console.error('Failed to initialize site manager:', error);
     }
- });
+});

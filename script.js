@@ -72,7 +72,6 @@ class SectionManager {
 
         this.setupViewportLogging();
         this.setupNavigationListeners();
-        this.setupInitialVisibility();
         this.setupAudioPlayer();
         this.setupCountdown();
         this.handleScroll = this.handleScroll.bind(this);
@@ -109,17 +108,6 @@ class SectionManager {
         // Track orientation changes
         window.addEventListener('orientationchange', () => {
             logViewportDetails();
-        });
-    }
- 
-    setupInitialVisibility() {
-        Object.keys(this.sections).forEach(sectionName => {
-            if (sectionName !== 'hero') {
-                this.sections[sectionName].element.classList.remove('visible');
-                if (sectionName === 'footer') {
-                    this.sections[sectionName].element.classList.add('hidden');
-                }
-            }
         });
     }
  

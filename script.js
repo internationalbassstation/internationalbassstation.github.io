@@ -1,5 +1,44 @@
+class SectionStateObserver {
+    constructor() {
+        this.currentSection = null;
+        this.observers = [];
+        console.log('SectionStateObserver initialized');
+    }
+
+    addObserver(observer) {
+        this.observers.push(observer);
+        console.log('Observer added');
+    }
+
+    updateSection(newSection) {
+        console.log(`Attempting to update section to: ${newSection}`);
+        if (this.currentSection !== newSection) {
+            console.log(`SECTION CHANGE: from ${this.currentSection} to ${newSection}`);
+            this.currentSection = newSection;
+            
+            this.observers.forEach(observer => {
+                console.log('Notifying observer');
+                if (typeof observer.onSectionChange === 'function') {
+                    observer.onSectionChange(newSection);
+                }
+            });
+        }
+    }
+}
+
 class SectionManager {
     constructor() {
+        console.log('SectionManager constructor called');
+        
+        this.sectionStateObserver = new SectionStateObserver();
+        
+        // Add a default logging observer
+        this.sectionStateObserver.addObserver({
+            onSectionChange: (section) => {
+                console.log(`OBSERVER CALLBACK: Current section changed to: ${section}`);
+            }
+        });
+
         this.sections = {
             hero: {
                 element: document.getElementById('hero-section'),
@@ -19,9 +58,12 @@ class SectionManager {
             }
         };
         this.state = {
-            currentSection: 'hero',
             isAudioPlaying: false
         };
+        
+        // Initialize with hero section
+        this.sectionStateObserver.updateSection('hero');
+        
         this.initialize();
     }
 
@@ -63,16 +105,19 @@ class SectionManager {
  
     setupNavigationListeners() {
         this.sections.hero.element.addEventListener('click', () => {
+            console.log('Hero section clicked');
             this.navigateToNextSection();
         });
         const pastVoyages = document.querySelector('.past-voyages');
         pastVoyages.addEventListener('click', () => {
-                this.navigateToNextSection();
+            console.log('Past Voyages clicked');
+            this.navigateToNextSection();
         });
  
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowDown' || e.code === 'Space') {
                 e.preventDefault();
+                console.log('Navigating via keyboard');
                 this.navigateToNextSection();
             }
         });
@@ -84,6 +129,7 @@ class SectionManager {
             
             if (e.deltaY > 0 && currentTime - lastScrollTime > scrollThreshold) {
                 lastScrollTime = currentTime;
+                console.log('Navigating via wheel');
                 this.navigateToNextSection();
             }
         }, { passive: true });
@@ -98,6 +144,7 @@ class SectionManager {
             const touchDiff = touchStartY - touchEndY;
             
             if (Math.abs(touchDiff) > 50 && touchDiff > 0) {
+                console.log('Navigating via touch');
                 this.navigateToNextSection();
             }
         });
@@ -169,17 +216,26 @@ class SectionManager {
     }
 
     navigateToNextSection() {
-        const currentSection = this.sections[this.state.currentSection];
-        if (currentSection && currentSection.nextSection) {
-            this.navigateToSection(currentSection.nextSection);
+        console.log('Navigating to next section');
+        
+        // Use the current section from the state observer
+        const currentSection = this.sectionStateObserver.currentSection;
+        const nextSection = this.sections[currentSection]?.nextSection;
+        
+        if (nextSection) {
+            console.log(`Current section: ${currentSection}, Next section: ${nextSection}`);
+            this.navigateToSection(nextSection);
         }
     }
 
     navigateToSection(sectionName) {
+        console.log(`Navigating to section: ${sectionName}`);
         const targetSection = this.sections[sectionName];
         if (!targetSection) return;
  
-        this.state.currentSection = sectionName;
+        // Update the state observer
+        this.sectionStateObserver.updateSection(sectionName);
+
         targetSection.element.classList.add('visible');
         targetSection.element.scrollIntoView({ 
             behavior: 'smooth',

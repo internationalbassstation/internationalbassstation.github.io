@@ -70,13 +70,50 @@ class SectionManager {
     initialize() {
         history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
- 
+
+        this.setupViewportLogging();
         this.setupNavigationListeners();
         this.setupInitialVisibility();
         this.setupAudioPlayer();
         this.setupCountdown();
         this.handleScroll = this.handleScroll.bind(this);
         window.addEventListener('scroll', this.handleScroll);
+    }
+
+    setupViewportLogging() {
+        const logViewportDetails = () => {
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const documentWidth = document.documentElement.clientWidth;
+            const documentHeight = document.documentElement.clientHeight;
+            // Calculate rem size based on root font-size
+            const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+            
+            console.group('🖥️ Viewport Details');
+            console.log(`Width: ${viewportWidth}px (${(viewportWidth / rootFontSize).toFixed(2)}rem)`);
+            console.log(`Height: ${viewportHeight}px (${(viewportHeight / rootFontSize).toFixed(2)}rem)`);
+            console.log(`Document Width: ${documentWidth}px`);
+            console.log(`Document Height: ${documentHeight}px`);
+            console.log(`Root Font Size: ${rootFontSize}px`);
+            // Detect orientation
+            const orientation = viewportWidth > viewportHeight ? 'Landscape' : 'Portrait';
+            console.log(`Orientation: ${orientation}`);
+            // Aspect ratio
+            const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
+            console.log(`Aspect Ratio: ${aspectRatio}`);
+            
+            console.groupEnd();
+        };
+        // Log initial viewport details
+        logViewportDetails();
+        // Add event listeners to track changes
+        window.addEventListener('resize', () => {
+            logViewportDetails();
+        });
+        // Track orientation changes
+        window.addEventListener('orientationchange', () => {
+            logViewportDetails();
+        });
     }
  
     setupInitialVisibility() {

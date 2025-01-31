@@ -368,7 +368,7 @@ body {
   50% { opacity: 1; }
 }
 /* MOBILE BROWSER CHANGES */
-@media (max-width: 768px) {
+@media (orientation: portrait) and (max-width: 768px) {
   .hero {
     background: url('assets/images/IBStall.jpg') center/contain no-repeat;
   }

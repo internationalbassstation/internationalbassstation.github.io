@@ -425,7 +425,6 @@ body {
     font-size: clamp(0.2rem, 1.5vw, 1rem);
   }
   .info-grid {
-    gap: 0.2rem;
     text-align: center;
   }
   .info-grid-left {
@@ -445,8 +444,12 @@ body {
   .dj-info p {
     display: none;
   }
+  .past-voyages {
+    font-size: clamp(0.1rem, 3vw, 3rem);
+  }
   .mix-item {
     min-height: 2.75rem;
+    width: 70%;
     padding: 0.5rem 1rem;
   }
 }

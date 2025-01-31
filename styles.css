@@ -68,8 +68,6 @@ body {
   overflow: hidden;
   cursor: crosshair;
   background: url('assets/images/IBSwide.jpg') center/contain no-repeat;
-  background-size: contain;
-  max-width: 100vw;
 }
 .hero-instruction {
   display: block;
@@ -369,7 +367,7 @@ body {
 }
 /* MOBILE BROWSER CHANGES */
 @media (orientation: portrait) and (max-width: 768px) {
-  .hero {
+  .hero-container {
     background: url('assets/images/IBStall.jpg') center/contain no-repeat;
   }
   .info-grid {

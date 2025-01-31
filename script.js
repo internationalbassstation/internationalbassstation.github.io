@@ -2,22 +2,21 @@ class SectionStateObserver {
     constructor() {
         this.currentSection = null;
         this.observers = [];
-        console.log('SectionStateObserver initialized');
+        console.log('SectionObserver initialized');
     }
 
     addObserver(observer) {
         this.observers.push(observer);
-        console.log('Observer added');
     }
 
     updateSection(newSection) {
-        console.log(`Attempting to update section to: ${newSection}`);
+        console.log(`Attempting section update to: ${newSection}`);
         if (this.currentSection !== newSection) {
-            console.log(`SECTION CHANGE: from ${this.currentSection} to ${newSection}`);
+            console.log(`SECTIONCHANGE: ${this.currentSection} to ${newSection}`);
             this.currentSection = newSection;
             
             this.observers.forEach(observer => {
-                console.log('Notifying observer');
+                console.log('Updating SectionObserver');
                 if (typeof observer.onSectionChange === 'function') {
                     observer.onSectionChange(newSection);
                 }
@@ -28,14 +27,14 @@ class SectionStateObserver {
 
 class SectionManager {
     constructor() {
-        console.log('SectionManager constructor called');
+        console.log('SectionManager initialized');
         
         this.sectionStateObserver = new SectionStateObserver();
         
         // Add a default logging observer
         this.sectionStateObserver.addObserver({
             onSectionChange: (section) => {
-                console.log(`OBSERVER CALLBACK: Current section changed to: ${section}`);
+                console.log(`SECTIONCHANGE complete: ${section}`);
             }
         });
 
@@ -86,6 +85,8 @@ class SectionManager {
             const viewportHeight = window.innerHeight;
             const documentWidth = document.documentElement.clientWidth;
             const documentHeight = document.documentElement.clientHeight;
+            const orientation = viewportWidth > viewportHeight ? 'Landscape' : 'Portrait';
+            const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
             // Calculate rem size based on root font-size
             const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
             
@@ -95,13 +96,8 @@ class SectionManager {
             console.log(`Document Width: ${documentWidth}px`);
             console.log(`Document Height: ${documentHeight}px`);
             console.log(`Root Font Size: ${rootFontSize}px`);
-            // Detect orientation
-            const orientation = viewportWidth > viewportHeight ? 'Landscape' : 'Portrait';
             console.log(`Orientation: ${orientation}`);
-            // Aspect ratio
-            const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
             console.log(`Aspect Ratio: ${aspectRatio}`);
-            
             console.groupEnd();
         };
         // Log initial viewport details

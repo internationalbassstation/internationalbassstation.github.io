@@ -248,10 +248,10 @@ body {
   position: relative;
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 1rem;
-  text-align: left;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: left;
 }
 .dj-info h2 {
   font-size: clamp(0.5rem, 4vw, 3rem);
@@ -270,7 +270,6 @@ body {
   flex-direction: column;
   justify-content: center;
   white-space: nowrap;
-  max-width: 100%;
   font-size: clamp(0.5rem, 4vw, 3rem);
   font-family: var(--font-glitch);
   color: var(--color-pink);
@@ -370,23 +369,26 @@ body {
   .hero-container {
     background: url('assets/images/IBStall.jpg') center/contain no-repeat;
   }
+  .hero-instruction {
+    top: 3rem;
+    font-size: clamp(0.2rem, 3vw, 1.5rem);
+  }
   .info-grid {
     grid-template-columns: 1fr;
     border: 0.3rem solid var(--color-green);
     width: 100%;
-    max-width: 100vw;
     padding: 0.3rem;
-    background-color: rgba(0, 0, 0, 0.6); /* Adjust opacity */
-    background-blend-mode: overlay; /* Helps blend the image with background color */
+    background-color: rgba(0, 0, 0, 0.6);
+    background-blend-mode: overlay;
   }
   .info-grid-left {
-    padding: 0.3rem;
+    text-align: center;
   }
   .info-grid-right {
-    display: none; /* Remove empty column */
+    display: none;
   }
   .broadcast-title h2 {
-    font-size: clamp(0.1rem, 8vw, 3rem);      /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode, 0.1rem to shrink to smaller sizing??  */
+    font-size: clamp(0.1rem, 8vw, 3rem);
     margin-bottom: 0.5rem;
   }
   #countdown {
@@ -405,43 +407,46 @@ body {
     padding: 0.5rem;
   }
   .dj-info h2 {
-    font-size: clamp(0.1rem, 7vw, 3rem); /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode */
     text-align: center;
+    font-size: clamp(0.1rem, 7vw, 3rem); /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode */
     margin-bottom: 0.5rem;
   }
   .dj-info p {
     font-size: clamp(0.5rem, 3vw, 1.1rem);
   }
   .past-voyages {
-    font-size: clamp(0.5rem, 6vw, 3rem);
+    font-size: clamp(0.5rem, 6vw, 5rem);
   }
 }
 /* Landscape orientation for mobile devices */
 @media (orientation: landscape) and (max-height: 500px) {
+  .hero-instruction {
+    top: 0.5rem;
+    font-size: clamp(0.2rem, 1.5vw, 1rem);
+  }
   .info-grid {
     gap: 0.2rem;
+    text-align: center;
   }
   .info-grid-left {
     padding: 0.3rem;
   }
   .broadcast-title h2 {
-    font-size: clamp(0.1rem, 2vw, 0.5rem); 
+    font-size: clamp(0.1rem, 4vw, 2rem); 
     margin: 0;
   }
-  .broadcast-player iframe {
-    height: 60px;  /* rem this */
-  }
-  .dj-info p {
-    visibility: hidden;
-    display: none;
-    font-size: clamp(0.1rem, 0.5vw, 0.9rem);
-    /* line-height: 1.2; */
+  .dj-info {
+    text-align: center;
   }
   .dj-info h2 {
-    font-size: clamp(0.1rem, 2vw, 0.5rem);
+    font-size: clamp(0.1rem, 4vw, 2rem);
+    text-align: center;
+  }
+  .dj-info p {
+    display: none;
   }
   .mix-item {
-    min-height: 44px; /* Minimum touch target size */
+    min-height: 2.75rem;
     padding: 0.5rem 1rem;
   }
 }

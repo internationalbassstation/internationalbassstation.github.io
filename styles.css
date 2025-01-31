@@ -112,21 +112,19 @@ body {
   flex-direction: column;
   justify-content: center;
   color: var(--color-purple);
-  font-size: clamp(0.5rem, 4vw, 2.5rem);
+  gap: 1rem;
+  font-size: clamp(0.1rem, 3vw, 2.5rem);
 }
 .broadcast-title {
-  color: var(--color-purple);
-}
-.broadcast-title h2 {
   white-space: nowrap;
-  font-size: clamp(0.5rem, 4vw, 3rem);
   line-height: 0.8;
 }
 #countdown {
   font-family: var(--font-wallpoet);
   color: var(--color-pink);
   white-space: nowrap;
-  font-size: clamp(0.5rem, 5vw, 2.3rem);
+  font-size: clamp(0.5rem, 4vw, 2.5rem);
+  margin-top: 0.5rem;
 }
 /* Countdown Active */
 .bass-station-active {
@@ -214,7 +212,7 @@ body {
   display: flex;
   flex-direction: column;
   font-family: var(--font-syncopate-bold);
-  font-size: clamp(0.5rem, 3vw, 1.8rem);
+  font-size: clamp(0.1rem, 3vw, 1.8rem);
   letter-spacing: 0.25em;
 }
 .broadcast-player h2 {
@@ -238,34 +236,25 @@ body {
   color: var(--color-green);
 }
 /* DJ INFO */
-.dj-section {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
 .dj-info {
-  line-height: 1.4;
-  position: relative;
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border-radius: 1rem;
   text-align: left;
 }
-.dj-info h2 {
-  font-size: clamp(0.5rem, 4vw, 3rem);
+.dj-title {
+  font-size: clamp(0.5rem, 3vw, 3rem);
   white-space: nowrap;
   letter-spacing: 0.2em;
   color: var(--color-green);
 }
-.dj-info p {
-  font-size: clamp(0.5rem, 2vw, 1.1rem);
+.dj-bio {
+  color: var(--color-white);
+  font-size: clamp(0.1rem, 1.6vw, 2rem);
 }
 /* PAST VOYAGES */
 .past-voyages {
-  cursor: crosshair;
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -273,6 +262,7 @@ body {
   font-size: clamp(0.5rem, 4vw, 3rem);
   font-family: var(--font-glitch);
   color: var(--color-pink);
+  cursor: crosshair;
   animation: neon 1.5s ease-in-out infinite alternate;
 }
 @keyframes neon {
@@ -376,23 +366,21 @@ body {
   .info-grid {
     grid-template-columns: 1fr;
     border: 0.3rem solid var(--color-green);
-    width: 100%;
     padding: 0.3rem;
     background-color: rgba(0, 0, 0, 0.6);
     background-blend-mode: overlay;
   }
   .info-grid-left {
-    text-align: center;
+    padding: 0.3rem;
   }
   .info-grid-right {
     display: none;
   }
-  .broadcast-title h2 {
-    font-size: clamp(0.1rem, 8vw, 3rem);
-    margin-bottom: 0.5rem;
+  .broadcast-info {
+    font-size: clamp(0.1rem, 5vw, 2.5rem);
   }
   #countdown {
-    font-size: clamp(0.1rem, 7vw, 2.3rem);
+    font-size: clamp(0.1rem, 7vw, 2.5rem);
     margin-bottom: 0.5rem;
   }
   .broadcast-player {
@@ -401,14 +389,14 @@ body {
   .broadcast-player h2 {
     font-size: clamp(0.1rem, 5vw, 2rem);
     letter-spacing: 0.03em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.1rem;
   }
   .dj-info {
     padding: 0.5rem;
   }
   .dj-info h2 {
     text-align: center;
-    font-size: clamp(0.1rem, 7vw, 3rem); /* Trialling higher vw size on vertical screen, will switch to lower number for landscape mode */
+    font-size: clamp(0.1rem, 7vw, 3rem);
     margin-bottom: 0.5rem;
   }
   .dj-info p {

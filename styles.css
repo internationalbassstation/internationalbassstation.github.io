@@ -352,7 +352,7 @@ body {
 /* MOBILE BROWSER CHANGES */
 @media (orientation: portrait) and (max-width: 768px) {
   .hero-container {
-    background: url('assets/images/IBStall.jpg') center/contain no-repeat;
+    background: url('assets/images/IBSportrait.jpg') center/contain no-repeat;
   }
   .hero-instruction {
     top: 3rem;

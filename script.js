@@ -57,7 +57,7 @@ class SectionManager {
             }
         };
         this.state = {
-            isAudioPlaying: false
+            audioPlaying: false
         };
         
         // Initialize with hero section
@@ -86,7 +86,6 @@ class SectionManager {
             const documentHeight = document.documentElement.clientHeight;
             const orientation = viewportWidth > viewportHeight ? 'Landscape' : 'Portrait';
             const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
-            // Calculate rem size based on root font-size
             const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
             
             console.group('🖥️ Viewport Details');
@@ -118,7 +117,7 @@ class SectionManager {
         if (scrollPosition > documentHeight - 100) {
             footer.classList.add('visible');
             footer.classList.remove('hidden');
-        } else if (!this.state.isAudioPlaying) {
+        } else if (!this.state.audioPlaying) {
             footer.classList.remove('visible');
             footer.classList.add('hidden');
         }
@@ -183,7 +182,7 @@ class SectionManager {
                     footer.querySelector('.audio-player-container').classList.add('error');
                 });
                 
-                this.state.isAudioPlaying = true;
+                this.state.audioPlaying = true;
  
                 footer.classList.add('visible');
                 footer.classList.remove('hidden');

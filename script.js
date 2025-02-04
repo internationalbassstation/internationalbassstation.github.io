@@ -1,6 +1,6 @@
 class SectionManager {
     constructor() {
-        console.log('⚡ Faint Flicker to Inventory Lighting');
+        console.log('⚡ Faint Flicker for Inventory Lighting');
         
         // Define sections
         this.sections = [
@@ -30,7 +30,7 @@ class SectionManager {
     }
 
     initializeManager() {
-        console.log('📡 Timid Trickle to Nav Systems');
+        console.log('📡 Tiny Trickle for Nav Systems');
         
         // Disable default scroll restoration
         history.scrollRestoration = 'manual';
@@ -101,7 +101,7 @@ class SectionManager {
             this.intersectionObserver.observe(section.element);
         });
         
-        console.log('🔍 Dismal Drip to Ship Sensors');
+        console.log('🔍 Dismal Drip for Ship Sensors');
     }
 
     updateCurrentSection(sectionName) {
@@ -194,7 +194,7 @@ class SectionManager {
             }
         });
 
-        console.log('🕹️ Pitiful Pinch to Pilot Controls');
+        console.log('🕹️ Pitiful Portion for Pilot Controls');
     }
 
     navigateToNextSection() {
@@ -265,44 +265,50 @@ class SectionManager {
     }
 
     setupCountdown() {
-        const countdownElement = document.getElementById('countdown');
-        const broadcastTitleElement = document.querySelector('.broadcast-title h2:last-child');
-    
         function updateCountdown() {
-            const now = new Date();
+            const countdownElement = document.getElementById('countdown');
+            
+            // Get current time in Eastern timezone
+            const easternTime = new Date().toLocaleString("en-US", {
+                timeZone: "America/New_York"
+            });
+            const now = new Date(easternTime);
             const currentDay = now.getDay();
             const currentHour = now.getHours();
-    
-            // Check if it's Friday between 10 PM and 11 PM
+        
+            // Check if it's Friday between 10 PM and 11 PM ET
             if (currentDay === 5 && currentHour >= 22 && currentHour < 23) {
-                console.log('📻 International Bass Station is Live!');
-                countdownElement.innerHTML = `<a href="https://northumberland897.ca" target="_blank" rel="noopener noreferrer" class="bass-station-active"><span class="glitch" data-text="BASS STATION ACTIVE">BASS STATION ACTIVE</span></a>`;
-                broadcastTitleElement.classList.add('broadcast-live');
+                countdownElement.innerHTML = `
+                    <a href="https://northumberland897.ca" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="digital-glitch">
+                        BASS STATION ACTIVE
+                    </a>`;
                 return;
             }
-    
-            // Find next Friday at 10 PM
-            const nextFriday = new Date(now);
+
+            // Find next Friday at 10 PM ET
+            const nextFriday = new Date(easternTime);
             nextFriday.setDate(nextFriday.getDate() + ((7 - currentDay + 5) % 7));
             nextFriday.setHours(22, 0, 0, 0);
-    
+        
             // Calculate difference
             const diff = nextFriday - now;
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-            countdownElement.textContent = `${days}D ${hours}H ${minutes}M ${seconds}S`;
-        }
-    
+        
+            countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+        }    
         // Update immediately and then every second
         updateCountdown();
         setInterval(updateCountdown, 1000);
-
+    
         console.log('⏰ Galaxy Timezone Calibrated');
     }
-
+        
     setupAudioPlayer() {
         const mixItems = document.querySelectorAll('.mix-item');
         const audioPlayer = document.getElementById('mixPlayer');
@@ -345,8 +351,8 @@ class SectionManager {
         });
     
         audioPlayer.addEventListener('pause', () => {
-            console.log('⏸️ Audio: Playback paused');
-            console.log('⏲️ Hiding timer started: 10s');
+            console.log('⏸️ Audio Playback Paused');
+            console.log('⏲️ Grace Timer: 8s');
             
             // Clear any existing timeout first
             if (footerHideTimeout) {
@@ -355,7 +361,7 @@ class SectionManager {
             
             // Set new timeout
             footerHideTimeout = setTimeout(() => {
-                console.log('⏲️ Hiding timer complete');
+                console.log('⏲️ Grace Timer Depleted');
                 this.state.audioPlaying = false;
                 this.setupFooterVisibility();
             }, 8000); // 8 seconds
@@ -367,7 +373,7 @@ class SectionManager {
             this.setupFooterVisibility();
         });
     
-        console.log('🎧 Vast, Vast Majority to Subwoofers');
+        console.log('🎧 Overwhelming Majority for Subwoofers');
     }
 }
 

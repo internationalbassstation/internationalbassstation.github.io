@@ -126,84 +126,62 @@ body {
   margin-top: 0.5rem;
   transition: all 0.3s ease;
 }
-/* Countdown Active */
-.bass-station-active {
+.live-indicator {
   color: var(--color-green);
   font-size: clamp(0.5rem, 3vw, 3rem);
   text-decoration: none;
   transition: all 0.3s ease;
   display: inline-block;
+  position: relative;
+  animation: pulse-live 1.5s infinite;
 }
-.bass-station-active:hover {
+.live-indicator:hover {
   transform: scale(1.05) skew(-10deg);
 }
-.glitch {
+.digital-glitch {
+  color: var(--color-green);
+  font-size: clamp(0.5rem, 3vw, 3rem);
+  text-decoration: none;
   position: relative;
   display: inline-block;
-  animation: glitch-animation 1s infinite linear alternate-reverse;
 }
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
+.digital-glitch::before,
+.digital-glitch::after {
+  content: 'BASS STATION ACTIVE';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background: var(--color-background);
 }
-.glitch::before {
+.digital-glitch::before {
   left: 2px;
-  text-shadow: -2px 0 red;
-  clip: rect(44px, 450px, 56px, 0);
-  animation: glitch-animation-before 1s infinite linear alternate-reverse;
+  text-shadow: -2px 0 var(--color-pink);
+  animation: glitch-1 2s infinite linear alternate-reverse;
 }
-.glitch::after {
+.digital-glitch::after {
   left: -2px;
-  text-shadow: -2px 0 blue;
-  clip: rect(44px, 450px, 56px, 0);
-  animation: glitch-animation-after 1s infinite linear alternate-reverse;
+  text-shadow: 2px 0 var(--color-purple);
+  animation: glitch-2 3s infinite linear alternate-reverse;
 }
-@keyframes glitch-animation {
-  0% { clip: rect(42px, 9999px, 44px, 0); }
-  5% { clip: rect(12px, 9999px, 44px, 0); }
-  10% { clip: rect(48px, 9999px, 3px, 0); }
-  15% { clip: rect(42px, 9999px, 44px, 0); }
-  20% { clip: rect(34px, 9999px, 2px, 0); }
-  25% { clip: rect(12px, 9999px, 44px, 0); }
-  30% { clip: rect(61px, 9999px, 59px, 0); }
-  35% { clip: rect(42px, 9999px, 44px, 0); }
-  40% { clip: rect(34px, 9999px, 2px, 0); }
-  45% { clip: rect(12px, 9999px, 44px, 0); }
-  50% { clip: rect(34px, 9999px, 2px, 0); }
-  55% { clip: rect(61px, 9999px, 59px, 0); }
-  60% { clip: rect(42px, 9999px, 44px, 0); }
-  65% { clip: rect(12px, 9999px, 44px, 0); }
-  70% { clip: rect(34px, 9999px, 2px, 0); }
-  75% { clip: rect(42px, 9999px, 44px, 0); }
-  80% { clip: rect(61px, 9999px, 59px, 0); }
-  85% { clip: rect(12px, 9999px, 44px, 0); }
-  90% { clip: rect(34px, 9999px, 2px, 0); }
-  95% { clip: rect(42px, 9999px, 44px, 0); }
-  100% { clip: rect(61px, 9999px, 59px, 0); }
+
+@keyframes glitch-1 {
+  0%, 100% { clip-path: inset(50% 0 30% 0); }
+  20% { clip-path: inset(20% 0 60% 0); }
+  40% { clip-path: inset(70% 0 20% 0); }
+  60% { clip-path: inset(10% 0 80% 0); }
+  80% { clip-path: inset(30% 0 50% 0); }
 }
-@keyframes glitch-animation-before {
-  0% { clip: rect(42px, 9999px, 44px, 0); }
-  25% { clip: rect(12px, 9999px, 44px, 0); }
-  50% { clip: rect(34px, 9999px, 2px, 0); }
-  75% { clip: rect(61px, 9999px, 59px, 0); }
-  100% { clip: rect(42px, 9999px, 44px, 0); }
+
+@keyframes glitch-2 {
+  0%, 100% { clip-path: inset(40% 0 40% 0); }
+  20% { clip-path: inset(60% 0 30% 0); }
+  40% { clip-path: inset(20% 0 70% 0); }
+  60% { clip-path: inset(70% 0 10% 0); }
+  80% { clip-path: inset(10% 0 60% 0); }
 }
-@keyframes glitch-animation-after {
-  0% { clip: rect(42px, 9999px, 44px, 0); }
-  25% { clip: rect(61px, 9999px, 59px, 0); }
-  50% { clip: rect(12px, 9999px, 44px, 0); }
-  75% { clip: rect(34px, 9999px, 2px, 0); }
-  100% { clip: rect(42px, 9999px, 44px, 0); }
-}
-.broadcast-live {
-  animation: pulse-animation 1.5s infinite;
-}
-@keyframes pulse-animation {
+@keyframes pulse-live {
   0% { transform: scale(1); }
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }

@@ -1,6 +1,6 @@
 class SectionManager {
     constructor() {
-        console.log('🎛️ Faint Flicker to Inventory Lighting');
+        console.log('⚡ Faint Flicker to Inventory Lighting');
         
         // Define sections
         this.sections = [
@@ -18,6 +18,9 @@ class SectionManager {
         // Track if initial navigation has completed
         this.initialNavigationComplete = false;
         
+        // Track furthest reached section to prevent loops
+        this.furthestReachedIndex = 0;
+        
         // State for audio and other interactions
         this.state = {
             audioPlaying: false
@@ -27,7 +30,7 @@ class SectionManager {
     }
 
     initializeManager() {
-        console.log('🎉 Timid Trickle to Nav Systems');
+        console.log('📡 Timid Trickle to Nav Systems');
         
         // Disable default scroll restoration
         history.scrollRestoration = 'manual';
@@ -56,7 +59,7 @@ class SectionManager {
             const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
             const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
             
-            console.group('🖥️ Bass Station Dimensions');
+            console.group('📏 Bass Station Dimensions');
             console.log(`Width: ${viewportWidth}px (${(viewportWidth / rootFontSize).toFixed(2)}rem)`);
             console.log(`Height: ${viewportHeight}px (${(viewportHeight / rootFontSize).toFixed(2)}rem)`);
             console.log(`Document Width: ${documentWidth}px`);
@@ -72,7 +75,7 @@ class SectionManager {
 
         // Add event listener to log changes
         window.addEventListener('resize', () => {
-            console.log('📏 Wormhole Reshaping Station Dimensions');
+            console.log('🕳️ Wormhole Reshaping Station Dimensions');
             logViewportDetails();
         });
     }
@@ -103,7 +106,7 @@ class SectionManager {
 
     updateCurrentSection(sectionName) {
         if (this.currentSection !== sectionName) {
-            console.log(`🚦 Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
+            console.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
             this.currentSection = sectionName;
             
             // Dispatch a custom event for section change
@@ -130,7 +133,7 @@ class SectionManager {
                 case 'click':
                     trigger.elements.forEach(el => {
                         el.addEventListener('click', () => {
-                            console.log(`🖱️ AutoPilot Engaged via Click`);
+                            console.log(`🖱️ AutoPilot Requested via Click`);
                             this.navigateToNextSection();
                         });
                     });
@@ -141,10 +144,10 @@ class SectionManager {
                         if (trigger.keys.includes(e.key) || trigger.keys.includes(e.code)) {
                             e.preventDefault();
                             if (!this.initialNavigationComplete) {
-                                console.log(`⌨️ AutoPilot Engaged via Key`);
+                                console.log(`⌨️ AutoPilot Requested via Keystroke`);
                                 this.navigateToNextSection();
                             } else {
-                                console.log(`⌨️ AutoPilot Denied`);
+                                console.log(`⌨️ AutoPilot via Keystroke Denied`);
                             }
                         }
                     });
@@ -158,10 +161,10 @@ class SectionManager {
                         if (e.deltaY > 0 && currentTime - lastScrollTime > trigger.threshold) {
                             if (!this.initialNavigationComplete) {
                                 lastScrollTime = currentTime;
-                                console.log('🖱️ AutoPilot Engaged via Scroll');
+                                console.log('🖱️ AutoPilot Requested via Scroll');
                                 this.navigateToNextSection();
                             } else {
-                                console.log('🖱️ AutoPilot Denied');
+                                console.log('🖱️ AutoPilot via Scroll Denied');
                             }
                         }
                     }, { passive: true });
@@ -183,7 +186,7 @@ class SectionManager {
                                 console.log('👆 AutoPilot Engaged via Swipe');
                                 this.navigateToNextSection();
                             } else {
-                                console.log('👆 AutoPilot Denied');
+                                console.log('👆 AutoPilot via Swipe Denied');
                             }
                         }
                     });
@@ -191,19 +194,22 @@ class SectionManager {
             }
         });
 
-        console.log('🧭 Pitiful Pinch to Pilot Controls');
+        console.log('🕹️ Pitiful Pinch to Pilot Controls');
     }
 
     navigateToNextSection() {
         const currentIndex = this.sectionOrder.indexOf(this.currentSection);
         const nextIndex = currentIndex + 1;
 
-        if (nextIndex < this.sectionOrder.length) {
+        // Update furthest reached
+        this.furthestReachedIndex = Math.max(this.furthestReachedIndex, currentIndex);
+
+        // Only allow forward navigation if we haven't reached this section before
+        if (nextIndex < this.sectionOrder.length && currentIndex >= this.furthestReachedIndex) {
             const nextSection = this.sectionOrder[nextIndex];
-            console.log(`🧭 Plotting Navigation: ${this.currentSection} → ${nextSection}`);
+            console.log(`🗺️ Plotting Navigation: ${this.currentSection} → ${nextSection}`);
             this.navigateToSection(nextSection);
 
-            // Mark initial navigation as complete when reaching mixes section  SMALL PROBLEM HERE AS YOU CAN RETRIGGER THIS BY SCROLLING BACK UP THEN BACK DOWN, SHOULD POSSIBLY BE TIED TO FOOTER BECOMING VISIBLE, NOT
             if (nextSection === 'mixes') {
                 this.initialNavigationComplete = true;
                 console.log('🏁 Destination Reached - AutoPilot Resting');
@@ -212,7 +218,7 @@ class SectionManager {
     }
 
     navigateToSection(sectionName) {
-        console.log(`🚦 AutoPiloting to ${sectionName}`);
+        console.log(`✈️ AutoPiloting to ${sectionName}`);
         const targetSection = this.sections.find(section => section.name === sectionName);
         
         if (targetSection) {
@@ -227,7 +233,6 @@ class SectionManager {
         const footer = document.getElementById('footer-section');
         const mixSection = document.getElementById('mix-section');
 
-        // Function to check footer visibility
         const checkFooterVisibility = () => {
             // Show footer if audio is playing
             if (this.state.audioPlaying) {
@@ -237,11 +242,11 @@ class SectionManager {
                 return;
             }
 
-            // Show footer if user is near the bottom of the mix section
+            // Show footer if user is near the bottom of the mix section - COULD THIS BE A PERCENTAGE OR AN rem?
             const mixSectionRect = mixSection.getBoundingClientRect();
             const windowHeight = window.innerHeight;
 
-            if (mixSectionRect.bottom - windowHeight <= 200) {
+            if (mixSectionRect.bottom - windowHeight <= 100) {
                 console.log('📍 Footer Showing: Position');
                 footer.classList.add('visible');
                 footer.classList.remove('hidden');
@@ -257,7 +262,6 @@ class SectionManager {
         
         // Initial check
         checkFooterVisibility();
-
     }
 
     setupCountdown() {
@@ -271,7 +275,7 @@ class SectionManager {
     
             // Check if it's Friday between 10 PM and 11 PM
             if (currentDay === 5 && currentHour >= 22 && currentHour < 23) {
-                console.log('🎉 International Bass Station is Live!');
+                console.log('📻 International Bass Station is Live!');
                 countdownElement.innerHTML = `<a href="https://northumberland897.ca" target="_blank" rel="noopener noreferrer" class="bass-station-active"><span class="glitch" data-text="BASS STATION ACTIVE">BASS STATION ACTIVE</span></a>`;
                 broadcastTitleElement.classList.add('broadcast-live');
                 return;
@@ -304,8 +308,16 @@ class SectionManager {
         const audioPlayer = document.getElementById('mixPlayer');
         const footer = document.getElementById('footer-section');
         
+        // Add a property to track the timeout
+        let footerHideTimeout;
+        
         mixItems.forEach(mixItem => {
             mixItem.addEventListener('click', () => {
+                // Clear any existing timeout when starting new audio
+                if (footerHideTimeout) {
+                    clearTimeout(footerHideTimeout);
+                }
+                
                 console.log(`🎵 Queueing Mix: ${mixItem.textContent.trim()}`);
                 audioPlayer.src = mixItem.getAttribute('data-src');
                 audioPlayer.play()
@@ -315,40 +327,56 @@ class SectionManager {
                         this.setupFooterVisibility();
                     })
                     .catch(error => {
-                        console.error('🚨 Audio Error:', error);
+                        console.error('⚠️ Audio Error:', error);
                         footer.querySelector('.audio-player-container').classList.add('error');
                     });
             });
         });
-
+    
         audioPlayer.addEventListener('play', () => {
+            // Clear any existing timeout when resuming playback
+            if (footerHideTimeout) {
+                clearTimeout(footerHideTimeout);
+            }
+            
             console.log('▶️ Audio: Playback started');
             this.state.audioPlaying = true;
             this.setupFooterVisibility();
         });
-
+    
         audioPlayer.addEventListener('pause', () => {
             console.log('⏸️ Audio: Playback paused');
-            this.state.audioPlaying = false;
-            this.setupFooterVisibility();
+            console.log('⏲️ Hiding timer started: 10s');
+            
+            // Clear any existing timeout first
+            if (footerHideTimeout) {
+                clearTimeout(footerHideTimeout);
+            }
+            
+            // Set new timeout
+            footerHideTimeout = setTimeout(() => {
+                console.log('⏲️ Hiding timer complete');
+                this.state.audioPlaying = false;
+                this.setupFooterVisibility();
+            }, 8000); // 8 seconds
         });
-
+    
         audioPlayer.addEventListener('ended', () => {
             console.log('🏁 Audio: Mix playback completed');
             this.state.audioPlaying = false;
             this.setupFooterVisibility();
         });
-
+    
         console.log('🎧 Vast, Vast Majority to Subwoofers');
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        console.log('🌐 BOOTUP POWER ALLOCATION:');
+        console.log('🔌 BOOTUP POWER ALLOCATION:');
         const siteManager = new SectionManager();
         console.log('🚀 BEGIN BASS BROADCAST');
     } catch (error) {
-        console.error('🚨 Launch Failed:', error);
+        console.error('⚠️ Launch Failed:', error);
     }
 });

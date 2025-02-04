@@ -72,7 +72,7 @@ class SectionManager {
 
         // Add event listener to log changes
         window.addEventListener('resize', () => {
-            console.log('📏 Wormhole Reshaping Bass Station');
+            console.log('📏 Wormhole Reshaping Station Dimensions');
             logViewportDetails();
         });
     }
@@ -103,7 +103,7 @@ class SectionManager {
 
     updateCurrentSection(sectionName) {
         if (this.currentSection !== sectionName) {
-            console.log(`🚦 Ship Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
+            console.log(`🚦 Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
             this.currentSection = sectionName;
             
             // Dispatch a custom event for section change
@@ -130,7 +130,7 @@ class SectionManager {
                 case 'click':
                     trigger.elements.forEach(el => {
                         el.addEventListener('click', () => {
-                            console.log(`🖱️ AutoPilot Engaged: Click`);
+                            console.log(`🖱️ AutoPilot Engaged via Click`);
                             this.navigateToNextSection();
                         });
                     });
@@ -141,7 +141,7 @@ class SectionManager {
                         if (trigger.keys.includes(e.key) || trigger.keys.includes(e.code)) {
                             e.preventDefault();
                             if (!this.initialNavigationComplete) {
-                                console.log(`⌨️ AutoPilot Engaged`);
+                                console.log(`⌨️ AutoPilot Engaged via Key`);
                                 this.navigateToNextSection();
                             } else {
                                 console.log(`⌨️ AutoPilot Denied`);
@@ -158,7 +158,7 @@ class SectionManager {
                         if (e.deltaY > 0 && currentTime - lastScrollTime > trigger.threshold) {
                             if (!this.initialNavigationComplete) {
                                 lastScrollTime = currentTime;
-                                console.log('🖱️ AutoPilot Engaged: Scroll');
+                                console.log('🖱️ AutoPilot Engaged via Scroll');
                                 this.navigateToNextSection();
                             } else {
                                 console.log('🖱️ AutoPilot Denied');
@@ -180,7 +180,7 @@ class SectionManager {
                         
                         if (Math.abs(touchDiff) > trigger.sensitivity && touchDiff > 0) {
                             if (!this.initialNavigationComplete) {
-                                console.log('👆 AutoPilot Engaged');
+                                console.log('👆 AutoPilot Engaged via Swipe');
                                 this.navigateToNextSection();
                             } else {
                                 console.log('👆 AutoPilot Denied');
@@ -200,19 +200,19 @@ class SectionManager {
 
         if (nextIndex < this.sectionOrder.length) {
             const nextSection = this.sectionOrder[nextIndex];
-            console.log(`🧭 Navigation Plotted: ${this.currentSection} → ${nextSection}`);
+            console.log(`🧭 Plotting Navigation: ${this.currentSection} → ${nextSection}`);
             this.navigateToSection(nextSection);
 
             // Mark initial navigation as complete when reaching mixes section  SMALL PROBLEM HERE AS YOU CAN RETRIGGER THIS BY SCROLLING BACK UP THEN BACK DOWN, SHOULD POSSIBLY BE TIED TO FOOTER BECOMING VISIBLE, NOT
             if (nextSection === 'mixes') {
                 this.initialNavigationComplete = true;
-                console.log('🏁 Navigation Complete - AutoPilot Hibernating');
+                console.log('🏁 Destination Reached - AutoPilot Resting');
             }
         }
     }
 
     navigateToSection(sectionName) {
-        console.log(`🚦 AutoPilot Flying to ${sectionName}`);
+        console.log(`🚦 AutoPiloting to ${sectionName}`);
         const targetSection = this.sections.find(section => section.name === sectionName);
         
         if (targetSection) {
@@ -310,7 +310,7 @@ class SectionManager {
                 audioPlayer.src = mixItem.getAttribute('data-src');
                 audioPlayer.play()
                     .then(() => {
-                        console.log('🎶 Mix Now Playing');
+                        console.log('🎶 Subwoofers Firing');
                         this.state.audioPlaying = true;
                         this.setupFooterVisibility();
                     })
@@ -321,7 +321,12 @@ class SectionManager {
             });
         });
 
-        // Add event listener to track audio state  EXPERIMENT HERE AS PAUSE IS NOW HIDING PLAYER
+        audioPlayer.addEventListener('play', () => {
+            console.log('▶️ Audio: Playback started');
+            this.state.audioPlaying = true;
+            this.setupFooterVisibility();
+        });
+
         audioPlayer.addEventListener('pause', () => {
             console.log('⏸️ Audio: Playback paused');
             this.state.audioPlaying = false;

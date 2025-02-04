@@ -124,11 +124,12 @@ body {
   white-space: nowrap;
   font-size: clamp(0.5rem, 3vw, 2.5rem);
   margin-top: 0.5rem;
+  transition: all 0.3s ease;
 }
 /* Countdown Active */
 .bass-station-active {
   color: var(--color-green);
-  font-size: clamp(0.5rem, 4vw, 3rem);
+  font-size: clamp(0.5rem, 3vw, 3rem);
   text-decoration: none;
   transition: all 0.3s ease;
   display: inline-block;

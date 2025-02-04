@@ -84,7 +84,7 @@ class SectionManager {
         const options = {
             root: null,
             rootMargin: '0px',
-            threshold: 0.5  // Trigger when 50% of section is visible
+            threshold: 0.5
         };
 
         this.intersectionObserver = new IntersectionObserver((entries) => {
@@ -229,42 +229,20 @@ class SectionManager {
         }
     }
 
-    setupFooterVisibility() {
-        const footer = document.getElementById('footer-section');
-        const mixSection = document.getElementById('mix-section');
-
-        const checkFooterVisibility = () => {
-            // Show footer if audio is playing
-            if (this.state.audioPlaying) {
-                console.log('🔊 Footer Showing: Audio');
-                footer.classList.add('visible');
-                footer.classList.remove('hidden');
-                return;
-            }
-
-            // Show footer if user is near the bottom of the mix section - COULD THIS BE A PERCENTAGE OR AN rem?
-            const mixSectionRect = mixSection.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-
-            if (mixSectionRect.bottom - windowHeight <= 100) {
-                console.log('📍 Footer Showing: Position');
-                footer.classList.add('visible');
-                footer.classList.remove('hidden');
-            } else {
-                console.log('📍 Footer Hidden');
-                footer.classList.remove('visible');
-                footer.classList.add('hidden');
-            }
-        };
-
-        // Add event listeners
-        window.addEventListener('scroll', checkFooterVisibility);
-        
-        // Initial check
-        checkFooterVisibility();
-    }
-
     setupCountdown() {
+        console.group('⏰ Time System Initialization');
+        
+        // Log initial time state
+        const userLocalTime = new Date();
+        console.log('Local Time:', userLocalTime.toLocaleString());
+        console.log('Local Timezone:', Intl.DateTimeFormat().resolvedOptions().timeZone);
+        
+        const easternTime = new Date().toLocaleString("en-US", {
+            timeZone: "America/New_York"
+        });
+        console.log('Eastern Time:', new Date(easternTime).toLocaleString());
+        console.groupEnd();
+
         function updateCountdown() {
             const countdownElement = document.getElementById('countdown');
             
@@ -302,13 +280,47 @@ class SectionManager {
         
             countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
         }    
+        
         // Update immediately and then every second
         updateCountdown();
         setInterval(updateCountdown, 1000);
-    
-        console.log('⏰ Galaxy Timezone Calibrated');
     }
+
+    setupFooterVisibility() {
+        const footer = document.getElementById('footer-section');
+        const mixSection = document.getElementById('mix-section');
+
+        const checkFooterVisibility = () => {
+            // Show footer if audio is playing
+            if (this.state.audioPlaying) {
+                console.log('🔊 Footer Showing: Audio');
+                footer.classList.add('visible');
+                footer.classList.remove('hidden');
+                return;
+            }
+
+            // Show footer if user is near the bottom of the mix section
+            const mixSectionRect = mixSection.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            if (mixSectionRect.bottom - windowHeight <= 100) {
+                console.log('📍 Footer Showing: Position');
+                footer.classList.add('visible');
+                footer.classList.remove('hidden');
+            } else {
+                console.log('📍 Footer Hidden');
+                footer.classList.remove('visible');
+                footer.classList.add('hidden');
+            }
+        };
+
+        // Add event listeners
+        window.addEventListener('scroll', checkFooterVisibility);
         
+        // Initial check
+        checkFooterVisibility();
+    }
+
     setupAudioPlayer() {
         const mixItems = document.querySelectorAll('.mix-item');
         const audioPlayer = document.getElementById('mixPlayer');

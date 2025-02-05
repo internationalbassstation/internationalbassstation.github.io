@@ -9,21 +9,18 @@
   --container-max-width: 80rem;
   --footer-height: 4.5rem;
   --border: 2px solid var(--color-pink);
-/* COLOURS */
   --color-purple: rgba(100, 36, 184, 1);
   --color-pink: rgba(239, 36, 170, 1);
   --color-green: rgba(180, 233, 17, 1);
   --color-white: rgba(255, 255, 255, 1);
   --color-background: rgba(0, 0, 0, 1);
   --color-black-translucent: rgba(0, 0, 0, 0.9);
-/* FONTS */
   --font-goldman: 'Goldman', sans-serif;
   --font-glitch: 'RubikGlitch', sans-serif;
   --font-syncopate: 'Syncopate', sans-serif;
   --font-syncopate-bold: 'Syncopate-Bold', sans-serif;
   --font-wallpoet: 'Wallpoet', sans-serif;
 }
-/* BASE STYLING */
 * {
   margin: 0;
   padding: 0;
@@ -304,7 +301,7 @@ body {
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
-/* MOBILE COMPATIBILITY - PORTRAIT */
+/* MOBILE CHANGES - PORTRAIT */
 @media (orientation: portrait) and (max-width: 768px) {
   .hero-container {
     background: url('assets/images/IBSportrait.jpg') center/contain no-repeat;
@@ -356,7 +353,7 @@ body {
     font-size: clamp(0.5rem, 6vw, 5rem);
   }
 }
-/* MOBILE COMPATIBILITY - LANDSCAPE */
+/* MOBILE CHANGES - LANDSCAPE */
 @media (orientation: landscape) and (max-height: 500px) {
   .hero-container {
     background: url('assets/images/IBSwide.jpg') center/contain no-repeat;

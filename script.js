@@ -45,8 +45,8 @@ class SectionManager {
             const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
             const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
             console.group('📐 Station Dimensions');
-            console.log(`Height: ${viewportHeight}px (${(viewportHeight / rootFontSize).toFixed(2)}rem)`);
-            console.log(`Width: ${viewportWidth}px (${(viewportWidth / rootFontSize).toFixed(2)}rem)`);
+            console.log(`Height: ${viewportHeight}px / ${(viewportHeight / rootFontSize).toFixed(2)}rem`);
+            console.log(`Width: ${viewportWidth}px / ${(viewportWidth / rootFontSize).toFixed(2)}rem`);
             console.log(`Aspect Ratio: ${aspectRatio}`);
             console.log(`Orientation: ${orientation}`);
             console.log(`Document Height: ${documentHeight}px`);

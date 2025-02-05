@@ -1,6 +1,6 @@
 class SectionManager {
     constructor() {
-        console.log('⚡ Faint Flicker in Inventory Lighting');
+        console.log('⚡ Faint Flicker Fueling Facility Fixtures');
 // Define sections
         this.sections = [
             { name: 'hero', element: document.getElementById('hero-section') },
@@ -22,7 +22,7 @@ class SectionManager {
     }
 
     initializeManager() {
-        console.log('📡 Tiny Trickle to Nav Systems');
+        console.log('📡 Tiny Trickle Tracking Telemetry');
 // Ensure site starts at top
         history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
@@ -44,7 +44,7 @@ class SectionManager {
             const orientation = viewportWidth > viewportHeight ? 'Landscape' : 'Portrait';
             const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
             const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-            console.group('📏 Station Dimensions');
+            console.group('📐 Station Dimensions');
             console.log(`Height: ${viewportHeight}px (${(viewportHeight / rootFontSize).toFixed(2)}rem)`);
             console.log(`Width: ${viewportWidth}px (${(viewportWidth / rootFontSize).toFixed(2)}rem)`);
             console.log(`Aspect Ratio: ${aspectRatio}`);
@@ -57,7 +57,7 @@ class SectionManager {
         logViewportDetails();
 // Listener for viewport resizing
         window.addEventListener('resize', () => {
-            console.log('🕳️ Wormhole Reshaping Station Dimensions');
+            console.log('🕳️ Wormhole Reshaping Station!');
             logViewportDetails();
         });
     }
@@ -79,7 +79,7 @@ class SectionManager {
         this.sections.forEach(section => {
             this.intersectionObserver.observe(section.element);
         });
-        console.log('🔍 Dismal Drip for Ship Sensors');
+        console.log('🕵️ Dubious Discharge Diminishing Diagnostics');
     }
 // Function modifying value attribute of current section
     updateCurrentSection(sectionName) {
@@ -154,7 +154,7 @@ class SectionManager {
                         const touchDiff = touchStartY - touchEndY;
                         if (Math.abs(touchDiff) > trigger.sensitivity && touchDiff > 0) {
                             if (!this.initialNavigationComplete) {
-                                console.log('👆 AutoPilot Engaged - SWIPE');
+                                console.log('👆 AutoPilot Requested - SWIPE');
                                 this.navigateToNextSection();
                             } else {
                                 console.log('👆 AutoPilot via Swipe Denied');
@@ -164,7 +164,7 @@ class SectionManager {
                     break;
             }
         });
-        console.log('🕹️ Pitiful Portion for Pilot Controls');
+        console.log('🕹️ Pitiful Portion Powering Pilot Panel');
     }
 // Function scripting auto-scroll
     navigateToNextSection() {
@@ -200,9 +200,7 @@ class SectionManager {
 // Log initial time state
         const userLocalTime = new Date();
         console.log('🌐', Intl.DateTimeFormat().resolvedOptions().timeZone, '-', userLocalTime.toLocaleString());
-        const easternTime = new Date().toLocaleString("en-US", {
-            timeZone: "America/New_York"
-        });
+        const easternTime = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
         console.log('🧮 Eastern Time:', new Date(easternTime).toLocaleString());
         console.groupEnd();
         function updateCountdown() {
@@ -332,15 +330,15 @@ class SectionManager {
             this.state.audioPlaying = false;
             this.setupFooterVisibility();
         });
-        console.log('🎧 Overwhelming Majority to Subwoofers');
+        console.log('📢 Staggering Share Supercharging Subwoofers');
     }
 }
 // First and final calls to launch site
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        console.log('🔌 INITIATED - ALLOCATING POWER:');
+        console.log('🔌 BOOTUP - ALLOCATING POWER:');
         const siteManager = new SectionManager();
-        console.log('🚀 BEGIN BASS BROADCAST');
+        console.log('🛸 BEGIN BASS BROADCAST');
     } catch (error) {
         console.error('⚠️ LAUNCH FAILED:', error);
     }

@@ -301,7 +301,7 @@ body {
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
-/* MOBILE CHANGES - PORTRAIT */
+/* MOBILE - PORTRAIT */
 @media (orientation: portrait) and (max-width: 768px) {
   .hero-container {
     background: url('assets/images/IBSportrait.jpg') center/contain no-repeat;
@@ -353,7 +353,7 @@ body {
     font-size: clamp(0.5rem, 6vw, 5rem);
   }
 }
-/* MOBILE CHANGES - LANDSCAPE */
+/* MOBILE - LANDSCAPE */
 @media (orientation: landscape) and (max-height: 500px) {
   .hero-container {
     background: url('assets/images/IBSwide.jpg') center/contain no-repeat;

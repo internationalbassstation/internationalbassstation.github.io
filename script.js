@@ -1,32 +1,26 @@
 class SectionManager {
     constructor() {
         console.log('⚡ Faint Flicker Fueling Facility Fixtures');
-// Define sections
+// SETUP SECTION STRUCTURE
         this.sections = [
             { name: 'hero', element: document.getElementById('hero-section') },
             { name: 'info', element: document.getElementById('info-section') },
             { name: 'mixes', element: document.getElementById('mix-section') }
         ];
         this.currentSection = null;
-// Navigation order
         this.sectionOrder = ['hero', 'info', 'mixes'];
-// Track if initial navigation has completed
         this.initialNavigationComplete = false;
-// Track furthest reached section to prevent loops
         this.furthestReachedIndex = 0;
-// State for audio and other interactions
         this.state = {
             audioPlaying: false
         };
         this.initializeManager();
     }
-
+// INITIALIZE SITE AND START AT TOP
     initializeManager() {
         console.log('📡 Tiny Trickle Tracking Telemetry');
-// Ensure site starts at top
         history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
-// Initial setups
         this.setupIntersectionObserver();
         this.setupNavigationListeners();
         this.setupAudioPlayer();
@@ -34,7 +28,7 @@ class SectionManager {
         this.setupFooterVisibility();
         this.setupViewportLogging();
     }
-// Log viewport size
+// DETERMINE VIEWPORT SIZE AND LISTEN FOR CHANGE
     setupViewportLogging() { 
         const logViewportDetails = () => {
             const viewportWidth = window.innerWidth;
@@ -55,13 +49,12 @@ class SectionManager {
             console.groupEnd();
         };
         logViewportDetails();
-// Listener for viewport resizing
         window.addEventListener('resize', () => {
             console.log('🕳️ Wormhole Reshaping Station!');
             logViewportDetails();
         });
     }
-// Observer to determine user's current section
+// OBSERVER DETERMINES CURRENT SECTION
     setupIntersectionObserver() {
         const options = {
             root: null,
@@ -81,7 +74,7 @@ class SectionManager {
         });
         console.log('🕵️ Dubious Discharge Diminishing Diagnostics');
     }
-// Function modifying value attribute of current section
+// MODIFYING VALUE ATTRIBUTE OF CURRENT SECTION
     updateCurrentSection(sectionName) {
         if (this.currentSection !== sectionName) {
             console.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
@@ -92,7 +85,7 @@ class SectionManager {
             document.dispatchEvent(event);
         }
     }
-// Listeners for user inputs
+// LISTENERS FOR USER INPUTS
     setupNavigationListeners() {
         const navigationTriggers = [
             { type: 'click', elements: [
@@ -166,13 +159,11 @@ class SectionManager {
         });
         console.log('🕹️ Pitiful Portion Powering Pilot Panel');
     }
-// Function scripting auto-scroll
+// UPDATE DEPTH INTO SITE
     navigateToNextSection() {
         const currentIndex = this.sectionOrder.indexOf(this.currentSection);
         const nextIndex = currentIndex + 1;
-// Update furthest reached
         this.furthestReachedIndex = Math.max(this.furthestReachedIndex, currentIndex);
-// Only allow forward navigation if we haven't reached this section before
         if (nextIndex < this.sectionOrder.length && currentIndex >= this.furthestReachedIndex) {
             const nextSection = this.sectionOrder[nextIndex];
             console.log(`🗺️ Plotting Navigation: ${this.currentSection} → ${nextSection}`);
@@ -183,7 +174,7 @@ class SectionManager {
             }
         }
     }
-// Function scripting auto-scroll (POSSIBLE REDUNDANCY?)
+// SCRIPTING AUTO-SCROLL
     navigateToSection(sectionName) {
         console.log(`✈️ AutoPiloting to ${sectionName}`);
         const targetSection = this.sections.find(section => section.name === sectionName);
@@ -195,9 +186,8 @@ class SectionManager {
             });
         }
     }
-// Countdown logic and element swap
+// JETLAG CALCULATIONS, COUNTDOWN LOGIC, AND ELEMENT SWAPPING
     setupCountdown() {
-// Log initial time state
         const userLocalTime = new Date();
         console.log('🌐', Intl.DateTimeFormat().resolvedOptions().timeZone, '-', userLocalTime.toLocaleString());
         const easternTime = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
@@ -241,16 +231,14 @@ class SectionManager {
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
         }    
-// Update immediately and then every second
         updateCountdown();
         setInterval(updateCountdown, 1000);
     }
-// Footer visibility logic
+// FOOTER VISIBILITY AND LISTENER
     setupFooterVisibility() {
         const footer = document.getElementById('footer-section');
         const mixSection = document.getElementById('mix-section');
         const checkFooterVisibility = () => {
-// Show footer if audio is playing
             if (this.state.audioPlaying) {
                 // console.log('🔊 Footer Showing: Audio');
                 footer.classList.add('visible');
@@ -270,17 +258,14 @@ class SectionManager {
                 footer.classList.add('hidden');
             }
         };
-// Add event listeners
         window.addEventListener('scroll', checkFooterVisibility);
-// Initial check
         checkFooterVisibility();
     }
-// Audio Player setup (room for improvement)
+// AUDIO PLAYER AND LISTENERS
     setupAudioPlayer() {
         const mixItems = document.querySelectorAll('.mix-item');
         const audioPlayer = document.getElementById('mixPlayer');
         const footer = document.getElementById('footer-section');
-// Add a property to track the timeout
         let footerHideTimeout;
         mixItems.forEach(mixItem => {
             mixItem.addEventListener('click', () => {
@@ -333,7 +318,7 @@ class SectionManager {
         console.log('📢 Staggering Share Supercharging Subwoofers');
     }
 }
-// First and final calls to launch site
+// FIRST AND FINAL SITE INITIALIZATIONS
 document.addEventListener('DOMContentLoaded', () => {
     try {
         console.log('🔌 BOOTUP - ALLOCATING POWER:');

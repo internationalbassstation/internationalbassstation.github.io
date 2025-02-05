@@ -108,7 +108,7 @@ class SectionManager {
                 case 'click':
                     trigger.elements.forEach(el => {
                         el.addEventListener('click', () => {
-                            console.log(`🖱️ AutoPilot Requested via Click`);
+                            console.log(`🖱️ AutoPilot Requested - CLICK`);
                             this.navigateToNextSection();
                         });
                     });
@@ -118,10 +118,11 @@ class SectionManager {
                         if (trigger.keys.includes(e.key) || trigger.keys.includes(e.code)) {
                             e.preventDefault();
                             if (!this.initialNavigationComplete) {
-                                console.log(`⌨️ AutoPilot Requested via Keystroke`);
+                                console.log(`⌨️ AutoPilot Requested - KEYSTROKE`);
                                 this.navigateToNextSection();
                             } else {
-                                console.log(`⌨️ AutoPilot via Keystroke Denied`);
+                                // console.log(`⌨️ AutoPilot via Keystroke Denied`);
+                                return;
                             }
                         }
                     });
@@ -134,7 +135,7 @@ class SectionManager {
                         if (e.deltaY > 0 && currentTime - lastScrollTime > trigger.threshold) {
                             if (!this.initialNavigationComplete) {
                                 lastScrollTime = currentTime;
-                                console.log('🖱️ AutoPilot Requested via Scroll');
+                                console.log('🖱️ AutoPilot Requested - SCROLL');
                                 this.navigateToNextSection();
                             } else {
                                 // console.log('🖱️ AutoPilot via Scroll Denied');
@@ -153,7 +154,7 @@ class SectionManager {
                         const touchDiff = touchStartY - touchEndY;
                         if (Math.abs(touchDiff) > trigger.sensitivity && touchDiff > 0) {
                             if (!this.initialNavigationComplete) {
-                                console.log('👆 AutoPilot Engaged via Swipe');
+                                console.log('👆 AutoPilot Engaged - SWIPE');
                                 this.navigateToNextSection();
                             } else {
                                 console.log('👆 AutoPilot via Swipe Denied');
@@ -178,7 +179,7 @@ class SectionManager {
             this.navigateToSection(nextSection);
             if (nextSection === 'mixes') {
                 this.initialNavigationComplete = true;
-                console.log('🏁 Destination Reached - AutoPilot Resting');
+                console.log('🏁 Destination Reached - AutoPilot Hibernating');
             }
         }
     }
@@ -202,7 +203,7 @@ class SectionManager {
         const easternTime = new Date().toLocaleString("en-US", {
             timeZone: "America/New_York"
         });
-        console.log('🧮Eastern Time:', new Date(easternTime).toLocaleString());
+        console.log('🧮 Eastern Time:', new Date(easternTime).toLocaleString());
         console.groupEnd();
         function updateCountdown() {
             const countdownElement = document.getElementById('countdown');
@@ -293,7 +294,7 @@ class SectionManager {
                 audioPlayer.src = mixItem.getAttribute('data-src');
                 audioPlayer.play()
                     .then(() => {
-                        console.log('🎶 Subwoofers Firing');
+                        console.log('🎶 Mix Active');
                         this.state.audioPlaying = true;
                         this.setupFooterVisibility();
                     })
@@ -308,12 +309,12 @@ class SectionManager {
             if (footerHideTimeout) {
                 clearTimeout(footerHideTimeout);
             }
-            console.log('▶️ Audio: Playback started');
+            console.log('▶️ Audio Started');
             this.state.audioPlaying = true;
             this.setupFooterVisibility();
         });
         audioPlayer.addEventListener('pause', () => {
-            console.log('⏸️ Audio Playback Paused');
+            console.log('⏸️ Audio Paused');
             console.log('⏲️ Grace Timer: 8s');
 // Clear any existing timeout first
             if (footerHideTimeout) {
@@ -321,26 +322,26 @@ class SectionManager {
             }
 // Set new timeout
             footerHideTimeout = setTimeout(() => {
-                console.log('⏲️ Grace Timer Depleted');
+                console.log('⏲️ Timer Depleted');
                 this.state.audioPlaying = false;
                 this.setupFooterVisibility();
             }, 8000); // 8 seconds
         });
         audioPlayer.addEventListener('ended', () => {
-            console.log('🏁 Audio: Mix playback completed');
+            console.log('🏁 Audio Complete');
             this.state.audioPlaying = false;
             this.setupFooterVisibility();
         });
-        console.log('🎧 Overwhelming Majority for Subwoofers');
+        console.log('🎧 Overwhelming Majority to Subwoofers');
     }
 }
 // First and final calls to launch site
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        console.log('🔌 BOOTUP INITIALIZED: ALLOCATING POWER:');
+        console.log('🔌 INITIATED - ALLOCATING POWER:');
         const siteManager = new SectionManager();
         console.log('🚀 BEGIN BASS BROADCAST');
     } catch (error) {
-        console.error('⚠️ Launch Failed:', error);
+        console.error('⚠️ LAUNCH FAILED:', error);
     }
 });

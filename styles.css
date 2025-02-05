@@ -1,31 +1,11 @@
-/* IMPORT FONTS */
-@font-face {
-  font-family: 'Goldman';
-  src: url('assets/fonts/Goldman.ttf') format('truetype');
-  font-display: block;
-}
-@font-face {
-  font-family: 'RubikGlitch';
-  src: url('assets/fonts/RubikGlitch.ttf') format('truetype');
-  font-display: block;
-}
-@font-face {
-  font-family: 'Syncopate';
-  src: url('assets/fonts/Syncopate-Regular.ttf') format('truetype');
-  font-display: block;
-}
-@font-face {
-  font-family: 'Syncopate-Bold';
-  src: url('assets/fonts/Syncopate-Bold.ttf') format('truetype');
-  font-display: block;
-}
-@font-face {
-  font-family: 'Wallpoet';
-  src: url('assets/fonts/Wallpoet-Regular.ttf') format('truetype');
-  font-display: block;
-}
-:root {
+/* IMPORTS */
+@font-face { font-family: 'Goldman'; src: url('assets/fonts/Goldman.ttf') format('truetype'); font-display: block}
+@font-face { font-family: 'RubikGlitch'; src: url('assets/fonts/RubikGlitch.ttf') format('truetype'); font-display: block}
+@font-face { font-family: 'Syncopate'; src: url('assets/fonts/Syncopate-Regular.ttf') format('truetype'); font-display: block}
+@font-face { font-family: 'Syncopate-Bold'; src: url('assets/fonts/Syncopate-Bold.ttf') format('truetype'); font-display: block}
+@font-face { font-family: 'Wallpoet'; src: url('assets/fonts/Wallpoet-Regular.ttf') format('truetype'); font-display: block}
 /* LAYOUT */
+:root {
   --container-max-width: 80rem;
   --footer-height: 4.5rem;
   --border: 2px solid var(--color-pink);
@@ -43,7 +23,7 @@
   --font-syncopate-bold: 'Syncopate-Bold', sans-serif;
   --font-wallpoet: 'Wallpoet', sans-serif;
 }
-/* BASE STYLES */
+/* BASE STYLING */
 * {
   margin: 0;
   padding: 0;
@@ -60,7 +40,7 @@ body {
   background-color: var(--color-background);
   overflow-x: hidden;
 }
-/* HERO SCREEN */
+/* HERO SECTION */
 .hero-container {
   margin: 0 auto;
   height: 100dvh;
@@ -81,7 +61,7 @@ body {
   letter-spacing: 0.2em;
   animation: fadeInOut 2s infinite;
 }
-/* INFO SCREEN */
+/* INFO SECTION */
 .info-container {
   height: 100dvh;
   max-width: var(--container-max-width);
@@ -105,7 +85,6 @@ body {
   text-align: center;
   padding: 0.8rem;
 }
-/* BROADCAST INFO */
 .broadcast-info {
   display: flex;
   flex-direction: column;
@@ -189,7 +168,6 @@ body {
 .broadcast-player a:hover {
   color: var(--color-green);
 }
-/* DJ INFO */
 .dj-info {
   display: flex;
   flex-direction: column;
@@ -206,7 +184,6 @@ body {
   color: var(--color-white);
   font-size: clamp(1rem, 1vw, 0.8rem);
 }
-/* PAST VOYAGES */
 .past-voyages {
   display: flex;
   flex-direction: column;
@@ -218,7 +195,7 @@ body {
   cursor: crosshair;
   animation: neon 1.5s ease-in-out infinite alternate;
 }
-/* MIXES SCREEN */
+/* MIXES SECTION */
 .mix-container {
   max-width: var(--container-max-width);
   display: flex;
@@ -327,7 +304,7 @@ body {
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
-/* MOBILE BROWSER CHANGES */
+/* MOBILE COMPATIBILITY - PORTRAIT */
 @media (orientation: portrait) and (max-width: 768px) {
   .hero-container {
     background: url('assets/images/IBSportrait.jpg') center/contain no-repeat;
@@ -379,7 +356,7 @@ body {
     font-size: clamp(0.5rem, 6vw, 5rem);
   }
 }
-/* Landscape orientation for mobile devices */
+/* MOBILE COMPATIBILITY - LANDSCAPE */
 @media (orientation: landscape) and (max-height: 500px) {
   .hero-container {
     background: url('assets/images/IBSwide.jpg') center/contain no-repeat;

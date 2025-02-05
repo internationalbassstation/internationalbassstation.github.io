@@ -22,7 +22,7 @@ class SectionManager {
     }
 
     initializeManager() {
-        console.log('📡 Tiny Trickle for Nav Systems');
+        console.log('📡 Tiny Trickle to Nav Systems');
 // Ensure site starts at top
         history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
@@ -44,14 +44,14 @@ class SectionManager {
             const orientation = viewportWidth > viewportHeight ? 'Landscape' : 'Portrait';
             const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
             const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-            console.group('📏 Bass Station Dimensions');
-            console.log(`Width: ${viewportWidth}px (${(viewportWidth / rootFontSize).toFixed(2)}rem)`);
+            console.group('📏 Station Dimensions');
             console.log(`Height: ${viewportHeight}px (${(viewportHeight / rootFontSize).toFixed(2)}rem)`);
-            console.log(`Document Width: ${documentWidth}px`);
-            console.log(`Document Height: ${documentHeight}px`);
-            console.log(`Root Font Size: ${rootFontSize}px`);
-            console.log(`Orientation: ${orientation}`);
+            console.log(`Width: ${viewportWidth}px (${(viewportWidth / rootFontSize).toFixed(2)}rem)`);
             console.log(`Aspect Ratio: ${aspectRatio}`);
+            console.log(`Orientation: ${orientation}`);
+            console.log(`Document Height: ${documentHeight}px`);
+            console.log(`Document Width: ${documentWidth}px`);
+            console.log(`Root Font Size: ${rootFontSize}px`);
             console.groupEnd();
         };
         logViewportDetails();
@@ -137,7 +137,8 @@ class SectionManager {
                                 console.log('🖱️ AutoPilot Requested via Scroll');
                                 this.navigateToNextSection();
                             } else {
-                                console.log('🖱️ AutoPilot via Scroll Denied');
+                                // console.log('🖱️ AutoPilot via Scroll Denied');
+                                return
                             }
                         }
                     }, { passive: true });
@@ -195,15 +196,13 @@ class SectionManager {
     }
 // Countdown logic and element swap
     setupCountdown() {
-        console.group('⏰ Time System Initialization');
 // Log initial time state
         const userLocalTime = new Date();
-        console.log('Local Time:', userLocalTime.toLocaleString());
-        console.log('Local Timezone:', Intl.DateTimeFormat().resolvedOptions().timeZone);
+        console.log('🌐', Intl.DateTimeFormat().resolvedOptions().timeZone, '-', userLocalTime.toLocaleString());
         const easternTime = new Date().toLocaleString("en-US", {
             timeZone: "America/New_York"
         });
-        console.log('Eastern Time:', new Date(easternTime).toLocaleString());
+        console.log('🧮Eastern Time:', new Date(easternTime).toLocaleString());
         console.groupEnd();
         function updateCountdown() {
             const countdownElement = document.getElementById('countdown');
@@ -254,7 +253,7 @@ class SectionManager {
         const checkFooterVisibility = () => {
 // Show footer if audio is playing
             if (this.state.audioPlaying) {
-                console.log('🔊 Footer Showing: Audio');
+                // console.log('🔊 Footer Showing: Audio');
                 footer.classList.add('visible');
                 footer.classList.remove('hidden');
                 return;
@@ -263,11 +262,11 @@ class SectionManager {
             const mixSectionRect = mixSection.getBoundingClientRect();
             const windowHeight = window.innerHeight;
             if (mixSectionRect.bottom - windowHeight <= 100) {
-                console.log('📍 Footer Showing: Position');
+                // console.log('📍 Footer Showing: Position');
                 footer.classList.add('visible');
                 footer.classList.remove('hidden');
             } else {
-                console.log('📍 Footer Hidden');
+                // console.log('📍 Footer Hidden');
                 footer.classList.remove('visible');
                 footer.classList.add('hidden');
             }
@@ -338,7 +337,7 @@ class SectionManager {
 // First and final calls to launch site
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        console.log('🔌 BOOTUP POWER ALLOCATION:');
+        console.log('🔌 BOOTUP INITIALIZED: ALLOCATING POWER:');
         const siteManager = new SectionManager();
         console.log('🚀 BEGIN BASS BROADCAST');
     } catch (error) {

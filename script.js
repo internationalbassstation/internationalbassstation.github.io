@@ -189,6 +189,7 @@ class SectionManager {
 // JETLAG CALCULATIONS, COUNTDOWN LOGIC, AND ELEMENT SWAPPING
 setupCountdown() {
     const countdownElement = document.getElementById('countdown');
+    
 
     function updateCountdown() {
         try {
@@ -252,8 +253,8 @@ setupCountdown() {
             countdownElement.style.display = 'block';
 
         } catch (error) {
-            console.error("⚠️ Countdown error:", error);
-            // Hide the countdown element
+            console.error("⚠️ Countdown error:", error.message, error.stack);  // Log the message and stack trace
+            //  Hide the countdown element
             countdownElement.style.display = 'none'; // Or 'visibility: hidden;'
         }
     }

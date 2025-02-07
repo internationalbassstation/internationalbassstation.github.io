@@ -259,6 +259,16 @@ body {
 .audio-player-container {
   flex-grow: 1;
 }
+.audio-player-container.error {
+  background-color: rgba(255, 0, 0, 0.2); /* Reddish background */
+  border: 1px solid red;
+}
+.audio-player-container.error::after {
+  content: "Error loading audio. Please try again.";
+  display: block;
+  color: red;
+  font-size: 0.8em;
+}
 #mixPlayer {
   width: 100%;
   border: 0.4rem solid var(--color-pink);

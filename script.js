@@ -187,53 +187,80 @@ class SectionManager {
         }
     }
 // JETLAG CALCULATIONS, COUNTDOWN LOGIC, AND ELEMENT SWAPPING
-    setupCountdown() {
-        const userLocalTime = new Date();
-        console.log('🌐', Intl.DateTimeFormat().resolvedOptions().timeZone, '-', userLocalTime.toLocaleString());
-        const easternTime = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
-        console.log('🧮 Eastern Time:', new Date(easternTime).toLocaleString());
-        console.groupEnd();
-        function updateCountdown() {
-            const countdownElement = document.getElementById('countdown');
-// Get current time in Eastern timezone
-            const easternTime = new Date().toLocaleString("en-US", {
-                timeZone: "America/New_York"
+setupCountdown() {
+    const countdownElement = document.getElementById('countdown');
+
+    function updateCountdown() {
+        try {
+            // Get current time in user's timezone
+            const now = new Date();           
+
+            // Create a formatter for EST
+            const estFormatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/New_York',
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
             });
-            const now = new Date(easternTime);
-            const currentDay = now.getDay();
-            const currentHour = now.getHours();
-// Check if it's Friday between 10 PM and 11 PM ET
+
+            // Get current time in EST
+            const nowESTString = estFormatter.format(now);
+            const nowEST = new Date(nowESTString);
+
+            const currentDay = nowEST.getDay();
+            const currentHour = nowEST.getHours();
+
+            // Check if it's Friday between 10 PM and 11 PM ET
             if (currentDay === 5 && currentHour >= 22 && currentHour < 23) {
                 countdownElement.innerHTML = `
-                    <a href="https://northumberland897.ca" 
-                       target="_blank" 
-                       rel="noopener noreferrer" 
+                    <a href="https://northumberland897.ca"
+                       target="_blank"
+                       rel="noopener noreferrer"
                        class="digital-glitch">
                         BASS STATION ACTIVE
                     </a>`;
                 return;
             }
-// Find next Friday at 10 PM ET
-            const nextFriday = new Date(easternTime);
+
+            // Find next Friday at 10 PM EST
+            let nextFridayEST = new Date(nowEST);
+
             if (currentDay === 5 && currentHour >= 23) {
-// If it's Friday after 11 PM, target next week's Friday
-                nextFriday.setDate(nextFriday.getDate() + 7);
+                // If it's Friday after 11 PM, target next week's Friday
+                nextFridayEST.setDate(nextFridayEST.getDate() + 7);
             } else {
-// Otherwise, find the next Friday
-                nextFriday.setDate(nextFriday.getDate() + ((7 - currentDay + 5) % 7));
+                // Otherwise, find the next Friday
+                nextFridayEST.setDate(nextFridayEST.getDate() + ((7 - currentDay + 5) % 7));
             }
-            nextFriday.setHours(22, 0, 0, 0);
-// Calculate difference
-            const diff = nextFriday - now;
+            nextFridayEST.setHours(22, 0, 0, 0);
+            const nextFridayESTString = estFormatter.format(nextFridayEST);
+            nextFridayEST = new Date(nextFridayESTString);
+
+            // Calculate difference
+            const diff = nextFridayEST - nowEST;
+
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
             countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
-        }    
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+             // Ensure countdown is visible (in case it was hidden previously)
+            countdownElement.style.display = 'block';
+
+        } catch (error) {
+            console.error("⚠️ Countdown error:", error);
+            // Hide the countdown element
+            countdownElement.style.display = 'none'; // Or 'visibility: hidden;'
+        }
     }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
 // FOOTER VISIBILITY AND LISTENER
     setupFooterVisibility() {
         const footer = document.getElementById('footer-section');

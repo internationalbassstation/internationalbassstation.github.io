@@ -265,10 +265,18 @@ class SectionManager {
                     </a>`;
                 return;
             }
-
+        
             // Find next Friday at 10 PM ET
             const nextFriday = new Date(easternTime);
-            nextFriday.setDate(nextFriday.getDate() + ((7 - currentDay + 5) % 7));
+            
+            if (currentDay === 5 && currentHour >= 23) {
+                // If it's Friday after 11 PM, target next week's Friday
+                nextFriday.setDate(nextFriday.getDate() + 7);
+            } else {
+                // Otherwise, find the next Friday
+                nextFriday.setDate(nextFriday.getDate() + ((7 - currentDay + 5) % 7));
+            }
+            
             nextFriday.setHours(22, 0, 0, 0);
         
             // Calculate difference

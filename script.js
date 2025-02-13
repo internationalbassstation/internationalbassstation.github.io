@@ -1,200 +1,358 @@
 class SectionManager {
     constructor() {
-// DEFINE SECTIONS
-        this.sections = {
-            hero: {
-                element: document.getElementById('hero-container'),
-                nextSection: 'info',
-            },
-            info: {
-                element: document.querySelector('.info-container'),
-                nextSection: 'mixes',
-            },
-            mixes: {
-                element: document.querySelector('.mix-container'),
-                nextSection: 'footer',
-            },
-            footer: {
-                element: document.querySelector('.site-footer'),
-                nextSection: null,
-            }
-        };
-// START AT HERO
+        console.log('⚡ Faint Flicker Fueling Facility Fixtures');
+// SETUP SECTION STRUCTURE
+        this.sections = [
+            { name: 'hero', element: document.getElementById('hero-section') },
+            { name: 'info', element: document.getElementById('info-section') },
+            { name: 'mixes', element: document.getElementById('mix-section') }
+        ];
+        this.currentSection = null;
+        this.sectionOrder = ['hero', 'info', 'mixes'];
+        this.initialNavigationComplete = false;
+        this.furthestReachedIndex = 0;
         this.state = {
-            currentSection: 'hero',
-            isAudioPlaying: false
+            audioPlaying: false
         };
-// PREPARE FUNCTION
-        this.initialize();
+        this.initializeManager();
     }
-// INITIALIZE STRUCTURE
-    initialize() {
-// FORCE PAGE TO TOP
+// INITIALIZE SITE AND START AT TOP
+    initializeManager() {
+        console.log('📡 Tiny Trickle Tracking Telemetry');
         history.scrollRestoration = 'manual';
-        window.scrollTo(0, 0);    
-// PREPARE SCRIPTS
+        window.scrollTo(0, 0);
+        this.setupIntersectionObserver();
         this.setupNavigationListeners();
-        this.setupInitialVisibility();
         this.setupAudioPlayer();
         this.setupCountdown();
-        this.handleScroll = this.handleScroll.bind(this);
-        window.addEventListener('scroll', this.handleScroll);
+        this.setupFooterVisibility();
+        this.setupViewportLogging();
     }
-// SET UP INVISIBILITY
-    setupInitialVisibility() {
-// HIDE ALL BUT HERO SCREEN
-        Object.keys(this.sections).forEach(sectionName => {
-            if (sectionName !== 'hero') {
-                this.sections[sectionName].element.classList.remove('visible');
-                if (sectionName === 'footer') {
-                    this.sections[sectionName].element.classList.add('hidden');
-                }
-            }
+// DETERMINE VIEWPORT SIZE AND LISTEN FOR CHANGE
+    setupViewportLogging() { 
+        const logViewportDetails = () => {
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const documentWidth = document.documentElement.clientWidth;
+            const documentHeight = document.documentElement.clientHeight;
+            const orientation = viewportWidth > viewportHeight ? 'Landscape' : 'Portrait';
+            const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
+            const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+            console.group('📐 Station Dimensions');
+            console.log(`Height: ${viewportHeight}px / ${(viewportHeight / rootFontSize).toFixed(2)}rem`);
+            console.log(`Width: ${viewportWidth}px / ${(viewportWidth / rootFontSize).toFixed(2)}rem`);
+            console.log(`Aspect Ratio: ${aspectRatio}`);
+            console.log(`Orientation: ${orientation}`);
+            console.log(`Document Height: ${documentHeight}px`);
+            console.log(`Document Width: ${documentWidth}px`);
+            console.log(`Root Font Size: ${rootFontSize}px`);
+            console.groupEnd();
+        };
+        logViewportDetails();
+        window.addEventListener('resize', () => {
+            console.log('🕳️ Wormhole Reshaping Station!');
+            logViewportDetails();
         });
     }
-// SET UP LISTENERS
-// HANDLE SCROLL EVENTS
-    handleScroll() {
-        // Get scroll position
-        const scrollPosition = window.scrollY + window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        // Show footer if near bottom (within 100px)
-        const footer = this.sections.footer.element;
-        if (scrollPosition > documentHeight - 100) {
-            footer.classList.add('visible');
-            footer.classList.remove('hidden');
-        } else if (!this.state.isAudioPlaying) {
-            // Only hide if we're not playing audio
-            footer.classList.remove('visible');
-            footer.classList.add('hidden');
+// OBSERVER DETERMINES CURRENT SECTION
+    setupIntersectionObserver() {
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+        this.intersectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionName = entry.target.id.replace('-section', '');
+                    this.updateCurrentSection(sectionName);
+                }
+            });
+        }, options);
+        this.sections.forEach(section => {
+            this.intersectionObserver.observe(section.element);
+        });
+        console.log('🕵️ Dubious Discharge Diminishing Diagnostics');
+    }
+// MODIFYING VALUE ATTRIBUTE OF CURRENT SECTION
+    updateCurrentSection(sectionName) {
+        if (this.currentSection !== sectionName) {
+            console.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
+            this.currentSection = sectionName;
+            const event = new CustomEvent('sectionchange', { 
+                detail: { section: sectionName } 
+            });
+            document.dispatchEvent(event);
         }
     }
+// LISTENERS FOR USER INPUTS
     setupNavigationListeners() {
-// CLICK
-        this.sections.hero.element.addEventListener('click', () => {
-            if (this.state.currentSection === 'hero') {
-                this.navigateToNextSection();
+        const navigationTriggers = [
+            { type: 'click', elements: [
+                this.sections.find(section => section.name === 'hero').element, 
+                document.querySelector('.past-voyages')
+            ]},
+            { type: 'keyboard', keys: ['ArrowDown', 'Space'] },
+            { type: 'wheel', threshold: 300 },
+            { type: 'touch', sensitivity: 50 }
+        ];
+        navigationTriggers.forEach(trigger => {
+            switch (trigger.type) {
+                case 'click':
+                    trigger.elements.forEach(el => {
+                        el.addEventListener('click', () => {
+                            console.log(`🖱️ AutoPilot Requested - CLICK`);
+                            this.navigateToNextSection();
+                        });
+                    });
+                    break;
+                case 'keyboard':
+                    document.addEventListener('keydown', (e) => {
+                        if (trigger.keys.includes(e.key) || trigger.keys.includes(e.code)) {
+                            e.preventDefault();
+                            if (!this.initialNavigationComplete) {
+                                console.log(`⌨️ AutoPilot Requested - KEYSTROKE`);
+                                this.navigateToNextSection();
+                            } else {
+                                // console.log(`⌨️ AutoPilot via Keystroke Denied`);
+                                return;
+                            }
+                        }
+                    });
+                    break;
+                case 'wheel':
+                    let lastScrollTime = 0;
+                    document.addEventListener('wheel', (e) => {
+                        const currentTime = new Date().getTime();
+                        
+                        if (e.deltaY > 0 && currentTime - lastScrollTime > trigger.threshold) {
+                            if (!this.initialNavigationComplete) {
+                                lastScrollTime = currentTime;
+                                console.log('🖱️ AutoPilot Requested - SCROLL');
+                                this.navigateToNextSection();
+                            } else {
+                                // console.log('🖱️ AutoPilot via Scroll Denied');
+                                return
+                            }
+                        }
+                    }, { passive: true });
+                    break;
+                case 'touch':
+                    let touchStartY = 0;
+                    document.addEventListener('touchstart', (e) => {
+                        touchStartY = e.touches[0].clientY;
+                    }, { passive: true });
+                    document.addEventListener('touchend', (e) => {
+                        const touchEndY = e.changedTouches[0].clientY;
+                        const touchDiff = touchStartY - touchEndY;
+                        if (Math.abs(touchDiff) > trigger.sensitivity && touchDiff > 0) {
+                            if (!this.initialNavigationComplete) {
+                                console.log('👆 AutoPilot Requested - SWIPE');
+                                this.navigateToNextSection();
+                            } else {
+                                console.log('👆 AutoPilot via Swipe Denied');
+                            }
+                        }
+                    });
+                    break;
             }
         });
-        const pastVoyages = document.querySelector('.past-voyages');
-        pastVoyages.addEventListener('click', () => {
-            if (this.state.currentSection === 'info') {
-                this.navigateToNextSection();
-            }
-        });
-        pastVoyages.style.cursor = 'pointer';
-// KEYBOARD
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown' || e.code === 'Space') {
-                e.preventDefault();
-                this.navigateToNextSection();
-            }
-        });
-// SCROLL
-        let lastScrollTime = 0;
-        const scrollThreshold = 500; // Minimum time between scroll triggers in ms
-        document.addEventListener('wheel', (e) => {
-            const currentTime = new Date().getTime();
-            
-            if (e.deltaY > 0 && // Scrolling down
-                currentTime - lastScrollTime > scrollThreshold) { // Throttle scroll events
-                
-                lastScrollTime = currentTime;
-                this.navigateToNextSection();
-            }
-        }, { passive: true });
-// TAP + SWIPE
-        let touchStartY = 0;
-        document.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-
-        document.addEventListener('touchend', (e) => {
-            const touchEndY = e.changedTouches[0].clientY;
-            const touchDiff = touchStartY - touchEndY;
-            
-            if (Math.abs(touchDiff) > 50 && touchDiff > 0) { // Swipe up
-                this.navigateToNextSection();
-            }
-        });
+        console.log('🕹️ Pitiful Portion Powering Pilot Panel');
     }
-// SET UP AUDIO PLAYER
+// UPDATE DEPTH INTO SITE
+    navigateToNextSection() {
+        const currentIndex = this.sectionOrder.indexOf(this.currentSection);
+        const nextIndex = currentIndex + 1;
+        this.furthestReachedIndex = Math.max(this.furthestReachedIndex, currentIndex);
+        if (nextIndex < this.sectionOrder.length && currentIndex >= this.furthestReachedIndex) {
+            const nextSection = this.sectionOrder[nextIndex];
+            console.log(`🗺️ Plotting Navigation: ${this.currentSection} → ${nextSection}`);
+            this.navigateToSection(nextSection);
+            if (nextSection === 'mixes') {
+                this.initialNavigationComplete = true;
+                console.log('🏁 Destination Reached - AutoPilot Hibernating');
+            }
+        }
+    }
+// SCRIPTING AUTO-SCROLL
+    navigateToSection(sectionName) {
+        console.log(`✈️ AutoPiloting to ${sectionName}`);
+        const targetSection = this.sections.find(section => section.name === sectionName);
+        
+        if (targetSection) {
+            targetSection.element.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+// JETLAG CALCULATIONS, COUNTDOWN LOGIC, AND ELEMENT SWAPPING
+setupCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    
+
+    function updateCountdown() {
+        try {
+            // Get current time in user's timezone
+            const now = new Date();           
+
+            // Create a formatter for EST
+            const estFormatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/New_York',
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+            });
+
+            // Get current time in EST
+            const nowESTString = estFormatter.format(now);
+            const nowEST = new Date(nowESTString);
+
+            const currentDay = nowEST.getDay();
+            const currentHour = nowEST.getHours();
+
+            // Check if it's Friday between 10 PM and 11 PM ET
+            if (currentDay === 5 && currentHour >= 22 && currentHour < 23) {
+                countdownElement.innerHTML = `
+                    <a href="https://northumberland897.ca"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="digital-glitch">
+                        BASS STATION ACTIVE
+                    </a>`;
+                return;
+            }
+
+            // Find next Friday at 10 PM EST
+            let nextFridayEST = new Date(nowEST);
+
+            if (currentDay === 5 && currentHour >= 23) {
+                // If it's Friday after 11 PM, target next week's Friday
+                nextFridayEST.setDate(nextFridayEST.getDate() + 7);
+            } else {
+                // Otherwise, find the next Friday
+                nextFridayEST.setDate(nextFridayEST.getDate() + ((7 - currentDay + 5) % 7));
+            }
+            nextFridayEST.setHours(22, 0, 0, 0);
+            const nextFridayESTString = estFormatter.format(nextFridayEST);
+            nextFridayEST = new Date(nextFridayESTString);
+
+            // Calculate difference
+            const diff = nextFridayEST - nowEST;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+             // Ensure countdown is visible (in case it was hidden previously)
+            countdownElement.style.display = 'block';
+
+        } catch (error) {
+            console.error("⚠️ Countdown error:", error.message, error.stack);  // Log the message and stack trace
+            //  Hide the countdown element
+            countdownElement.style.display = 'none'; // Or 'visibility: hidden;'
+        }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+// FOOTER VISIBILITY AND LISTENER
+    setupFooterVisibility() {
+        const footer = document.getElementById('footer-section');
+        const mixSection = document.getElementById('mix-section');
+        const checkFooterVisibility = () => {
+            if (this.state.audioPlaying) {
+                // console.log('🔊 Footer Showing: Audio');
+                footer.classList.add('visible');
+                footer.classList.remove('hidden');
+                return;
+            }
+// Show footer if user is near the bottom of the mix section
+            const mixSectionRect = mixSection.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            if (mixSectionRect.bottom - windowHeight <= 100) {
+                // console.log('📍 Footer Showing: Position');
+                footer.classList.add('visible');
+                footer.classList.remove('hidden');
+            } else {
+                // console.log('📍 Footer Hidden');
+                footer.classList.remove('visible');
+                footer.classList.add('hidden');
+            }
+        };
+        window.addEventListener('scroll', checkFooterVisibility);
+        checkFooterVisibility();
+    }
+// AUDIO PLAYER AND LISTENERS
     setupAudioPlayer() {
         const mixItems = document.querySelectorAll('.mix-item');
         const audioPlayer = document.getElementById('mixPlayer');
-        const footer = this.sections.footer.element;
+        const footer = document.getElementById('footer-section');
+        let footerHideTimeout;
         mixItems.forEach(mixItem => {
             mixItem.addEventListener('click', () => {
+// Clear any existing timeout when starting new audio
+                if (footerHideTimeout) {
+                    clearTimeout(footerHideTimeout);
+                }
+                console.log(`🎵 Queueing Mix: ${mixItem.textContent.trim()}`);
                 audioPlayer.src = mixItem.getAttribute('data-src');
-                audioPlayer.play().catch(error => {
-                    console.error('Error playing audio:', error);
-                    footer.querySelector('.audio-player-container').classList.add('error');
-                });
-                
-                this.state.isAudioPlaying = true;
-
-                footer.classList.add('visible');
-                footer.classList.remove('hidden');
-                this.navigateToSection('footer');
+                audioPlayer.play()
+                    .then(() => {
+                        console.log('🎶 Mix Active');
+                        this.state.audioPlaying = true;
+                        this.setupFooterVisibility();
+                    })
+                    .catch(error => {
+                        console.error('⚠️ Audio Error:', error);
+                        footer.querySelector('.audio-player-container').classList.add('error');
+                    });
             });
         });
-    }
-// SET UP COUNTDOWN
-        setupCountdown() {
-            const countdownElement = document.getElementById('countdown');
-            function updateCountdown() {
-                const now = new Date();
-                const estOffset = -5; // EST offset from UTC
-                // Convert current time to EST
-                const estTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (estOffset * 3600000));
-                // Find next Friday 10 PM
-                const nextFriday = new Date(estTime);
-                nextFriday.setDate(nextFriday.getDate() + ((7 - nextFriday.getDay() + 5) % 7)); // Get to Friday
-                nextFriday.setHours(22, 0, 0, 0); // Set to 10 PM
-                // If it's already past Friday 10 PM, move to next week
-                if (estTime > nextFriday) {
-                    nextFriday.setDate(nextFriday.getDate() + 7);
-                }
-                // Calculate difference
-                const diff = nextFriday - estTime;
-                // Convert to days, hours, minutes, seconds
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                // Update countdown display
-                countdownElement.textContent = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+        audioPlayer.addEventListener('play', () => {
+// Clear any existing timeout when resuming playback
+            if (footerHideTimeout) {
+                clearTimeout(footerHideTimeout);
             }
-            // Update immediately and then every second
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
-        }
-// SCRIPT TO SCROLL AUTOMATICALLY
-    navigateToNextSection() {
-        const currentSection = this.sections[this.state.currentSection];
-        if (currentSection && currentSection.nextSection) {
-            this.navigateToSection(currentSection.nextSection);
-        }
-    }
-    navigateToSection(sectionName) {
-        const targetSection = this.sections[sectionName];
-        if (!targetSection) return;
-// UPDATE CURRENT SECTION
-        this.state.currentSection = sectionName;
-// ADD VISIBILITY
-        targetSection.element.classList.add('visible');
-// SCROLL TO SECTION
-        targetSection.element.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
+            console.log('▶️ Audio Started');
+            this.state.audioPlaying = true;
+            this.setupFooterVisibility();
         });
+        audioPlayer.addEventListener('pause', () => {
+            console.log('⏸️ Audio Paused');
+            console.log('⏲️ Grace Timer: 8s');
+// Clear any existing timeout first
+            if (footerHideTimeout) {
+                clearTimeout(footerHideTimeout);
+            }
+// Set new timeout
+            footerHideTimeout = setTimeout(() => {
+                console.log('⏲️ Timer Depleted');
+                this.state.audioPlaying = false;
+                this.setupFooterVisibility();
+            }, 8000); // 8 seconds
+        });
+        audioPlayer.addEventListener('ended', () => {
+            console.log('🏁 Audio Complete');
+            this.state.audioPlaying = false;
+            this.setupFooterVisibility();
+        });
+        console.log('📢 Staggering Share Supercharging Subwoofers');
     }
 }
-// FUNCTION TO ENSURE SITE IS LOADED BEFORE DISPLAY
+// FIRST AND FINAL SITE INITIALIZATIONS
 document.addEventListener('DOMContentLoaded', () => {
     try {
+        console.log('🔌 BOOTUP - ALLOCATING POWER:');
         const siteManager = new SectionManager();
+        console.log('🛸 BEGIN BASS BROADCAST');
     } catch (error) {
-        console.error('Failed to initialize site manager:', error);
+        console.error('⚠️ LAUNCH FAILED:', error);
     }
 });

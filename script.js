@@ -16,6 +16,7 @@ class SectionManager {
         };
         this.initializeManager();
     }
+
 // INITIALIZE SITE AND START AT TOP
     initializeManager() {
         console.log('📡 Tiny Trickle Tracking Telemetry');
@@ -27,7 +28,9 @@ class SectionManager {
         this.setupCountdown();
         this.setupFooterVisibility();
         this.setupViewportLogging();
+        this.logTimezoneDebugInfo();
     }
+
 // DETERMINE VIEWPORT SIZE AND LISTEN FOR CHANGE
     setupViewportLogging() { 
         const logViewportDetails = () => {
@@ -54,7 +57,141 @@ class SectionManager {
             logViewportDetails();
         });
     }
-// OBSERVER DETERMINES CURRENT SECTION
+
+// One-time timezone debugging method
+    logTimezoneDebugInfo() {
+        const localTime = new Date();
+        const estFormatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'America/New_York',
+            dateStyle: 'full',
+            timeStyle: 'long'
+        });
+
+        console.group('🌐 Timezone Debug Information');
+        console.log('Local Time:', localTime);
+        console.log('EST Time:', estFormatter.format(localTime));
+        console.log('Local Timezone:', Intl.DateTimeFormat().resolvedOptions().timeZone);
+        console.log('EST Offset Calculation:', this.calculateESTOffset());
+        console.groupEnd();
+    }
+
+// Timezone offset calculation method
+    calculateESTOffset() {
+        const localTime = new Date();
+        const estTime = new Date(localTime.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        return localTime.getTime() - estTime.getTime();
+    }
+
+// Get current time in EST
+    getCurrentESTTime() {
+        try {
+            const localTime = new Date();
+            return new Date(localTime.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        } catch (error) {
+            console.error('EST Time Calculation Error', error);
+            return new Date();
+        }
+    }
+
+// Check if show is currently active
+    isShowActive() {
+        const currentESTTime = this.getCurrentESTTime();
+        return (
+            currentESTTime.getDay() === 5 && // Friday
+            currentESTTime.getHours() >= 22 && 
+            currentESTTime.getHours() < 23
+        );
+    }
+
+// Determine next show time
+    getNextShowTime() {
+        try {
+            const currentESTTime = this.getCurrentESTTime();
+            const nextShow = new Date(currentESTTime);
+    
+            // If it's Friday
+            if (currentESTTime.getDay() === 5) {
+                // If current time is before 10 PM, set to today's 10 PM
+                if (currentESTTime.getHours() < 22) {
+                    nextShow.setHours(22, 0, 0, 0);
+                } 
+                // If current time is after 11 PM, set to next Friday at 10 PM
+                else {
+                    nextShow.setDate(nextShow.getDate() + 7);
+                    nextShow.setHours(22, 0, 0, 0);
+                }
+            } 
+            // If it's not Friday, set to next Friday at 10 PM
+            else {
+                nextShow.setDate(
+                    nextShow.getDate() + 
+                    ((7 - nextShow.getDay() + 5) % 7 || 7)
+                );
+                nextShow.setHours(22, 0, 0, 0);
+            }
+    
+            return nextShow;
+        } catch (error) {
+            console.error('Next Show Time Calculation Error', error);
+            // Fallback to a default time
+            const fallbackShow = new Date();
+            fallbackShow.setDate(fallbackShow.getDate() + ((7 - fallbackShow.getDay() + 5) % 7 || 7));
+            fallbackShow.setHours(22, 0, 0, 0);
+            return fallbackShow;
+        }
+    }
+
+    setupCountdown() {
+        const countdownElement = document.getElementById('countdown');
+        
+        const updateCountdown = () => {
+            try {
+                // Check if it's Friday between 10 PM and 11 PM EST
+                if (this.isShowActive()) {
+                    countdownElement.innerHTML = `
+                        <a href="https://northumberland897.ca"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="digital-glitch">
+                            BASS STATION ACTIVE
+                        </a>`;
+                    return;
+                }
+
+                // Get current time in EST
+                const currentESTTime = this.getCurrentESTTime();
+                const nextShowTime = this.getNextShowTime();
+
+                // Calculate difference
+                const diff = nextShowTime.getTime() - currentESTTime.getTime();
+
+                if (diff < 0) {
+                    throw new Error('Negative time difference');
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+                // Ensure countdown is visible
+                countdownElement.style.display = 'block';
+
+            } catch (error) {
+                console.error("⚠️ Countdown error:", error);
+                // Hide the countdown element on error
+                countdownElement.style.display = 'none';
+            }
+        };
+
+        // Initial update
+        updateCountdown();
+        // Update every second
+        setInterval(updateCountdown, 1000);
+    }
+
+    // OBSERVER DETERMINES CURRENT SECTION
     setupIntersectionObserver() {
         const options = {
             root: null,
@@ -74,7 +211,8 @@ class SectionManager {
         });
         console.log('🕵️ Dubious Discharge Diminishing Diagnostics');
     }
-// MODIFYING VALUE ATTRIBUTE OF CURRENT SECTION
+
+    // MODIFYING VALUE ATTRIBUTE OF CURRENT SECTION
     updateCurrentSection(sectionName) {
         if (this.currentSection !== sectionName) {
             console.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
@@ -85,6 +223,7 @@ class SectionManager {
             document.dispatchEvent(event);
         }
     }
+
 // LISTENERS FOR USER INPUTS
     setupNavigationListeners() {
         const navigationTriggers = [
@@ -186,82 +325,6 @@ class SectionManager {
             });
         }
     }
-// JETLAG CALCULATIONS, COUNTDOWN LOGIC, AND ELEMENT SWAPPING
-setupCountdown() {
-    const countdownElement = document.getElementById('countdown');
-    
-
-    function updateCountdown() {
-        try {
-            // Get current time in user's timezone
-            const now = new Date();           
-
-            // Create a formatter for EST
-            const estFormatter = new Intl.DateTimeFormat('en-US', {
-                timeZone: 'America/New_York',
-                year: 'numeric',
-                month: 'numeric',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-            });
-
-            // Get current time in EST
-            const nowESTString = estFormatter.format(now);
-            const nowEST = new Date(nowESTString);
-
-            const currentDay = nowEST.getDay();
-            const currentHour = nowEST.getHours();
-
-            // Check if it's Friday between 10 PM and 11 PM ET
-            if (currentDay === 5 && currentHour >= 22 && currentHour < 23) {
-                countdownElement.innerHTML = `
-                    <a href="https://northumberland897.ca"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="digital-glitch">
-                        BASS STATION ACTIVE
-                    </a>`;
-                return;
-            }
-
-            // Find next Friday at 10 PM EST
-            let nextFridayEST = new Date(nowEST);
-
-            if (currentDay === 5 && currentHour >= 23) {
-                // If it's Friday after 11 PM, target next week's Friday
-                nextFridayEST.setDate(nextFridayEST.getDate() + 7);
-            } else {
-                // Otherwise, find the next Friday
-                nextFridayEST.setDate(nextFridayEST.getDate() + ((7 - currentDay + 5) % 7));
-            }
-            nextFridayEST.setHours(22, 0, 0, 0);
-            const nextFridayESTString = estFormatter.format(nextFridayEST);
-            nextFridayEST = new Date(nextFridayESTString);
-
-            // Calculate difference
-            const diff = nextFridayEST - nowEST;
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
-             // Ensure countdown is visible (in case it was hidden previously)
-            countdownElement.style.display = 'block';
-
-        } catch (error) {
-            console.error("⚠️ Countdown error:", error.message, error.stack);  // Log the message and stack trace
-            //  Hide the countdown element
-            countdownElement.style.display = 'none'; // Or 'visibility: hidden;'
-        }
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-}
 // FOOTER VISIBILITY AND LISTENER
     setupFooterVisibility() {
         const footer = document.getElementById('footer-section');

@@ -16,7 +16,6 @@ class SectionManager {
         };
         this.initializeManager();
     }
-
 // INITIALIZE SITE AND START AT TOP
     initializeManager() {
         console.log('📡 Tiny Trickle Tracking Telemetry');
@@ -30,7 +29,6 @@ class SectionManager {
         this.setupViewportLogging();
         this.logTimezoneDebugInfo();
     }
-
 // DETERMINE VIEWPORT SIZE AND LISTEN FOR CHANGE
     setupViewportLogging() { 
         const logViewportDetails = () => {
@@ -57,8 +55,7 @@ class SectionManager {
             logViewportDetails();
         });
     }
-
-// One-time timezone debugging method
+// TIMEZONE CALIBRATION
     logTimezoneDebugInfo() {
         const localTime = new Date();
         const estFormatter = new Intl.DateTimeFormat('en-US', {
@@ -66,7 +63,6 @@ class SectionManager {
             dateStyle: 'full',
             timeStyle: 'long'
         });
-
         console.group('🌐 Timezone Debug Information');
         console.log('Local Time:', localTime);
         console.log('EST Time:', estFormatter.format(localTime));
@@ -74,15 +70,12 @@ class SectionManager {
         console.log('EST Offset Calculation:', this.calculateESTOffset());
         console.groupEnd();
     }
-
-// Timezone offset calculation method
+// EST TIMEZONE CONVERSION
     calculateESTOffset() {
         const localTime = new Date();
         const estTime = new Date(localTime.toLocaleString('en-US', { timeZone: 'America/New_York' }));
         return localTime.getTime() - estTime.getTime();
     }
-
-// Get current time in EST
     getCurrentESTTime() {
         try {
             const localTime = new Date();
@@ -92,8 +85,7 @@ class SectionManager {
             return new Date();
         }
     }
-
-// Check if show is currently active
+// CHECK FOR ACTIVE SHOW
     isShowActive() {
         const currentESTTime = this.getCurrentESTTime();
         return (
@@ -102,26 +94,22 @@ class SectionManager {
             currentESTTime.getHours() < 23
         );
     }
-
-// Determine next show time
+// CALCULATE NEXT SHOW
     getNextShowTime() {
         try {
             const currentESTTime = this.getCurrentESTTime();
             const nextShow = new Date(currentESTTime);
-    
-            // If it's Friday
+            // IF FRIDAY
             if (currentESTTime.getDay() === 5) {
-                // If current time is before 10 PM, set to today's 10 PM
                 if (currentESTTime.getHours() < 22) {
                     nextShow.setHours(22, 0, 0, 0);
                 } 
-                // If current time is after 11 PM, set to next Friday at 10 PM
                 else {
                     nextShow.setDate(nextShow.getDate() + 7);
                     nextShow.setHours(22, 0, 0, 0);
                 }
             } 
-            // If it's not Friday, set to next Friday at 10 PM
+            // IF NOT FRIDAY
             else {
                 nextShow.setDate(
                     nextShow.getDate() + 
@@ -129,7 +117,6 @@ class SectionManager {
                 );
                 nextShow.setHours(22, 0, 0, 0);
             }
-    
             return nextShow;
         } catch (error) {
             console.error('Next Show Time Calculation Error', error);
@@ -140,13 +127,13 @@ class SectionManager {
             return fallbackShow;
         }
     }
-
+// CALIBRATE COUNTDOWN
     setupCountdown() {
         const countdownElement = document.getElementById('countdown');
-        
+// UPDATE FUNCTION
         const updateCountdown = () => {
             try {
-                // Check if it's Friday between 10 PM and 11 PM EST
+// CHECK FOR ACTIVE SHOW
                 if (this.isShowActive()) {
                     countdownElement.innerHTML = `
                         <a href="https://northumberland897.ca"
@@ -157,12 +144,10 @@ class SectionManager {
                         </a>`;
                     return;
                 }
-
-                // Get current time in EST
+// Get current time in EST
                 const currentESTTime = this.getCurrentESTTime();
                 const nextShowTime = this.getNextShowTime();
-
-                // Calculate difference
+// Calculate difference
                 const diff = nextShowTime.getTime() - currentESTTime.getTime();
 
                 if (diff < 0) {
@@ -175,22 +160,21 @@ class SectionManager {
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
                 countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
-                // Ensure countdown is visible
+// Ensure countdown is visible
                 countdownElement.style.display = 'block';
 
             } catch (error) {
                 console.error("⚠️ Countdown error:", error);
-                // Hide the countdown element on error
+// Hide the countdown element on error
                 countdownElement.style.display = 'none';
             }
         };
 
-        // Initial update
+// Initial update
         updateCountdown();
-        // Update every second
+// Update every second
         setInterval(updateCountdown, 1000);
     }
-
     // OBSERVER DETERMINES CURRENT SECTION
     setupIntersectionObserver() {
         const options = {
@@ -211,8 +195,7 @@ class SectionManager {
         });
         console.log('🕵️ Dubious Discharge Diminishing Diagnostics');
     }
-
-    // MODIFYING VALUE ATTRIBUTE OF CURRENT SECTION
+// MODIFYING VALUE ATTRIBUTE OF CURRENT SECTION
     updateCurrentSection(sectionName) {
         if (this.currentSection !== sectionName) {
             console.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
@@ -223,7 +206,6 @@ class SectionManager {
             document.dispatchEvent(event);
         }
     }
-
 // LISTENERS FOR USER INPUTS
     setupNavigationListeners() {
         const navigationTriggers = [

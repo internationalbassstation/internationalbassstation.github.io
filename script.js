@@ -318,7 +318,7 @@ class SectionManager {
                 footer.classList.remove('hidden');
                 return;
             }
-// Show footer if user is near the bottom of the mix section
+// SHOW IF NEAR BOTTOM OF SITE
             const mixSectionRect = mixSection.getBoundingClientRect();
             const windowHeight = window.innerHeight;
             if (mixSectionRect.bottom - windowHeight <= 100) {
@@ -342,7 +342,7 @@ class SectionManager {
         let footerHideTimeout;
         mixItems.forEach(mixItem => {
             mixItem.addEventListener('click', () => {
-// Clear any existing timeout when starting new audio
+// CLEAR ANY EXISTING TIMEOUTS
                 if (footerHideTimeout) {
                     clearTimeout(footerHideTimeout);
                 }
@@ -361,7 +361,7 @@ class SectionManager {
             });
         });
         audioPlayer.addEventListener('play', () => {
-// Clear any existing timeout when resuming playback
+// CLEAR ANY EXISTING TIMEOUTS
             if (footerHideTimeout) {
                 clearTimeout(footerHideTimeout);
             }
@@ -372,11 +372,11 @@ class SectionManager {
         audioPlayer.addEventListener('pause', () => {
             console.log('⏸️ Audio Paused');
             console.log('⏲️ Grace Timer: 8s');
-// Clear any existing timeout first
+// CLEAR ANY EXISTING TIMEOUTS
             if (footerHideTimeout) {
                 clearTimeout(footerHideTimeout);
             }
-// Set new timeout
+// SET NEW TIMEOUT
             footerHideTimeout = setTimeout(() => {
                 console.log('⏲️ Timer Depleted');
                 this.state.audioPlaying = false;

@@ -1,6 +1,6 @@
 // ===== DEBUG MODE CONTROL =====
 // Set to true to enable console logging, false to disable
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 
 // ===== Custom Logger =====
 // Wraps console methods to respect DEBUG_MODE

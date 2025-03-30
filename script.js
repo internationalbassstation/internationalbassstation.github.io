@@ -1,8 +1,50 @@
+// ===== DEBUG MODE CONTROL =====
+// Set to true to enable console logging, false to disable
+const DEBUG_MODE = true;
+
+// ===== Custom Logger =====
+// Wraps console methods to respect DEBUG_MODE
+const logger = {
+    log: (...args) => {
+        if (DEBUG_MODE) {
+            console.log(...args);
+        }
+    },
+    warn: (...args) => {
+        if (DEBUG_MODE) {
+            console.warn(...args);
+        }
+    },
+    error: (...args) => {
+        // Always log errors, regardless of DEBUG_MODE, as they are usually important
+        console.error(...args);
+    },
+    group: (...args) => {
+        if (DEBUG_MODE) {
+            console.group(...args);
+        }
+    },
+    groupEnd: () => {
+        if (DEBUG_MODE) {
+            console.groupEnd();
+        }
+    },
+    info: (...args) => {
+        if (DEBUG_MODE) {
+            console.info(...args);
+        }
+    }
+    // Add wrappers for other console methods (e.g., table, time, timeEnd) if needed
+};
+
+
 // ===== AudioPlayer Class =====
 class AudioPlayer {
     constructor(containerSelector) {
         const container = document.querySelector(containerSelector);
         if (!container) {
+            // Use console.error directly as this is a setup failure
+            console.error(`AudioPlayer container "${containerSelector}" not found.`);
             throw new Error(`AudioPlayer container "${containerSelector}" not found.`);
         }
         this.audioElement = container.querySelector('#mixPlayer');
@@ -17,7 +59,7 @@ class AudioPlayer {
         this.playerContainer = container; // The main .audio-player-container
         this.hasTrackLoaded = false; // Flag to track if loadTrack was successful
         if (!this.audioElement || !this.playPauseButton || !this.seekSlider || !this.volumeSlider /*... check others */) {
-             console.error("AudioPlayer UI elements missing!");
+             logger.error("AudioPlayer UI elements missing!"); // Use logger.error (which always logs)
              return;
         }
         this.isPlaying = false;
@@ -30,7 +72,7 @@ class AudioPlayer {
         this.attachEventListeners();
         this.updateVolumeUI(); // Set initial volume slider/icon state
         this.playerContainer.classList.remove('track-loaded'); // Ensure state starts clean
-        console.log('🎧 Custom Audio Controls Initialized');
+        logger.log('🎧 Custom Audio Controls Initialized'); // Use logger.log
     }
 
     attachEventListeners() {
@@ -56,7 +98,7 @@ class AudioPlayer {
     }
 
     loadTrack(src, title) {
-        console.log(`💿 Loading Track: ${title} (${src})`);
+        logger.log(`💿 Loading Track: ${title} (${src})`); // Use logger.log
         this.audioElement.src = src;
         this.audioElement.load(); // Important: Trigger load for new src
         this.currentTrackTitle = title;
@@ -86,7 +128,7 @@ class AudioPlayer {
             if (this.audioElement.readyState >= 2) { // HAVE_METADATA or more
                  this.play();
             } else {
-                console.warn("Audio not ready to play yet.");
+                logger.warn("Audio not ready to play yet."); // Use logger.warn
                 // Optionally try loading again or show a message
                 this.showLoading();
                 this.audioElement.load(); // Try loading again
@@ -98,7 +140,7 @@ class AudioPlayer {
        this.audioElement.play().then(() => {
            this.handlePlay(); // Update UI immediately on success
        }).catch(error => {
-           console.error("Play Error:", error);
+           logger.error("Play Error:", error); // Use logger.error
            this.handleError();
        });
     }
@@ -130,7 +172,7 @@ class AudioPlayer {
     }
 
      handleEnded() {
-        console.log('🏁 Audio Complete (Custom Handler)');
+        logger.log('🏁 Audio Complete (Custom Handler)'); // Use logger.log
         this.handlePause(); // Visually reset to paused state (this also sets lastStopTime)
         this.audioElement.currentTime = 0;
         this.seekSlider.value = 0;
@@ -142,7 +184,7 @@ class AudioPlayer {
     handleMetadataLoaded() {
         this.duration = this.audioElement.duration;
         if (isNaN(this.duration) || !isFinite(this.duration)) {
-             console.warn("Duration is invalid:", this.duration);
+             logger.warn("Duration is invalid:", this.duration); // Use logger.warn
              this.durationElement.textContent = '-:--';
              this.seekSlider.disabled = true; // Disable seeking if duration unknown
              this.duration = 0; // Reset internal duration
@@ -156,7 +198,7 @@ class AudioPlayer {
 
     updateProgress() {
         if (this.isSeeking) {
-            // console.log('Skipping updateProgress while seeking'); // Debugging
+            // logger.log('Skipping updateProgress while seeking'); // Debugging
             return; // Don't update slider value from audio while user is dragging
         }
 
@@ -169,42 +211,39 @@ class AudioPlayer {
 
     handleSeekInput(event) {
         this.isSeeking = true; // Mark that user is dragging
-        // Optional: Update the current time display live while dragging
         const seekTime = parseFloat(event.target.value);
         if (!isNaN(seekTime) && isFinite(seekTime)) {
              this.currentTimeElement.textContent = this.formatTime(seekTime);
         }
-         console.log(`Seek Input - Dragging to ${this.formatTime(seekTime)}`); // Debugging
     }
 
     handleSeekChange(event) {
-         // This now acts like the old 'seek' method, firing on release
         const seekTime = parseFloat(event.target.value);
-        console.log(`Seek Change - Released at Slider Value: ${seekTime}`);
+        logger.log(`Seek Change - Released at Slider Value: ${seekTime}`); // Use logger.log
 
         if (this.duration > 0 && !isNaN(this.duration) && isFinite(this.duration)) {
              if (!isNaN(seekTime) && isFinite(seekTime)) {
                  const clampedTime = Math.max(0, Math.min(seekTime, this.duration));
-                 console.log(`Seeking to final time: ${this.formatTime(clampedTime)}`);
+                 logger.log(`Seeking to final time: ${this.formatTime(clampedTime)}`); // Use logger.log
                  try {
                     this.audioElement.currentTime = clampedTime;
                      // Don't set isSeeking = false immediately, wait for browser
                  } catch (error) {
-                    console.error("Error setting currentTime on seek change:", error);
+                    logger.error("Error setting currentTime on seek change:", error); // Use logger.error
                     this.isSeeking = false; // Reset flag on error
                  }
              } else {
-                 console.error(`Invalid seekTime on change: ${seekTime}`);
+                 logger.error(`Invalid seekTime on change: ${seekTime}`); // Use logger.error
                  this.isSeeking = false; // Reset flag if value invalid
              }
         } else {
-            console.log(`Seek Change prevented: Duration=${this.duration}`);
+            logger.log(`Seek Change prevented: Duration=${this.duration}`); // Use logger.log
             this.isSeeking = false; // Reset flag if duration invalid
         }
     }
 
     handleSeeked() {
-        console.log(`Seek operation completed. Current time: ${this.formatTime(this.audioElement.currentTime)}`);
+        logger.log(`Seek operation completed. Current time: ${this.formatTime(this.audioElement.currentTime)}`); // Use logger.log
         this.isSeeking = false; // Reset the flag now that the seek is done
         // It's now safe to allow updateProgress to run fully again
     }
@@ -236,7 +275,7 @@ class AudioPlayer {
         }
         this.audioElement.muted = this.isMuted; // Ensure audio element muted state matches
         // volumechange event will trigger updateVolumeUI
-         console.log(`Mute toggled. Is Muted: ${this.isMuted}, Volume: ${this.audioElement.volume}, Last Volume: ${this.lastVolume}`);
+         logger.log(`Mute toggled. Is Muted: ${this.isMuted}, Volume: ${this.audioElement.volume}, Last Volume: ${this.lastVolume}`); // Use logger.log
     }
 
     updateVolumeUI() {
@@ -277,7 +316,7 @@ class AudioPlayer {
     }
 
     handleError() {
-        console.error("Audio Element Error:", this.audioElement.error);
+        logger.error("Audio Element Error:", this.audioElement.error); // Use logger.error
         this.playerContainer.classList.add('error');
         this.playerContainer.classList.remove('track-loaded'); // Remove loaded state on error
         this.hasTrackLoaded = false;                          // Update flag
@@ -299,14 +338,14 @@ class AudioPlayer {
             return false; // Never stopped or currently playing
         }
         const timeSinceStop = Date.now() - this.lastStopTime;
-        // console.log(`Time since stop: ${timeSinceStop}ms`); // Debugging
+        // logger.log(`Time since stop: ${timeSinceStop}ms`); // Debugging
         return timeSinceStop < gracePeriod;
     }
 }
 // ===== SectionManager Class Modifications =====
 class SectionManager {
     constructor() {
-        console.log('⚡ Faint Flicker Fueling Facility Fixtures');
+        logger.log('⚡ Faint Flicker Fueling Facility Fixtures'); // Use logger.log
 // SETUP SECTION STRUCTURE
         this.sections = [
             { name: 'hero', element: document.getElementById('hero-section') },
@@ -321,7 +360,7 @@ class SectionManager {
         try {
             this.audioPlayer = new AudioPlayer('.audio-player-container');
         } catch (error) {
-             console.error("FAILED TO INITIALIZE AUDIO PLAYER:", error);
+             logger.error("FAILED TO INITIALIZE AUDIO PLAYER:", error); // Use logger.error
              // Handle failure - maybe hide the footer or show a static message
              const footer = document.getElementById('footer-section');
              if (footer) footer.style.display = 'none'; // Example: hide footer on critical error
@@ -332,7 +371,7 @@ class SectionManager {
     }
 // INITIALIZE SITE AND START AT TOP
     initializeManager() {
-        console.log('📡 Tiny Trickle Tracking Telemetry');
+        logger.log('📡 Tiny Trickle Tracking Telemetry'); // Use logger.log
         history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
         this.setupIntersectionObserver();
@@ -344,7 +383,7 @@ class SectionManager {
         this.logTimezoneDebugInfo();
     }
 // DETERMINE VIEWPORT SIZE AND LISTEN FOR CHANGE
-    setupViewportLogging() { 
+    setupViewportLogging() {
         const logViewportDetails = () => {
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
@@ -353,19 +392,19 @@ class SectionManager {
             const orientation = viewportWidth > viewportHeight ? 'Landscape' : 'Portrait';
             const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
             const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-            console.group('📐 Station Dimensions');
-            console.log(`Height: ${viewportHeight}px / ${(viewportHeight / rootFontSize).toFixed(2)}rem`);
-            console.log(`Width: ${viewportWidth}px / ${(viewportWidth / rootFontSize).toFixed(2)}rem`);
-            console.log(`Aspect Ratio: ${aspectRatio}`);
-            console.log(`Orientation: ${orientation}`);
-            console.log(`Document Height: ${documentHeight}px`);
-            console.log(`Document Width: ${documentWidth}px`);
-            console.log(`Root Font Size: ${rootFontSize}px`);
-            console.groupEnd();
+            logger.group('📐 Station Dimensions'); // Use logger.group
+            logger.log(`Height: ${viewportHeight}px / ${(viewportHeight / rootFontSize).toFixed(2)}rem`); // Use logger.log
+            logger.log(`Width: ${viewportWidth}px / ${(viewportWidth / rootFontSize).toFixed(2)}rem`); // Use logger.log
+            logger.log(`Aspect Ratio: ${aspectRatio}`); // Use logger.log
+            logger.log(`Orientation: ${orientation}`); // Use logger.log
+            logger.log(`Document Height: ${documentHeight}px`); // Use logger.log
+            logger.log(`Document Width: ${documentWidth}px`); // Use logger.log
+            logger.log(`Root Font Size: ${rootFontSize}px`); // Use logger.log
+            logger.groupEnd(); // Use logger.groupEnd
         };
         logViewportDetails();
         window.addEventListener('resize', () => {
-            console.log('🕳️ Wormhole Reshaping Station!');
+            logger.log('🕳️ Wormhole Reshaping Station!'); // Use logger.log
             logViewportDetails();
         });
     }
@@ -377,12 +416,12 @@ class SectionManager {
             dateStyle: 'full',
             timeStyle: 'long'
         });
-        console.group('🌐 Timezone Debug Information');
-        console.log('Local Time:', localTime);
-        console.log('EST Time:', estFormatter.format(localTime));
-        console.log('Local Timezone:', Intl.DateTimeFormat().resolvedOptions().timeZone);
-        console.log('EST Offset Calculation:', this.calculateESTOffset());
-        console.groupEnd();
+        logger.group('🌐 Timezone Debug Information'); // Use logger.group
+        logger.log('Local Time:', localTime); // Use logger.log
+        logger.log('EST Time:', estFormatter.format(localTime)); // Use logger.log
+        logger.log('Local Timezone:', Intl.DateTimeFormat().resolvedOptions().timeZone); // Use logger.log
+        logger.log('EST Offset Calculation:', this.calculateESTOffset()); // Use logger.log
+        logger.groupEnd(); // Use logger.groupEnd
     }
 // EST TIMEZONE CONVERSION
     calculateESTOffset() {
@@ -395,7 +434,7 @@ class SectionManager {
             const localTime = new Date();
             return new Date(localTime.toLocaleString('en-US', { timeZone: 'America/New_York' }));
         } catch (error) {
-            console.error('EST Time Calculation Error', error);
+            logger.error('EST Time Calculation Error', error); // Use logger.error
             return new Date();
         }
     }
@@ -404,7 +443,7 @@ class SectionManager {
         const currentESTTime = this.getCurrentESTTime();
         return (
             currentESTTime.getDay() === 5 && // Friday
-            currentESTTime.getHours() >= 22 && 
+            currentESTTime.getHours() >= 22 &&
             currentESTTime.getHours() < 23
         );
     }
@@ -417,23 +456,23 @@ class SectionManager {
             if (currentESTTime.getDay() === 5) {
                 if (currentESTTime.getHours() < 22) {
                     nextShow.setHours(22, 0, 0, 0);
-                } 
+                }
                 else {
                     nextShow.setDate(nextShow.getDate() + 7);
                     nextShow.setHours(22, 0, 0, 0);
                 }
-            } 
+            }
             // IF NOT FRIDAY
             else {
                 nextShow.setDate(
-                    nextShow.getDate() + 
+                    nextShow.getDate() +
                     ((7 - nextShow.getDay() + 5) % 7 || 7)
                 );
                 nextShow.setHours(22, 0, 0, 0);
             }
             return nextShow;
         } catch (error) {
-            console.error('Next Show Time Calculation Error', error);
+            logger.error('Next Show Time Calculation Error', error); // Use logger.error
             // Fallback to a default time
             const fallbackShow = new Date();
             fallbackShow.setDate(fallbackShow.getDate() + ((7 - fallbackShow.getDay() + 5) % 7 || 7));
@@ -465,6 +504,7 @@ class SectionManager {
                 const diff = nextShowTime.getTime() - currentESTTime.getTime();
 
                 if (diff < 0) {
+                    // Throw error instead of logging directly inside potentially frequent interval
                     throw new Error('Negative time difference');
                 }
 
@@ -478,16 +518,20 @@ class SectionManager {
                 countdownElement.style.display = 'block';
 
             } catch (error) {
-                console.error("⚠️ Countdown error:", error);
+                // Log error outside the interval logic, but only if it occurs
+                logger.error("⚠️ Countdown error:", error); // Use logger.error
 // Hide the countdown element on error
                 countdownElement.style.display = 'none';
+                 // Consider stopping the interval if the error is persistent/unrecoverable
+                 // clearInterval(countdownInterval); // Need to assign interval to variable first
             }
         };
 
 // Initial update
         updateCountdown();
 // Update every second
-        setInterval(updateCountdown, 1000);
+        // Assign to variable if you might need to clear it
+        const countdownInterval = setInterval(updateCountdown, 1000);
     }
     // OBSERVER DETERMINES CURRENT SECTION
     setupIntersectionObserver() {
@@ -507,12 +551,12 @@ class SectionManager {
         this.sections.forEach(section => {
             this.intersectionObserver.observe(section.element);
         });
-        console.log('🕵️ Dubious Discharge Diminishing Diagnostics');
+        logger.log('🕵️ Dubious Discharge Diminishing Diagnostics'); // Use logger.log
     }
 // MODIFYING VALUE ATTRIBUTE OF CURRENT SECTION
     updateCurrentSection(sectionName) {
         if (this.currentSection !== sectionName) {
-            console.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
+            logger.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`); // Use logger.log
             this.currentSection = sectionName;
         }
     }
@@ -520,7 +564,7 @@ class SectionManager {
     setupNavigationListeners() {
         const navigationTriggers = [
             { type: 'click', elements: [
-                this.sections.find(section => section.name === 'hero').element, 
+                this.sections.find(section => section.name === 'hero').element,
                 document.querySelector('.past-voyages')
             ]},
             { type: 'keyboard', keys: ['ArrowDown', 'Space'] },
@@ -532,7 +576,7 @@ class SectionManager {
                 case 'click':
                     trigger.elements.forEach(el => {
                         el.addEventListener('click', () => {
-                            console.log(`🖱️ AutoPilot Requested - CLICK`);
+                            logger.log(`🖱️ AutoPilot Requested - CLICK`); // Use logger.log
                             this.navigateToNextSection();
                         });
                     });
@@ -542,10 +586,10 @@ class SectionManager {
                         if (trigger.keys.includes(e.key) || trigger.keys.includes(e.code)) {
                             e.preventDefault();
                             if (!this.initialNavigationComplete) {
-                                console.log(`⌨️ AutoPilot Requested - KEYSTROKE`);
+                                logger.log(`⌨️ AutoPilot Requested - KEYSTROKE`); // Use logger.log
                                 this.navigateToNextSection();
                             } else {
-                                // console.log(`⌨️ AutoPilot via Keystroke Denied`);
+                                // logger.log(`⌨️ AutoPilot via Keystroke Denied`); // Use logger.log
                                 return;
                             }
                         }
@@ -555,14 +599,14 @@ class SectionManager {
                     let lastScrollTime = 0;
                     document.addEventListener('wheel', (e) => {
                         const currentTime = new Date().getTime();
-                        
+
                         if (e.deltaY > 0 && currentTime - lastScrollTime > trigger.threshold) {
                             if (!this.initialNavigationComplete) {
                                 lastScrollTime = currentTime;
-                                console.log('🖱️ AutoPilot Requested - SCROLL');
+                                logger.log('🖱️ AutoPilot Requested - SCROLL'); // Use logger.log
                                 this.navigateToNextSection();
                             } else {
-                                // console.log('🖱️ AutoPilot via Scroll Denied');
+                                // logger.log('🖱️ AutoPilot via Scroll Denied'); // Use logger.log
                                 return
                             }
                         }
@@ -578,17 +622,18 @@ class SectionManager {
                         const touchDiff = touchStartY - touchEndY;
                         if (Math.abs(touchDiff) > trigger.sensitivity && touchDiff > 0) {
                             if (!this.initialNavigationComplete) {
-                                console.log('👆 AutoPilot Requested - SWIPE');
+                                logger.log('👆 AutoPilot Requested - SWIPE'); // Use logger.log
                                 this.navigateToNextSection();
                             } else {
-                                console.log('👆 AutoPilot via Swipe Denied');
+                                // logger.log('👆 AutoPilot via Swipe Denied'); // Use logger.log
+                                return; // Explicitly return here too
                             }
                         }
                     });
                     break;
             }
         });
-        console.log('🕹️ Pitiful Portion Powering Pilot Panel');
+        logger.log('🕹️ Pitiful Portion Powering Pilot Panel'); // Use logger.log
     }
 // UPDATE DEPTH INTO SITE
     navigateToNextSection() {
@@ -597,21 +642,21 @@ class SectionManager {
         this.furthestReachedIndex = Math.max(this.furthestReachedIndex, currentIndex);
         if (nextIndex < this.sectionOrder.length && currentIndex >= this.furthestReachedIndex) {
             const nextSection = this.sectionOrder[nextIndex];
-            console.log(`🗺️ Plotting Navigation: ${this.currentSection} → ${nextSection}`);
+            logger.log(`🗺️ Plotting Navigation: ${this.currentSection} → ${nextSection}`); // Use logger.log
             this.navigateToSection(nextSection);
             if (nextSection === 'mixes') {
                 this.initialNavigationComplete = true;
-                console.log('🏁 Destination Reached - AutoPilot Hibernating');
+                logger.log('🏁 Destination Reached - AutoPilot Hibernating'); // Use logger.log
             }
         }
     }
 // SCRIPTING AUTO-SCROLL
     navigateToSection(sectionName) {
-        console.log(`✈️ AutoPiloting to ${sectionName}`);
+        logger.log(`✈️ AutoPiloting to ${sectionName}`); // Use logger.log
         const targetSection = this.sections.find(section => section.name === sectionName);
-        
+
         if (targetSection) {
-            targetSection.element.scrollIntoView({ 
+            targetSection.element.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
@@ -628,13 +673,13 @@ class SectionManager {
             const shouldBeVisible = () => {
                 // Condition 1: Is audio playing?
                 if (this.audioPlayer && this.audioPlayer.isAudioPlaying) {
-                    // console.log('🔊 Footer Showing: Audio Playing');
+                    // logger.log('🔊 Footer Showing: Audio Playing'); // Use logger.log
                     return true;
                 }
 
                 // Condition 2: Was audio playing recently (within grace period)?
                 if (this.audioPlayer && this.audioPlayer.wasPlayingRecently(8000)) { // Check within 8 seconds
-                     // console.log('⏱️ Footer Showing: Grace Period');
+                     // logger.log('⏱️ Footer Showing: Grace Period'); // Use logger.log
                      return true;
                 }
 
@@ -645,11 +690,11 @@ class SectionManager {
                 const nearBottomThreshold = 50; // Pixels from the very bottom
 
                 if (documentHeight - (scrollY + windowHeight) < nearBottomThreshold) {
-                    // console.log('⬇️ Footer Showing: Near Bottom');
+                    // logger.log('⬇️ Footer Showing: Near Bottom'); // Use logger.log
                     return true;
                 }
 
-                // console.log('⭕ Footer Hidden');
+                // logger.log('⭕ Footer Hidden'); // Use logger.log
                 return false;
             };
 
@@ -676,7 +721,7 @@ class SectionManager {
     // --- Modified Audio Player Interaction Setup ---
     setupAudioPlayerInteractions() {
         if (!this.audioPlayer) {
-            console.warn("Audio Player not available, skipping interaction setup.");
+            logger.warn("Audio Player not available, skipping interaction setup."); // Use logger.warn
             return; // Don't setup if player failed to init
         }
 
@@ -688,19 +733,19 @@ class SectionManager {
                 const title = mixItem.textContent.trim(); // Get title from list item text
 
                 if (src && title) {
-                    console.log(`🎵 User selected Mix: ${title}`);
+                    logger.log(`🎵 User selected Mix: ${title}`); // Use logger.log
                     this.audioPlayer.loadTrack(src, title);
                     // Automatically play after selection
                     this.audioPlayer.play();
                     // Ensure footer becomes visible immediately when a track is loaded
-                    this.setupFooterVisibility();
+                    this.setupFooterVisibility(); // Re-check footer visibility
                 } else {
-                    console.error("Missing data-src or title on mix item:", mixItem);
+                    logger.error("Missing data-src or title on mix item:", mixItem); // Use logger.error
                 }
             });
         });
 
-        console.log('📢 Mix selection listeners ready.');
+        logger.log('📢 Mix selection listeners ready.'); // Use logger.log
     }
 
 }
@@ -708,10 +753,10 @@ class SectionManager {
 // ===== Initialize Site =====
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        console.log('🔌 BOOTUP - ALLOCATING POWER:');
+        logger.log('🔌 BOOTUP - ALLOCATING POWER:'); // Use logger.log
         const siteManager = new SectionManager();
-        console.log('🛸 BEGIN BASS BROADCAST');
+        logger.log('🛸 BEGIN BASS BROADCAST'); // Use logger.log
     } catch (error) {
-        console.error('⚠️ LAUNCH FAILED:', error);
+        logger.error('⚠️ LAUNCH FAILED:', error); // Use logger.error
     }
 });

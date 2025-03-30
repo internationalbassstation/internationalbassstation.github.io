@@ -200,10 +200,6 @@ class SectionManager {
         if (this.currentSection !== sectionName) {
             console.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
             this.currentSection = sectionName;
-            const event = new CustomEvent('sectionchange', { 
-                detail: { section: sectionName } 
-            });
-            document.dispatchEvent(event);
         }
     }
 // LISTENERS FOR USER INPUTS

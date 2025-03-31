@@ -1,5 +1,4 @@
-// ===== DEBUG MODE CONTROL =====
-// Set to true to enable console logging, false to disable
+// Set to true to enable console logging
 const DEBUG_MODE = false;
 
 // ===== Custom Logger =====

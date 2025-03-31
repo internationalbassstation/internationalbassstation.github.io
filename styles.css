@@ -267,61 +267,50 @@ body {
 .site-footer a:hover {
   color: var(--color-pink);
 }
-/* --- Custom Audio Player Styles --- */
 .audio-player-container {
   flex-grow: 1;
-  position: relative; /* Needed for absolute positioning of loader */
-  overflow: hidden; /* Hide anything overflowing */
-  padding: 0 0.5rem; /* Add some spacing */
+  position: relative;
+  overflow: hidden;
+  padding: 0 0.5rem;
 }
-/* --- Hide Player Controls if No Track Loaded --- */
 .audio-player-container:not(.track-loaded) .player-controls,
 .audio-player-container:not(.track-loaded) .loading-indicator {
-  display: none; /* Hide controls AND loader if track-loaded class is missing */
+  display: none;
 }
-
-/* Hide the actual audio tag */
 #mixPlayer {
   display: none;
 }
-
 .player-controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  gap: 0.8rem; /* Spacing between control groups */
-  height: var(--footer-height); /* Match footer height */
+  gap: 0.8rem;
+  height: var(--footer-height);
   padding: 0.2rem 0;
 }
-
-/* Buttons (Play/Pause, Volume) */
 .play-pause-button,
 .volume-button {
   background: none;
   border: none;
   color: var(--color-green);
-  font-size: 1.5rem; /* Adjust icon size */
+  font-size: 1.5rem;
   cursor: crosshair;
   padding: 0.2rem;
-  line-height: 1; /* Prevent extra space */
+  line-height: 1;
   transition: transform 0.2s ease, color 0.2s ease;
 }
-
 .play-pause-button:hover,
 .volume-button:hover {
   color: var(--color-pink);
   transform: scale(1.1);
 }
-
 .play-pause-button:focus,
 .volume-button:focus {
   outline: 2px solid var(--color-pink);
   outline-offset: 2px;
   border-radius: 3px;
 }
-
-/* Track Title */
 .track-title {
   color: var(--color-white);
   font-family: var(--font-syncopate);
@@ -329,20 +318,16 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex-shrink: 1; /* Allow shrinking */
-  min-width: 50px; /* Prevent collapsing too much */
+  flex-shrink: 1;
+  min-width: 50px;
   text-align: center;
 }
-
-/* Time & Seek Container */
 .time-seek-container {
   display: flex;
   align-items: center;
-  flex-grow: 1; /* Take up available space */
+  flex-grow: 1;
   gap: 0.5rem;
 }
-
-/* Time Displays */
 .current-time,
 .duration {
   color: var(--color-green);
@@ -350,62 +335,52 @@ body {
   font-size: clamp(0.7rem, 1.8vw, 0.9rem);
   white-space: nowrap;
 }
-
-/* Volume Container */
 .volume-container {
   display: flex;
   align-items: center;
   gap: 0.3rem;
 }
-
-/* Sliders (General - requires vendor prefixes) */
 .seek-slider,
 .volume-slider {
-  -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none;
   appearance: none;
-  width: 100%; /* Full width within container */
-  height: 8px; /* Track height */
-  background: var(--color-purple); /* Track color */
+  width: 100%;
+  height: 8px;
+  background: var(--color-purple);
   border-radius: 5px;
   outline: none;
   cursor: crosshair;
   transition: opacity 0.2s ease;
 }
 .volume-slider {
-    max-width: 70px; /* Limit volume slider width */
+    max-width: 70px;
 }
-
-/* Slider Thumb (Chrome, Safari, Edge, Opera) */
 .seek-slider::-webkit-slider-thumb,
 .volume-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none;
   appearance: none;
-  width: 20px; /* Thumb size */
-  height: 20px; /* Thumb size */
-  background-color: transparent; /* Hide default circle if using image */
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
   background-image: url('assets/images/seeker.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
-  border: none; /* Remove border if using image */
-  border-radius: 0; /* Remove radius if using image */
+  border: none;
+  border-radius: 0;
   cursor: crosshair;
   margin-top: -6px; /* Adjust vertical position (approx -(thumbHeight - trackHeight) / 2) */
 }
-/* --- Fallback Thumb Style (if image fails or not set) --- */
 .seek-slider::-webkit-slider-thumb:not([style*="background-image"]),
 .volume-slider::-webkit-slider-thumb:not([style*="background-image"]) {
-    background-color: var(--color-pink); /* Fallback color */
-    border-radius: 50%; /* Fallback shape */
+    background-color: var(--color-pink);
+    border-radius: 50%;
 }
-
-
-/* Slider Thumb (Firefox) */
 .seek-slider::-moz-range-thumb,
 .volume-slider::-moz-range-thumb {
-  width: 20px; /* Thumb size */
-  height: 20px; /* Thumb size */
-  background-color: transparent; /* Hide default circle if using image */
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
   background-image: url('assets/images/seeker.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -414,14 +389,11 @@ body {
   border-radius: 0;
   cursor: crosshair;
 }
-/* --- Fallback Thumb Style (Firefox) --- */
 .seek-slider::-moz-range-thumb:not([style*="background-image"]),
 .volume-slider::-moz-range-thumb:not([style*="background-image"]) {
-    background-color: var(--color-pink); /* Fallback color */
-    border-radius: 50%; /* Fallback shape */
+    background-color: var(--color-pink);
+    border-radius: 50%;
 }
-
-/* Loading Indicator */
 .loading-indicator {
   position: absolute;
   top: 50%;
@@ -429,30 +401,20 @@ body {
   transform: translate(-50%, -50%);
   width: 25px;
   height: 25px;
-  border: 4px solid rgba(239, 36, 170, 0.3); /* Lighter pink */
-  border-top-color: var(--color-green); /* Green */
+  border: 4px solid rgba(239, 36, 170, 0.3);
+  border-top-color: var(--color-green);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  display: none; /* Hidden by default */
+  display: none;
 }
-
 .audio-player-container.loading .loading-indicator {
   display: block;
 }
-
-/* Hide controls slightly when loading */
 .audio-player-container.loading .player-controls {
   opacity: 0.7;
 }
-
-@keyframes spin {
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* Error State */
 .audio-player-container.error .player-controls {
-  /* Maybe change border or background slightly */
-  border: 2px dashed red; /* Example */
+  border: 2px dashed red;
   border-radius: 5px;
 }
 .audio-player-container.error .track-title::before {
@@ -463,22 +425,18 @@ body {
 .audio-player-container.error .volume-button,
 .audio-player-container.error .current-time,
 .audio-player-container.error .duration {
-  color: red; /* Indicate error on controls */
+  color: red;
 }
 .audio-player-container.error .seek-slider::-webkit-slider-thumb,
 .audio-player-container.error .seek-slider::-moz-range-thumb {
-    background-color: red !important; /* Force thumb red */
-    background-image: none !important; /* Hide custom image on error */
+    background-color: red !important;
+    background-image: none !important;
     border-radius: 50%;
 }
 /* ANIMATIONS */
 @keyframes fadeInOut {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
-}
-@keyframes neon {
-  from { text-shadow: 0 0 5px var(--color-green); }
-  to { text-shadow: 0 0 20px var(--color-purple); }
 }
 @keyframes glitch-1 {
   0%, 100% { clip-path: inset(50% 0 30% 0); }
@@ -487,7 +445,6 @@ body {
   60% { clip-path: inset(10% 0 80% 0); }
   80% { clip-path: inset(30% 0 50% 0); }
 }
-
 @keyframes glitch-2 {
   0%, 100% { clip-path: inset(40% 0 40% 0); }
   20% { clip-path: inset(60% 0 30% 0); }
@@ -495,10 +452,17 @@ body {
   60% { clip-path: inset(70% 0 10% 0); }
   80% { clip-path: inset(10% 0 60% 0); }
 }
+@keyframes neon {
+  from { text-shadow: 0 0 5px var(--color-green); }
+  to { text-shadow: 0 0 20px var(--color-purple); }
+}
 @keyframes pulse-live {
   0% { transform: scale(1); }
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
+}
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 /* MOBILE - PORTRAIT */
 @media (orientation: portrait) and (max-width: 768px) {
@@ -552,22 +516,22 @@ body {
     font-size: clamp(0.5rem, 6vw, 5rem);
   }
   .player-controls {
-    gap: 0.4rem; /* Tighter spacing */
+    gap: 0.4rem;
   }
   .track-title,
   .current-time,
   .duration {
-    display: none; /* Hide text elements */
+    display: none;
   }
   .time-seek-container {
-      flex-grow: 1; /* Ensure seek bar still takes space */
+      flex-grow: 1;
   }
   .volume-slider {
-      max-width: 50px; /* Shrink volume slider */
+      max-width: 50px;
   }
   .play-pause-button,
   .volume-button {
-    font-size: 1.3rem; /* Slightly smaller icons */
+    font-size: 1.3rem; 
   }
 }
 /* MOBILE - LANDSCAPE */

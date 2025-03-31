@@ -305,7 +305,7 @@ body {
   color: var(--color-green);
   font-size: 1.5rem;
   cursor: crosshair;
-  padding: 0.2rem;
+  padding: 0.1rem;
   line-height: 1;
   transition: transform 0.2s ease, color 0.2s ease;
 }
@@ -316,7 +316,7 @@ body {
 }
 .play-pause-button:focus,
 .volume-button:focus {
-  outline: 2px solid var(--color-pink);
+  outline: 1px dashed var(--color-pink);
   outline-offset: 2px;
   border-radius: 3px;
 }

@@ -202,6 +202,11 @@ body {
   color: var(--color-pink);
   cursor: crosshair;
   animation: neon 1.5s ease-in-out infinite alternate;
+  /* prevent text selection */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge */
+  user-select: none;         /* Standard */
 }
 /* MIXES SECTION */
 .mix-container {
@@ -263,12 +268,12 @@ body {
   color: var(--color-purple);
   text-decoration: none;
   font-size: clamp(0.5rem, 2vw, 0.8rem);
+  text-align: center;
 }
 .site-footer a:hover {
   color: var(--color-pink);
 }
 .audio-player-container {
-  flex-grow: 1;
   position: relative;
   overflow: hidden;
   padding: 0 0.5rem;

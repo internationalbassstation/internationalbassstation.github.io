@@ -273,7 +273,10 @@ body {
   overflow: hidden;
   padding: 0 0.5rem;
 }
-.audio-player-container:not(.track-loaded) .player-controls,
+.audio-player-container:not(.track-loaded) .player-controls {
+  opacity: 0;
+  visibility: hidden;
+}
 .audio-player-container:not(.track-loaded) .loading-indicator {
   display: none;
 }
@@ -288,6 +291,7 @@ body {
   gap: 0.8rem;
   height: var(--footer-height);
   padding: 0.2rem 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 .play-pause-button,
 .volume-button {

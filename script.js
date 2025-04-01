@@ -1,9 +1,10 @@
-// Set to true to enable console logging
+// Set true for console logging
 const DEBUG_MODE = false;
-
-// ===== Custom Logger =====
-// Wraps console methods to respect DEBUG_MODE
 const logger = {
+// Always log errors
+    error: (...args) => {
+        console.error(...args);
+    },
     log: (...args) => {
         if (DEBUG_MODE) {
             console.log(...args);
@@ -13,10 +14,6 @@ const logger = {
         if (DEBUG_MODE) {
             console.warn(...args);
         }
-    },
-    error: (...args) => {
-        // Always log errors, regardless of DEBUG_MODE, as they are usually important
-        console.error(...args);
     },
     group: (...args) => {
         if (DEBUG_MODE) {
@@ -33,16 +30,13 @@ const logger = {
             console.info(...args);
         }
     }
-    // Add wrappers for other console methods (e.g., table, time, timeEnd) if needed
+// Add wrappers for other console methods (e.g., table, time, timeEnd) if needed
 };
-
-
-// ===== AudioPlayer Class =====
+// Custom player
 class AudioPlayer {
     constructor(containerSelector) {
         const container = document.querySelector(containerSelector);
         if (!container) {
-            // Use console.error directly as this is a setup failure
             console.error(`AudioPlayer container "${containerSelector}" not found.`);
             throw new Error(`AudioPlayer container "${containerSelector}" not found.`);
         }
@@ -71,7 +65,7 @@ class AudioPlayer {
         this.attachEventListeners();
         this.updateVolumeUI(); // Set initial volume slider/icon state
         this.playerContainer.classList.remove('track-loaded'); // Ensure state starts clean
-        logger.log('🎧 Custom Audio Controls Initialized'); // Use logger.log
+        logger.log('🎧 Custom Audio Controls Initialized');
     }
 
     attachEventListeners() {
@@ -97,7 +91,7 @@ class AudioPlayer {
     }
 
     loadTrack(src, title) {
-        logger.log(`💿 Loading Track: ${title} (${src})`); // Use logger.log
+        logger.log(`💿 Loading Track: ${title} (${src})`); 
         this.audioElement.src = src;
         this.audioElement.load(); // Important: Trigger load for new src
         this.currentTrackTitle = title;
@@ -171,7 +165,7 @@ class AudioPlayer {
     }
 
      handleEnded() {
-        logger.log('🏁 Audio Complete (Custom Handler)'); // Use logger.log
+        logger.log('🏁 Audio Complete (Custom Handler)');
         this.handlePause(); // Visually reset to paused state (this also sets lastStopTime)
         this.audioElement.currentTime = 0;
         this.seekSlider.value = 0;
@@ -218,12 +212,12 @@ class AudioPlayer {
 
     handleSeekChange(event) {
         const seekTime = parseFloat(event.target.value);
-        logger.log(`Seek Change - Released at Slider Value: ${seekTime}`); // Use logger.log
+        logger.log(`Seek Change - Released at Slider Value: ${seekTime}`);
 
         if (this.duration > 0 && !isNaN(this.duration) && isFinite(this.duration)) {
              if (!isNaN(seekTime) && isFinite(seekTime)) {
                  const clampedTime = Math.max(0, Math.min(seekTime, this.duration));
-                 logger.log(`Seeking to final time: ${this.formatTime(clampedTime)}`); // Use logger.log
+                 logger.log(`Seeking to final time: ${this.formatTime(clampedTime)}`);
                  try {
                     this.audioElement.currentTime = clampedTime;
                      // Don't set isSeeking = false immediately, wait for browser
@@ -236,13 +230,13 @@ class AudioPlayer {
                  this.isSeeking = false; // Reset flag if value invalid
              }
         } else {
-            logger.log(`Seek Change prevented: Duration=${this.duration}`); // Use logger.log
+            logger.log(`Seek Change prevented: Duration=${this.duration}`);
             this.isSeeking = false; // Reset flag if duration invalid
         }
     }
 
     handleSeeked() {
-        logger.log(`Seek operation completed. Current time: ${this.formatTime(this.audioElement.currentTime)}`); // Use logger.log
+        logger.log(`Seek operation completed. Current time: ${this.formatTime(this.audioElement.currentTime)}`);
         this.isSeeking = false; // Reset the flag now that the seek is done
         // It's now safe to allow updateProgress to run fully again
     }
@@ -274,7 +268,7 @@ class AudioPlayer {
         }
         this.audioElement.muted = this.isMuted; // Ensure audio element muted state matches
         // volumechange event will trigger updateVolumeUI
-         logger.log(`Mute toggled. Is Muted: ${this.isMuted}, Volume: ${this.audioElement.volume}, Last Volume: ${this.lastVolume}`); // Use logger.log
+         logger.log(`Mute toggled. Is Muted: ${this.isMuted}, Volume: ${this.audioElement.volume}, Last Volume: ${this.lastVolume}`);
     }
 
     updateVolumeUI() {
@@ -344,7 +338,7 @@ class AudioPlayer {
 // ===== SectionManager Class Modifications =====
 class SectionManager {
     constructor() {
-        logger.log('⚡ Faint Flicker Fueling Facility Fixtures'); // Use logger.log
+        logger.log('⚡ Faint Flicker Fueling Facility Fixtures');
 // SETUP SECTION STRUCTURE
         this.sections = [
             { name: 'hero', element: document.getElementById('hero-section') },
@@ -370,9 +364,10 @@ class SectionManager {
     }
 // INITIALIZE SITE AND START AT TOP
     initializeManager() {
-        logger.log('📡 Tiny Trickle Tracking Telemetry'); // Use logger.log
+        logger.log('📡 Tiny Trickle Tracking Telemetry');
         history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
+        this.loadMixes();
         this.setupIntersectionObserver();
         this.setupNavigationListeners();
         this.setupAudioPlayerInteractions(); // Renamed from setupAudioPlayer
@@ -381,6 +376,43 @@ class SectionManager {
         this.setupViewportLogging();
         this.logTimezoneDebugInfo();
     }
+
+    // --- LOAD MIXES ---
+async loadMixes() {
+    const mixListElement = document.querySelector('.mix-list');
+    if (!mixListElement) {
+        logger.error("Mix list container (.mix-list) not found.");
+        return;
+    }
+
+    try {
+        const response = await fetch('mixes.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const mixes = await response.json();
+        // Clear any potential placeholders (though it should be empty)
+        mixListElement.innerHTML = '';
+        // Populate the list
+        mixes.forEach(mix => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('mix-item');
+            listItem.setAttribute('data-src', mix.src);
+            listItem.textContent = mix.title;
+            // Add tabindex="0" to make it keyboard focusable if needed,
+            // but click/enter usually works on list items with listeners.
+            // listItem.setAttribute('tabindex', '0');
+            mixListElement.appendChild(listItem);
+        });
+
+        logger.log(`🎵 Loaded ${mixes.length} mixes from JSON.`);
+
+    } catch (error) {
+        logger.error("Failed to load mixes:", error);
+        mixListElement.innerHTML = '<li class="mix-item error-message">Could not load mixes. Please try again later.</li>'; // Display error
+         // Add basic styling for .error-message if desired
+    }
+}
 // DETERMINE VIEWPORT SIZE AND LISTEN FOR CHANGE
     setupViewportLogging() {
         const logViewportDetails = () => {
@@ -392,18 +424,18 @@ class SectionManager {
             const aspectRatio = (viewportWidth / viewportHeight).toFixed(2);
             const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
             logger.group('📐 Station Dimensions'); // Use logger.group
-            logger.log(`Height: ${viewportHeight}px / ${(viewportHeight / rootFontSize).toFixed(2)}rem`); // Use logger.log
-            logger.log(`Width: ${viewportWidth}px / ${(viewportWidth / rootFontSize).toFixed(2)}rem`); // Use logger.log
-            logger.log(`Aspect Ratio: ${aspectRatio}`); // Use logger.log
-            logger.log(`Orientation: ${orientation}`); // Use logger.log
-            logger.log(`Document Height: ${documentHeight}px`); // Use logger.log
-            logger.log(`Document Width: ${documentWidth}px`); // Use logger.log
-            logger.log(`Root Font Size: ${rootFontSize}px`); // Use logger.log
+            logger.log(`Height: ${viewportHeight}px / ${(viewportHeight / rootFontSize).toFixed(2)}rem`);
+            logger.log(`Width: ${viewportWidth}px / ${(viewportWidth / rootFontSize).toFixed(2)}rem`);
+            logger.log(`Aspect Ratio: ${aspectRatio}`);
+            logger.log(`Orientation: ${orientation}`);
+            logger.log(`Document Height: ${documentHeight}px`);
+            logger.log(`Document Width: ${documentWidth}px`);
+            logger.log(`Root Font Size: ${rootFontSize}px`);
             logger.groupEnd(); // Use logger.groupEnd
         };
         logViewportDetails();
         window.addEventListener('resize', () => {
-            logger.log('🕳️ Wormhole Reshaping Station!'); // Use logger.log
+            logger.log('🕳️ Wormhole Reshaping Station!');
             logViewportDetails();
         });
     }
@@ -415,12 +447,12 @@ class SectionManager {
             dateStyle: 'full',
             timeStyle: 'long'
         });
-        logger.group('🌐 Timezone Debug Information'); // Use logger.group
-        logger.log('Local Time:', localTime); // Use logger.log
-        logger.log('EST Time:', estFormatter.format(localTime)); // Use logger.log
-        logger.log('Local Timezone:', Intl.DateTimeFormat().resolvedOptions().timeZone); // Use logger.log
-        logger.log('EST Offset Calculation:', this.calculateESTOffset()); // Use logger.log
-        logger.groupEnd(); // Use logger.groupEnd
+        logger.group('🌐 Timezone Debug Information');
+        logger.log('Local Time:', localTime);
+        logger.log('EST Time:', estFormatter.format(localTime)); 
+        logger.log('Local Timezone:', Intl.DateTimeFormat().resolvedOptions().timeZone);
+        logger.log('EST Offset Calculation:', this.calculateESTOffset());
+        logger.groupEnd();
     }
 // EST TIMEZONE CONVERSION
     calculateESTOffset() {
@@ -550,12 +582,12 @@ class SectionManager {
         this.sections.forEach(section => {
             this.intersectionObserver.observe(section.element);
         });
-        logger.log('🕵️ Dubious Discharge Diminishing Diagnostics'); // Use logger.log
+        logger.log('🕵️ Dubious Discharge Diminishing Diagnostics');
     }
 // MODIFYING VALUE ATTRIBUTE OF CURRENT SECTION
     updateCurrentSection(sectionName) {
         if (this.currentSection !== sectionName) {
-            logger.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`); // Use logger.log
+            logger.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
             this.currentSection = sectionName;
         }
     }
@@ -575,7 +607,7 @@ class SectionManager {
                 case 'click':
                     trigger.elements.forEach(el => {
                         el.addEventListener('click', () => {
-                            logger.log(`🖱️ AutoPilot Requested - CLICK`); // Use logger.log
+                            logger.log(`🖱️ AutoPilot Requested - CLICK`);
                             this.navigateToNextSection();
                         });
                     });
@@ -585,10 +617,10 @@ class SectionManager {
                         if (trigger.keys.includes(e.key) || trigger.keys.includes(e.code)) {
                             e.preventDefault();
                             if (!this.initialNavigationComplete) {
-                                logger.log(`⌨️ AutoPilot Requested - KEYSTROKE`); // Use logger.log
+                                logger.log(`⌨️ AutoPilot Requested - KEYSTROKE`);
                                 this.navigateToNextSection();
                             } else {
-                                // logger.log(`⌨️ AutoPilot via Keystroke Denied`); // Use logger.log
+                                logger.log(`⌨️ AutoPilot via Keystroke Denied`)
                                 return;
                             }
                         }
@@ -602,10 +634,10 @@ class SectionManager {
                         if (e.deltaY > 0 && currentTime - lastScrollTime > trigger.threshold) {
                             if (!this.initialNavigationComplete) {
                                 lastScrollTime = currentTime;
-                                logger.log('🖱️ AutoPilot Requested - SCROLL'); // Use logger.log
+                                logger.log('🖱️ AutoPilot Requested - SCROLL');
                                 this.navigateToNextSection();
                             } else {
-                                // logger.log('🖱️ AutoPilot via Scroll Denied'); // Use logger.log
+                                logger.log('🖱️ AutoPilot via Scroll Denied');
                                 return
                             }
                         }
@@ -621,18 +653,18 @@ class SectionManager {
                         const touchDiff = touchStartY - touchEndY;
                         if (Math.abs(touchDiff) > trigger.sensitivity && touchDiff > 0) {
                             if (!this.initialNavigationComplete) {
-                                logger.log('👆 AutoPilot Requested - SWIPE'); // Use logger.log
+                                logger.log('👆 AutoPilot Requested - SWIPE');
                                 this.navigateToNextSection();
                             } else {
-                                // logger.log('👆 AutoPilot via Swipe Denied'); // Use logger.log
-                                return; // Explicitly return here too
+                                logger.log('👆 AutoPilot via Swipe Denied');
+                                return;
                             }
                         }
                     });
                     break;
             }
         });
-        logger.log('🕹️ Pitiful Portion Powering Pilot Panel'); // Use logger.log
+        logger.log('🕹️ Pitiful Portion Powering Pilot Panel');
     }
 // UPDATE DEPTH INTO SITE
     navigateToNextSection() {
@@ -641,17 +673,17 @@ class SectionManager {
         this.furthestReachedIndex = Math.max(this.furthestReachedIndex, currentIndex);
         if (nextIndex < this.sectionOrder.length && currentIndex >= this.furthestReachedIndex) {
             const nextSection = this.sectionOrder[nextIndex];
-            logger.log(`🗺️ Plotting Navigation: ${this.currentSection} → ${nextSection}`); // Use logger.log
+            logger.log(`🗺️ Plotting Navigation: ${this.currentSection} → ${nextSection}`);
             this.navigateToSection(nextSection);
             if (nextSection === 'mixes') {
                 this.initialNavigationComplete = true;
-                logger.log('🏁 Destination Reached - AutoPilot Hibernating'); // Use logger.log
+                logger.log('🏁 Destination Reached - AutoPilot Hibernating');
             }
         }
     }
 // SCRIPTING AUTO-SCROLL
     navigateToSection(sectionName) {
-        logger.log(`✈️ AutoPiloting to ${sectionName}`); // Use logger.log
+        logger.log(`✈️ AutoPiloting to ${sectionName}`);
         const targetSection = this.sections.find(section => section.name === sectionName);
 
         if (targetSection) {
@@ -672,13 +704,13 @@ class SectionManager {
             const shouldBeVisible = () => {
                 // Condition 1: Is audio playing?
                 if (this.audioPlayer && this.audioPlayer.isAudioPlaying) {
-                    // logger.log('🔊 Footer Showing: Audio Playing'); // Use logger.log
+                    logger.log('🔊 Footer Showing: Audio Playing');
                     return true;
                 }
 
                 // Condition 2: Was audio playing recently (within grace period)?
                 if (this.audioPlayer && this.audioPlayer.wasPlayingRecently(8000)) { // Check within 8 seconds
-                     // logger.log('⏱️ Footer Showing: Grace Period'); // Use logger.log
+                     logger.log('⏱️ Footer Showing: Grace Period');
                      return true;
                 }
 
@@ -689,11 +721,11 @@ class SectionManager {
                 const nearBottomThreshold = 50; // Pixels from the very bottom
 
                 if (documentHeight - (scrollY + windowHeight) < nearBottomThreshold) {
-                    // logger.log('⬇️ Footer Showing: Near Bottom'); // Use logger.log
+                    logger.log('⬇️ Footer Showing: Near Bottom');
                     return true;
                 }
 
-                // logger.log('⭕ Footer Hidden'); // Use logger.log
+                logger.log('⭕ Footer Hidden');
                 return false;
             };
 
@@ -717,44 +749,50 @@ class SectionManager {
         checkFooterVisibility(); // Initial check
     }
 
-    // --- Modified Audio Player Interaction Setup ---
+// --- Modified Audio Player Interaction Setup ---
     setupAudioPlayerInteractions() {
         if (!this.audioPlayer) {
-            logger.warn("Audio Player not available, skipping interaction setup."); // Use logger.warn
-            return; // Don't setup if player failed to init
+            logger.warn("Audio Player not available, skipping interaction setup.");
+            return;
         }
 
-        const mixItems = document.querySelectorAll('.mix-item');
+        const mixListElement = document.querySelector('.mix-list');
+        if (!mixListElement) {
+            logger.error("Mix list container (.mix-list) not found for event delegation.");
+            return;
+        }
 
-        mixItems.forEach(mixItem => {
-            mixItem.addEventListener('click', () => {
+        // Use Event Delegation on the parent UL
+        mixListElement.addEventListener('click', (event) => {
+            // Check if the clicked element is a mix item itself
+            const mixItem = event.target.closest('.mix-item');
+
+            if (mixItem && !mixItem.classList.contains('error-message')) { // Ensure it's a valid mix item
                 const src = mixItem.getAttribute('data-src');
-                const title = mixItem.textContent.trim(); // Get title from list item text
+                const title = mixItem.textContent.trim();
 
                 if (src && title) {
-                    logger.log(`🎵 User selected Mix: ${title}`); // Use logger.log
+                    logger.log(`🎵 User selected Mix: ${title}`);
                     this.audioPlayer.loadTrack(src, title);
-                    // Automatically play after selection
+                    // Optional: Add visual feedback for loading here (see UX Improvement)
                     this.audioPlayer.play();
-                    // Ensure footer becomes visible immediately when a track is loaded
                     this.setupFooterVisibility(); // Re-check footer visibility
                 } else {
-                    logger.error("Missing data-src or title on mix item:", mixItem); // Use logger.error
+                    logger.error("Missing data-src or title on clicked mix item:", mixItem);
                 }
-            });
+            }
         });
 
-        logger.log('📢 Mix selection listeners ready.'); // Use logger.log
+        logger.log('📢 Mix selection listener ready (using event delegation).');
     }
-
 }
 
 // ===== Initialize Site =====
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        logger.log('🔌 BOOTUP - ALLOCATING POWER:'); // Use logger.log
+        logger.log('🔌 BOOTUP - ALLOCATING POWER:');
         const siteManager = new SectionManager();
-        logger.log('🛸 BEGIN BASS BROADCAST'); // Use logger.log
+        logger.log('🛸 BEGIN BASS BROADCAST');
     } catch (error) {
         logger.error('⚠️ LAUNCH FAILED:', error); // Use logger.error
     }

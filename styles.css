@@ -4,6 +4,13 @@
 @font-face { font-family: 'Syncopate'; src: url('assets/fonts/Syncopate-Regular.ttf') format('truetype'); font-display: block}
 @font-face { font-family: 'Syncopate-Bold'; src: url('assets/fonts/Syncopate-Bold.ttf') format('truetype'); font-display: block}
 @font-face { font-family: 'Wallpoet'; src: url('assets/fonts/Wallpoet-Regular.ttf') format('truetype'); font-display: block}
+
+@font-face { font-family: 'Megrim'; src: url('assets/fonts/Megrim.ttf') format('truetype'); font-display: block}
+@font-face { font-family: 'Notable'; src: url('assets/fonts/Notable.ttf') format('truetype'); font-display: block}
+@font-face { font-family: 'Revalia'; src: url('assets/fonts/Revalia.ttf') format('truetype'); font-display: block}
+
+
+
 /* LAYOUT */
 :root {
   --container-max-width: 80rem;
@@ -20,6 +27,9 @@
   --font-syncopate: 'Syncopate', sans-serif;
   --font-syncopate-bold: 'Syncopate-Bold', sans-serif;
   --font-wallpoet: 'Wallpoet', sans-serif;
+  --font-megrim: 'Megrim', sans-serif;
+  --font-notable: 'Notable', sans-serif;
+  --font-revalia: 'Revalia', sans-serif;
 }
 * {
   margin: 0;
@@ -102,6 +112,7 @@ body {
   font-size: clamp(0.1rem, 3vw, 2.5rem);
 }
 .broadcast-title {
+  font-family: var(--font-notable);
   white-space: nowrap;
   line-height: 0.8;
 }
@@ -183,9 +194,9 @@ body {
   text-align: left;
 }
 .dj-title {
+  font-family: var(--font-revalia);
   font-size: clamp(0.5rem, 3vw, 2.5rem);
   white-space: nowrap;
-  letter-spacing: 0.2em;
   color: var(--color-green);
 }
 .dj-bio {
@@ -197,8 +208,8 @@ body {
   flex-direction: column;
   justify-content: center;
   white-space: nowrap;
-  font-size: clamp(2.5rem, 3vw, 3rem);
-  font-family: var(--font-glitch);
+  font-size: clamp(2.5rem, 4vw, 3rem);
+  font-family: var(--font-megrim);
   color: var(--color-pink);
   cursor: crosshair;
   animation: neon 1.5s ease-in-out infinite alternate;
@@ -258,16 +269,24 @@ body {
   max-width: var(--container-max-width);
   margin: 0 auto;
   gap: 0.5rem;
+  padding-inline: 0.5rem;
 }
 .site-footer.visible {
   opacity: 1;
   visibility: visible;
+}
+.short-credit-text {
+  display: none; /* Hide short text by default */
+}
+.full-credit-text {
+  display: inline; /* Ensure full text is shown by default (usually is, but explicit) */
 }
 .site-footer a {
   color: var(--color-purple);
   text-decoration: none;
   font-size: clamp(0.5rem, 2vw, 0.8rem);
   text-align: center;
+  padding: 0 0.2rem;
 }
 .site-footer a:hover {
   color: var(--color-pink);
@@ -522,6 +541,12 @@ body {
   }
   .past-voyages {
     font-size: clamp(0.5rem, 6vw, 5rem);
+  }
+  .site-footer a .full-credit-text {
+    display: none; /* Hide full text on mobile portrait */
+  }
+  .site-footer a .short-credit-text {
+    display: inline; /* Show short text on mobile portrait */
   }
   .player-controls {
     gap: 0.4rem;

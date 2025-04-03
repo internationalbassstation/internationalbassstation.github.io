@@ -353,10 +353,12 @@ class SectionManager {
         try {
             this.audioPlayer = new AudioPlayer('.audio-player-container');
         } catch (error) {
-             logger.error("FAILED TO INITIALIZE AUDIO PLAYER:", error); // Use logger.error
-             // Handle failure - maybe hide the footer or show a static message
-             const footer = document.getElementById('footer-section');
-             if (footer) footer.style.display = 'none'; // Example: hide footer on critical error
+             logger.error("FAILED TO INITIALIZE AUDIO PLAYER:", error);
+             // Handle failure - hide the footer
+             const footer = document.querySelector('.site-footer'); // <-- Changed selector
+             if (footer) {
+                 footer.style.display = 'none'; // Hide footer on critical error
+             }
              this.audioPlayer = null; // Ensure it's null if failed
         }
 
@@ -695,10 +697,15 @@ async loadMixes() {
     }
 // FOOTER VISIBILITY AND LISTENER
     setupFooterVisibility() {
-        const footer = document.getElementById('footer-section');
+        const footer = document.querySelector('.site-footer');
+            if (!footer) {
+                logger.error("Footer element (.site-footer) not found!");
+                return; // Stop if footer doesn't exist
+            }
         let visibilityTimeout; // Use a timeout for smoother transitions on scroll near edge
 
         const checkFooterVisibility = () => {
+            if (!footer) return;  // Don't try to modify classes if footer wasn't found
             clearTimeout(visibilityTimeout); // Clear any pending check
 
             const shouldBeVisible = () => {
@@ -732,13 +739,12 @@ async loadMixes() {
 
             if (shouldBeVisible()) {
                 footer.classList.add('visible');
-                footer.classList.remove('hidden');
             } else {
                 // Use timeout only for hiding to prevent flicker
                 visibilityTimeout = setTimeout(() => {
+                    if (!footer) return; // Check again inside timeout
                     if (!shouldBeVisible()) { // Re-check condition before hiding
                         footer.classList.remove('visible');
-                        // footer.classList.add('hidden'); // Optional explicit hidden class
                     }
                 }, 250); // Short delay
             }

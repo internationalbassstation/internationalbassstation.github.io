@@ -91,7 +91,7 @@ class AudioPlayer {
     }
 
     loadTrack(src, title) {
-        logger.log(`💿 Loading Track: ${title} (${src})`); 
+        logger.log(`💿 Loading Track: ${title} (${src})`);
         this.audioElement.src = src;
         this.audioElement.load(); // Important: Trigger load for new src
         this.currentTrackTitle = title;
@@ -349,6 +349,8 @@ class SectionManager {
         this.sectionOrder = ['hero', 'info', 'mixes'];
         this.initialNavigationComplete = false;
         this.furthestReachedIndex = 0;
+        this.heroInstructionElement = document.querySelector('.hero-instruction');
+        this.heroInstructionHasBeenHidden = false;
 
         try {
             this.audioPlayer = new AudioPlayer('.audio-player-container');
@@ -451,7 +453,7 @@ async loadMixes() {
         });
         logger.group('🌐 Timezone Debug Information');
         logger.log('Local Time:', localTime);
-        logger.log('EST Time:', estFormatter.format(localTime)); 
+        logger.log('EST Time:', estFormatter.format(localTime));
         logger.log('Local Timezone:', Intl.DateTimeFormat().resolvedOptions().timeZone);
         logger.log('EST Offset Calculation:', this.calculateESTOffset());
         logger.groupEnd();
@@ -591,6 +593,14 @@ async loadMixes() {
         if (this.currentSection !== sectionName) {
             logger.log(`➡️ Sector Switch: ${this.currentSection || 'None'} → ${sectionName}`);
             this.currentSection = sectionName;
+            // Hide hero instruction if we've moved past the hero section
+            if (this.heroInstructionElement && !this.heroInstructionHasBeenHidden) {
+                if (sectionName !== 'hero') {
+                    this.heroInstructionElement.classList.add('hidden');
+                    this.heroInstructionHasBeenHidden = true;
+                    logger.log('👻 Hero instruction hidden.');
+                }
+            }
         }
     }
 // LISTENERS FOR USER INPUTS
@@ -598,7 +608,7 @@ async loadMixes() {
         const navigationTriggers = [
             { type: 'click', elements: [
                 this.sections.find(section => section.name === 'hero').element,
-                document.querySelector('.past-voyages')
+                document.querySelector('.past-voyages-button') // Updated selector
             ]},
             { type: 'keyboard', keys: ['ArrowDown', 'Space'] },
             { type: 'wheel', threshold: 300 },
@@ -608,9 +618,14 @@ async loadMixes() {
             switch (trigger.type) {
                 case 'click':
                     trigger.elements.forEach(el => {
+                        if (!el) { // Guard against null elements if selector fails
+                            logger.warn(`Navigation trigger element not found for type: ${trigger.type}`);
+                            return;
+                        }
                         el.addEventListener('click', () => {
-                            logger.log(`🖱️ AutoPilot Requested - CLICK`);
-                            this.navigateToNextSection();
+                            logger.log(`🖱️ AutoPilot Requested - CLICK on ${el.className || el.id}`);
+                            // For hero section OR past voyages button, force navigation
+                            this.navigateToNextSection(true);
                         });
                     });
                     break;
@@ -669,18 +684,34 @@ async loadMixes() {
         logger.log('🕹️ Pitiful Portion Powering Pilot Panel');
     }
 // UPDATE DEPTH INTO SITE
-    navigateToNextSection() {
+    navigateToNextSection(forceNavigation = false) {
         const currentIndex = this.sectionOrder.indexOf(this.currentSection);
         const nextIndex = currentIndex + 1;
+
+        // This line ensures furthestReachedIndex is at least the current section before the check.
+        // It's part of the logic to prevent implicit navigation (scroll/swipe) from re-triggering
+        // if the user has scrolled back past a section they already visited.
+        // For forced navigation, this specific update's immediate effect on the condition is bypassed.
         this.furthestReachedIndex = Math.max(this.furthestReachedIndex, currentIndex);
-        if (nextIndex < this.sectionOrder.length && currentIndex >= this.furthestReachedIndex) {
-            const nextSection = this.sectionOrder[nextIndex];
-            logger.log(`🗺️ Plotting Navigation: ${this.currentSection} → ${nextSection}`);
-            this.navigateToSection(nextSection);
-            if (nextSection === 'mixes') {
+
+        // Condition to navigate:
+        // 1. There must be a next section.
+        // 2. EITHER navigation is forced (explicit click)
+        //    OR (for implicit navigation) the user hasn't already been further than the current section.
+        if (nextIndex < this.sectionOrder.length && (forceNavigation || currentIndex >= this.furthestReachedIndex)) {
+            const nextSectionName = this.sectionOrder[nextIndex];
+            logger.log(`🗺️ Plotting Navigation: ${this.currentSection} → ${nextSectionName} (Forced: ${forceNavigation})`);
+            this.navigateToSection(nextSectionName);
+
+            // IMPORTANT: Update furthestReachedIndex to the new section *index* after deciding to navigate
+            this.furthestReachedIndex = Math.max(this.furthestReachedIndex, nextIndex);
+
+            if (nextSectionName === 'mixes') {
                 this.initialNavigationComplete = true;
                 logger.log('🏁 Destination Reached - AutoPilot Hibernating');
             }
+        } else {
+            logger.log(`Navigation to next section skipped. Current: ${this.currentSection}, Next Index: ${nextIndex}, Furthest: ${this.furthestReachedIndex}, CheckVal: ${currentIndex >= this.furthestReachedIndex}, Forced: ${forceNavigation}`);
         }
     }
 // SCRIPTING AUTO-SCROLL

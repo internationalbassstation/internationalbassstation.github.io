@@ -4,13 +4,9 @@
 @font-face { font-family: 'Syncopate'; src: url('assets/fonts/Syncopate-Regular.ttf') format('truetype'); font-display: block}
 @font-face { font-family: 'Syncopate-Bold'; src: url('assets/fonts/Syncopate-Bold.ttf') format('truetype'); font-display: block}
 @font-face { font-family: 'Wallpoet'; src: url('assets/fonts/Wallpoet-Regular.ttf') format('truetype'); font-display: block}
-
 @font-face { font-family: 'Megrim'; src: url('assets/fonts/Megrim.ttf') format('truetype'); font-display: block}
 @font-face { font-family: 'Notable'; src: url('assets/fonts/Notable.ttf') format('truetype'); font-display: block}
 @font-face { font-family: 'Revalia'; src: url('assets/fonts/Revalia.ttf') format('truetype'); font-display: block}
-
-
-
 /* LAYOUT */
 :root {
   --container-max-width: 80rem;
@@ -67,6 +63,12 @@ body {
   white-space: nowrap;
   letter-spacing: 0.2em;
   animation: fadeInOut 2s infinite;
+}
+.hero-instruction.hidden {
+  animation: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-out, visibility 0s linear 0.5s;
 }
 .visually-hidden {
   position: absolute;
@@ -177,7 +179,7 @@ body {
   letter-spacing: 0.03em;
 }
 .broadcast-player iframe {
-  border-color: var(--color-pink); 
+  border-color: var(--color-pink);
   margin: 0.2rem 0;
 }
 .broadcast-player a {
@@ -205,19 +207,33 @@ body {
 }
 .past-voyages {
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+.past-voyages-button {
+  background-color: transparent;
+  border: 3px solid var(--color-pink);
+  padding: 0.6em 1.2em;
+  border-radius: 0.7rem;
   white-space: nowrap;
   font-size: clamp(2.5rem, 4vw, 3rem);
   font-family: var(--font-megrim);
   color: var(--color-pink);
   cursor: crosshair;
   animation: neon 1.5s ease-in-out infinite alternate;
-  /* prevent text selection */
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  /* Prevent text selection */
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none;    /* Firefox */
   -ms-user-select: none;     /* IE/Edge */
   user-select: none;         /* Standard */
+}
+.past-voyages-button:hover,
+.past-voyages-button:focus {
+  background-color: rgba(239, 36, 170, 0.15);
+  border-color: var(--color-green);
+  transform: scale(1.03);
+  outline: none;
 }
 /* MIXES SECTION */
 .mix-container {
@@ -262,7 +278,6 @@ body {
   width: 100%;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -270,16 +285,21 @@ body {
   margin: 0 auto;
   gap: 0.5rem;
   padding-inline: 0.5rem;
+  transition-property: opacity, visibility;
+  transition-duration: 0.8s, 0s;
+  transition-timing-function: ease, linear;
+  transition-delay: 0s, 0.8s;
 }
 .site-footer.visible {
   opacity: 1;
   visibility: visible;
+  transition-delay: 0s, 0s;
 }
 .short-credit-text {
-  display: none; /* Hide short text by default */
+  display: none;
 }
 .full-credit-text {
-  display: inline; /* Ensure full text is shown by default (usually is, but explicit) */
+  display: inline;
 }
 .site-footer a {
   color: var(--color-purple);
@@ -396,7 +416,7 @@ body {
   border: none;
   border-radius: 0;
   cursor: crosshair;
-  margin-top: -6px; /* Adjust vertical position (approx -(thumbHeight - trackHeight) / 2) */
+  margin-top: -6px; /* (approx -(thumbHeight - trackHeight) / 2) */
 }
 .seek-slider::-webkit-slider-thumb:not([style*="background-image"]),
 .volume-slider::-webkit-slider-thumb:not([style*="background-image"]) {
@@ -539,14 +559,14 @@ body {
   .dj-info p {
     font-size: clamp(0.5rem, 3vw, 1.1rem);
   }
-  .past-voyages {
-    font-size: clamp(0.5rem, 6vw, 5rem);
+  .past-voyages-button {
+    font-size: clamp(2rem, 6vw, 4rem);
   }
   .site-footer a .full-credit-text {
-    display: none; /* Hide full text on mobile portrait */
+    display: none;
   }
   .site-footer a .short-credit-text {
-    display: inline; /* Show short text on mobile portrait */
+    display: inline;
   }
   .player-controls {
     gap: 0.4rem;
@@ -564,7 +584,7 @@ body {
   }
   .play-pause-button,
   .volume-button {
-    font-size: 1.3rem; 
+    font-size: 1.3rem;
   }
 }
 /* MOBILE - LANDSCAPE */
@@ -588,7 +608,7 @@ body {
     gap: 0;
   }
   .broadcast-title h2 {
-    font-size: clamp(0.1rem, 4vw, 2rem); 
+    font-size: clamp(0.1rem, 4vw, 2rem);
     margin: 0;
   }
   #countdown {
@@ -604,8 +624,8 @@ body {
   .dj-info p {
     display: none;
   }
-  .past-voyages {
-    font-size: clamp(0.1rem, 3vw, 3rem);
+  .past-voyages-button {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
   }
   .mix-item {
     min-height: 2.75rem;

@@ -687,13 +687,11 @@ async loadMixes() {
     navigateToNextSection(forceNavigation = false) {
         const currentIndex = this.sectionOrder.indexOf(this.currentSection);
         const nextIndex = currentIndex + 1;
-
         // This line ensures furthestReachedIndex is at least the current section before the check.
         // It's part of the logic to prevent implicit navigation (scroll/swipe) from re-triggering
         // if the user has scrolled back past a section they already visited.
         // For forced navigation, this specific update's immediate effect on the condition is bypassed.
         this.furthestReachedIndex = Math.max(this.furthestReachedIndex, currentIndex);
-
         // Condition to navigate:
         // 1. There must be a next section.
         // 2. EITHER navigation is forced (explicit click)
@@ -702,10 +700,8 @@ async loadMixes() {
             const nextSectionName = this.sectionOrder[nextIndex];
             logger.log(`🗺️ Plotting Navigation: ${this.currentSection} → ${nextSectionName} (Forced: ${forceNavigation})`);
             this.navigateToSection(nextSectionName);
-
             // IMPORTANT: Update furthestReachedIndex to the new section *index* after deciding to navigate
             this.furthestReachedIndex = Math.max(this.furthestReachedIndex, nextIndex);
-
             if (nextSectionName === 'mixes') {
                 this.initialNavigationComplete = true;
                 logger.log('🏁 Destination Reached - AutoPilot Hibernating');
@@ -734,40 +730,32 @@ async loadMixes() {
                 return; // Stop if footer doesn't exist
             }
         let visibilityTimeout; // Use a timeout for smoother transitions on scroll near edge
-
         const checkFooterVisibility = () => {
             if (!footer) return;  // Don't try to modify classes if footer wasn't found
             clearTimeout(visibilityTimeout); // Clear any pending check
-
             const shouldBeVisible = () => {
                 // Condition 1: Is audio playing?
                 if (this.audioPlayer && this.audioPlayer.isAudioPlaying) {
                     logger.log('🔊 Footer Showing: Audio Playing');
                     return true;
                 }
-
                 // Condition 2: Was audio playing recently (within grace period)?
                 if (this.audioPlayer && this.audioPlayer.wasPlayingRecently(8000)) { // Check within 8 seconds
                      logger.log('⏱️ Footer Showing: Grace Period');
                      return true;
                 }
-
                 // Condition 3: Is user near the absolute bottom of the page?
                 const scrollY = window.scrollY || window.pageYOffset;
                 const windowHeight = window.innerHeight;
                 const documentHeight = document.documentElement.scrollHeight;
                 const nearBottomThreshold = 50; // Pixels from the very bottom
-
                 if (documentHeight - (scrollY + windowHeight) < nearBottomThreshold) {
                     logger.log('⬇️ Footer Showing: Near Bottom');
                     return true;
                 }
-
                 logger.log('⭕ Footer Hidden');
                 return false;
             };
-
-
             if (shouldBeVisible()) {
                 footer.classList.add('visible');
             } else {
@@ -780,34 +768,28 @@ async loadMixes() {
                 }, 250); // Short delay
             }
         };
-
         window.addEventListener('scroll', checkFooterVisibility, { passive: true });
         document.addEventListener('audiostatechange', checkFooterVisibility); // Keep this listener
         checkFooterVisibility(); // Initial check
     }
-
 // --- Modified Audio Player Interaction Setup ---
     setupAudioPlayerInteractions() {
         if (!this.audioPlayer) {
             logger.warn("Audio Player not available, skipping interaction setup.");
             return;
         }
-
         const mixListElement = document.querySelector('.mix-list');
         if (!mixListElement) {
             logger.error("Mix list container (.mix-list) not found for event delegation.");
             return;
         }
-
         // Use Event Delegation on the parent UL
         mixListElement.addEventListener('click', (event) => {
             // Check if the clicked element is a mix item itself
             const mixItem = event.target.closest('.mix-item');
-
             if (mixItem && !mixItem.classList.contains('error-message')) { // Ensure it's a valid mix item
                 const src = mixItem.getAttribute('data-src');
                 const title = mixItem.textContent.trim();
-
                 if (src && title) {
                     logger.log(`🎵 User selected Mix: ${title}`);
                     this.audioPlayer.loadTrack(src, title);
@@ -819,11 +801,9 @@ async loadMixes() {
                 }
             }
         });
-
         logger.log('📢 Mix selection listener ready (using event delegation).');
     }
 }
-
 // ===== Initialize Site =====
 document.addEventListener('DOMContentLoaded', () => {
     try {

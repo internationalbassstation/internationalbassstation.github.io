@@ -35,13 +35,10 @@ def record_stream(url, duration, output_file):
 # if not, print message indicating stream access error
             print(f"Error: Failed to access stream. Status code: {response.status_code}")
             return
-
 # note the recording start time
         start_time = time.time()
-    
 # print message indicating recording has started
         print(f"Recording to {output_file}...")
-    
 # write-binary to store the stream data
         with open(output_file, "wb") as f:
 # loop over chunks of audio data
@@ -54,60 +51,47 @@ def record_stream(url, duration, output_file):
                 if time.time() - start_time > duration:
 # stop the loop (and therefore the recording) if limit is reached
                     break
-
 # print message indicating recording is complete
         print("Recording finished.")
-
     except requests.RequestException as e:
 # print message indicating errors related to network issues
         print(f"Error: Request failed while streaming. Details: {e}")
-    
     except IOError as e:
 # print message indicating errors related to file permission or storage
-        print(f"Error: Failed to write to file. Details: {e}")
-    
+        print(f"Error: Failed to write to file. Details: {e}") 
     except Exception as e:
 # print message indicating any other unexpected exceptions
         print(f"Unexpected error occurred: {e}")
-
 # main function to manage order and process
 def main():
     try:
 # call the "record_stream" function to start recording
         record_stream(STREAM_URL, RECORD_DURATION, OUTPUT_FILE)
 # print message indicating confirmation of output file and location
-        print(f"Audio saved to {OUTPUT_FILE}")
-        
+        print(f"Audio saved to {OUTPUT_FILE}") 
 # calculate file size in megabytes
         file_size = os.path.getsize(OUTPUT_FILE) / (1024 * 1024)
 # print message indicating file size, two decimal places
-        print(f"File size: {file_size:.2f} MB")
-        
+        print(f"File size: {file_size:.2f} MB")  
 # calculate approximate bitrate in kbps
         bitrate = (file_size * 8192) / RECORD_DURATION
 # print message indicating bitrate, two decimal places
-        print(f"Approximate bitrate: {bitrate:.2f} kbps")
-        
+        print(f"Approximate bitrate: {bitrate:.2f} kbps")   
 # error handling related to HTTP request
     except requests.RequestException as e:
 # print message indicating streaming error
         print(f"Error occurred while streaming: {e}")
-
-
 # allow for early exit from program via keyboard (Ctrl+C)
     except KeyboardInterrupt:
 # print message indicating user interruption
         print("\nRecording interrupted by user.")
-
 # error handling related to unexpected issues in main function
     except Exception as e:
 # print message indicating unexpected error in main function
         print(f"Unexpected error in main function: {e}")
-
 # ensure main function is executed when script runs
 if __name__ == "__main__":
     main()
-
 # needs to be updated with:
 # attempts to retry errors, with timeout
 # File Overwriting Prevention

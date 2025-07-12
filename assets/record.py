@@ -6,7 +6,7 @@
 # "python -m pip install requests"
 # if all is well, run:
 # "python record.py"
-# 4444 seconds is 74 minutes
+# 5400 seconds is 90 minutes
 
 import requests
 import time
@@ -16,7 +16,7 @@ from datetime import datetime
 # station to record - find new one in developer console, search for "src" and find audio
 STREAM_URL = "http://northumberland.serverroom.net:8850/"
 # (in seconds)
-RECORD_DURATION = 4444
+RECORD_DURATION = 5400
 # bytes read from stream at a time
 CHUNK_SIZE = 8192
 

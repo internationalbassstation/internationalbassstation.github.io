@@ -415,7 +415,7 @@ body {
   background-position: center center;
   border: none;
   border-radius: 0;
-  cursor: crosshair;
+  cursor: crosshair; 
   margin-top: -6px; /* (approx -(thumbHeight - trackHeight) / 2) */
 }
 .seek-slider::-webkit-slider-thumb:not([style*="background-image"]),

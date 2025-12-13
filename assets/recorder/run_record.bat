@@ -1,3 +1,3 @@
 @echo off
 cd /d "%~dp0"
-python record.py
+"C:\Python314\python.exe" record.py
